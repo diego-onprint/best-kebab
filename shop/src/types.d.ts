@@ -3,6 +3,7 @@ export type Product = {
     name: string
     price: string
     images: ProductImage[]
+    description: string
 }
 
 type ProductImage = {
@@ -11,9 +12,20 @@ type ProductImage = {
     alt: string
 }
 
-export type CartProduct = Product & { qty: number }
+export type Category = {
+    id: number
+    name: string
+    slug: string
+    image: ProductImage
+    
+}
+
+export type CartProduct = Pick<Product, 'id' | 'name' | 'price'> & { qty: number }
 
 export type Cart = { 
     products: CartProduct[] 
     total: string
 }
+
+export type CartProductId = CartProduct["id"]
+export type CartTotal = Cart["total"]

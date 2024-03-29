@@ -2,11 +2,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import type { CartProduct, Product } from "../../types"
 
 type PropsTypes = {
-    cart: CartProduct[]
-    setCart: Dispatch<SetStateAction<CartProduct[]>>
+    setProductDetails: Dispatch<SetStateAction<Product | null>>
 }
 
-const ProductsList = ({ cart, setCart }: PropsTypes) => {
+const ProductsList = ({ setProductDetails }: PropsTypes) => {
 
     const [products, setProducts] = useState<Product[]>([])
     const baseUrl = import.meta.env.DEV ? import.meta.env.VITE_STORE_BASE_URL : import.meta.env.VITE_STORE_BASE_URL
@@ -34,13 +33,6 @@ const ProductsList = ({ cart, setCart }: PropsTypes) => {
 
     }, [url])
 
-    // ADD TO CART    
-    const handleAdd = async (product: Product) => {
-
-        setCart([...cart, {...product, qty: 1}])
-
-    }
-
     return (
         <div className="w-full">
             <div className="mb-4">
@@ -57,7 +49,7 @@ const ProductsList = ({ cart, setCart }: PropsTypes) => {
                                         <h3>{product.name}</h3>
                                         <p>CHF.{product.price}</p>
                                     </div>
-                                    <button onClick={() => handleAdd(product)} className="bg-zinc-100 rounded-sm px-2 py-1 text-slate-900 grid place-items-center" type="button">Add</button>
+                                    <button onClick={() => setProductDetails(product)} className="bg-zinc-100 rounded-sm px-2 py-1 text-slate-900 grid place-items-center" type="button">Add</button>
                                 </div>
                             </article>
                         )) : null
