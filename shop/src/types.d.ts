@@ -20,11 +20,12 @@ export type Category = {
     
 }
 
-export type CartProduct = Pick<Product, 'id' | 'name' | 'price'> & { qty: number }
+export type CartProduct = Product & { qty: number, localId: string }
 
 export type Cart = { 
     products: CartProduct[] 
     total: string
+    totalProducts: number
 }
 
 export type CartProductId = CartProduct["id"]

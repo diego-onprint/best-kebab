@@ -25,7 +25,6 @@ const Cart = () => {
     }
 
     const handleDelete = (id: CartProductId) => {
-        console.table([cartProducts, id])
         dispatch(removeProduct(id))
     }
 

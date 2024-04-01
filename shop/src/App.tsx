@@ -1,28 +1,37 @@
-import { useState } from "react";
-import Layout from "./components/layout/Layout";
-import ProductsList from "./components/products_list/ProductsList";
-import { CartProduct, Product } from "./types";
-import CheckoutForm from "./components/checkout_form/CheckoutForm";
-import ProductDetail from "./components/product_detail/ProductDetail";
+import { useState } from "react"
+import ProductsList from "./components/products_list/ProductsList"
+import { Product } from "./types"
+import ProductDetail from "./components/product_detail/ProductDetail"
+import Order from "./components/order/Order"
+import Checkout from "./components/checkout/Checkout"
 
 function App() {
 
-  const [cart, setCart] = useState<CartProduct[]>([])
   const [productDetails, setProductDetails] = useState<Product | null>(null)
-  const [selectedProduct, setSelectedProduct] = useState()
-  const [isCheckout, setCheckout] = useState(false)
+  const [showOrder, setShowOrder] = useState(false)
+  const [showCheckout, setShowCheckout] = useState(false)
 
   return (
-    <Layout>
-      <div className="grid grid-cols-12 p-4 max-w-screen-xl mx-auto gap-4">
-        <div className="col-span-12 md:col-span-6">
-          <ProductsList setProductDetails={setProductDetails} />
-        </div>
-        <ProductDetail productDetails={productDetails} setProductDetails={setProductDetails} />
-        { isCheckout ? <CheckoutForm cart={cart} setCheckout={setCheckout} /> : null }
-
-      </div>
-    </Layout>
+    <main>
+        <ProductsList
+          setProductDetails={setProductDetails}
+          setShowOrder={setShowOrder}
+        />
+        <ProductDetail
+          productDetails={productDetails}
+          setProductDetails={setProductDetails}
+        />
+        <Order
+          showOrder={showOrder}
+          setShowOrder={setShowOrder}
+          setShowCheckout={setShowCheckout}
+        />
+        <Checkout 
+          showCheckout={showCheckout}
+          setShowCheckout={setShowCheckout}
+        />
+        {/* {isCheckout ? <CheckoutForm cart={cart} setCheckout={setCheckout} /> : null} */}
+    </main>
   )
 }
 
