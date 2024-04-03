@@ -14,6 +14,10 @@
   .section-title {
     @apply text-xl font-semibold;
   }
+
+  .input-base {
+    @apply w-full p-4 rounded-sm border border-zinc-200 focus-visible:outline-zinc-400 focus:outline-zinc-400;
+  }
 }
 
 :root {

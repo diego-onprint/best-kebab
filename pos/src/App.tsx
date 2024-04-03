@@ -123,7 +123,166 @@ function App() {
       </div>
     `
 
-    // <div>${address} ${postcode} ${city} ${country}}</div>
+      // <div>${address} ${postcode} ${city} ${country}}</div>
+
+      const html = `
+      <html>
+        <head>
+          <title>Print Receipt</title>
+          <style>
+
+          * {
+            margin: 0;
+            padding: 0;
+          }
+
+          body {
+            padding: 25px;
+          }
+
+          .logo-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+          }
+
+          .title {
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+          }
+
+          .company-details {
+            margin-bottom: 7.5px;
+            padding-bottom: 7.5px;
+            border-bottom: 1px solid black;
+          }
+
+          .table-header {
+            display: flex;
+            gap: 5px;
+          }
+
+          .items-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            flex-gap: 3px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid black;
+          }
+
+          .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+          }
+
+          .emph {
+            font-weight: bold;
+            font-size: 22px;
+          }
+
+          .address-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          }
+
+          .qr-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+          }
+
+          </style>
+        </head>
+        <body>
+          ${ticket}
+        </body>
+      </html>
+    `
+
+      const printWindow = windowRef.current.open("")
+
+      if (printWindow && ticket) {
+        printWindow.document.write(html)
+        printWindow.document.close()
+        printWindow.print()
+        printWindow.close()
+      } else {
+        console.error("Ocurrió un error al intentar imprimir la ventana")
+      }
+    }
+
+    const printLocalOrder = (args) => {
+
+      console.log("ARGS......", args)
+
+      // EVENTUALLY REMOVE WHEN LOCAL AND TAKEAWAY ENDPOINTS DIFF
+      if (!args.isStore) {
+        setNewOrderId(args.data.id)
+        notificationSound.play()
+      }
+
+      const items = args.data.line_items.map(item => {
+        return `
+          <div class="item">
+            <div style="width: 25px;">${item.quantity}</div>
+            <div style="flex: 1">${item.name}</div>
+            <div>CHF.${item.price}</div>
+          </div>
+        `
+      }).join('')
+
+      const ticket = `
+      <div>
+        <div class="logo-container">
+          <img class="logo" src="/assets/onprint-logo.png" alt="" />
+        </div>
+        <h2 class="title">OnPrint POS Demo</h2>
+        <div class="company-details">
+          <div>Dohlenweg 24,</div>
+          <div>8050 Zürich</div>
+          <div>Onprintmedia.ch</div>
+          <div>info@onprintmedia.ch</div>
+        </div>
+        <div class="order-details">
+          <div>Bestellung: #${args.data.id}</div>
+          <div>Bestelldatum: ${args.data.date_created}</div>
+          <div>Client: ${args.data.billing.first_name}</div>
+          <div>Table: ${args.data.shipping.first_name}</div>
+        </div>
+        <div class="items-list">
+          <div class="table-header">
+            <div style="width: 25px;">Qty</div>
+            <div style="flex: 1;">Artikel</div>
+            <div>Preis</div>
+          </div>
+          ${items}
+        </div>
+        <div class="item">
+          <div>Rabatt</div>
+          <div>CHF.0</div>
+        </div>
+        <div class="item">
+          <div>Versandgebühr</div>
+          <div>CHF.0</div>
+        </div>
+        <div class="item">
+          <div class="emph">Gesamt</div>
+          <div class="emph">CHF.${args.data.total}</div>
+        </div>
+      </div>
+    `
 
       const html = `
       <html>
@@ -224,13 +383,16 @@ function App() {
     }
 
     const handlePrintOrder = (args) => printOrder(args)
+    const handlePrintLocalOrder = (args) => printLocalOrder(args)
 
     socket.on("connect", onConnect)
     socket.on("new-order", handlePrintOrder)
+    socket.on("new-local-order", handlePrintLocalOrder)
 
     return () => {
       socket.off("connect", onConnect)
       socket.off("new-order", handlePrintOrder)
+      socket.off("new-local-order", handlePrintLocalOrder)
     }
 
   }, [dispatch])

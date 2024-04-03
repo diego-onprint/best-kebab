@@ -8,9 +8,10 @@ type PropsTypes = {
     showOrder: boolean,
     setShowOrder: Dispatch<SetStateAction<boolean>>
     setShowCheckout: Dispatch<SetStateAction<boolean>>
+    table: string
 }
 
-const Order = memo(({ showOrder, setShowOrder, setShowCheckout }: PropsTypes) => {
+const Order = memo(({ showOrder, setShowOrder, setShowCheckout, table }: PropsTypes) => {
 
     const cartProducts = useSelector<RootState, CartProduct[]>(state => state.cart.products)
     const totalProducts = useSelector<RootState, number>(state => state.cart.totalProducts)
@@ -18,10 +19,10 @@ const Order = memo(({ showOrder, setShowOrder, setShowCheckout }: PropsTypes) =>
     const dispatch = useDispatch<AppDispatch>()
 
     return (
-        <div className={`${showOrder && "-translate-x-full"} transition-transform z-30 flex flex-col bg-white fixed top-0 -right-[100vw] w-[100vw] h-[100vh]`}>
+        <div className={`${showOrder && "-translate-x-full"} transition-transform z-30 flex flex-col bg-white fixed top-0 -right-[100vw] w-[100vw] h-[80vh] h-`}>
             <div className="relative p-3 shadow-lg">
                 <h3 className="text-center font-semibold">Your order</h3>
-                <p className="text-center text-zinc-400">Table 4</p>
+                <p className="text-center text-zinc-400">Table {table}</p>
                 <button onClick={() => setShowOrder(false)} className="absolute left-2 top-1/2 -translate-y-1/2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -57,7 +58,7 @@ const Order = memo(({ showOrder, setShowOrder, setShowCheckout }: PropsTypes) =>
             </div>
             <div className="flex flex-col gap-2 w-full p-5 bg-white border-t border-slate-100 shadow-lg">
                 <div className="flex flex-col gap-2">
-                <p><span>{totalProducts}</span> producto{totalProducts > 1 && <span>s</span>}</p>
+                    <p><span>{totalProducts}</span> producto{totalProducts > 1 && <span>s</span>}</p>
                     <div className="flex justify-between">
                         <p className="">Total</p>
                         <p className="text-xl font-semibold">CHF. {total}</p>

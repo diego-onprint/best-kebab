@@ -4,7 +4,7 @@
 
 @layer components {
   .primary-button {
-    @apply bg-green-500 hover:bg-green-600 py-4 px-2 rounded-lg transition-colors flex justify-center;
+    @apply bg-green-500 hover:bg-green-600 disabled:bg-zinc-100 disabled:hover:bg-zinc-100 py-4 px-2 rounded-lg transition-colors flex justify-center;
   }
 
   .ghost-button {

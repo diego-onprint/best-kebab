@@ -6,9 +6,10 @@ import { RootState } from "../../store/store"
 type PropsTypes = {
     setProductDetails: Dispatch<SetStateAction<Product | null>>
     setShowOrder: Dispatch<SetStateAction<boolean>>
+    table: string
 }
 
-const ProductsList = ({ setProductDetails, setShowOrder }: PropsTypes) => {
+const ProductsList = ({ setProductDetails, setShowOrder, table }: PropsTypes) => {
 
     const [products, setProducts] = useState<Product[]>([])
     const totalProducts = useSelector<RootState, number>(state => state.cart.totalProducts)
@@ -41,10 +42,10 @@ const ProductsList = ({ setProductDetails, setShowOrder }: PropsTypes) => {
     }, [url])
 
     return (
-        <div className="w-full flex flex-col h-[100vh]">
+        <div className="w-full flex flex-col h-[80vh]">
             <div className="relative p-3 border-b border-zinc-200">
                 <h3 className="text-center font-semibold">Select products</h3>
-                <p className="text-center text-zinc-400">Table 4</p>
+                <p className="text-center text-zinc-400">Table {table}</p>
             </div>
             <div className="flex flex-nowrap gap-4 p-4 bg-white shadow-md overflow-x-scroll">
                 <p>Categories</p>
@@ -56,7 +57,7 @@ const ProductsList = ({ setProductDetails, setShowOrder }: PropsTypes) => {
                 <button className="inline-block">Cat. 6</button>
                 <button className="inline-block">Cat. 6</button> */}
             </div>
-            <div className="grid grid-cols-12 gap-2 flex-1 h-80 overflow-y-auto pt-3 px-2 bg-neutral-100">
+            <div className="grid grid-cols-12 gap-2 flex-1 h-80 overflow-y-auto py-3 px-2 bg-neutral-100">
                 {
                     products.length !== 0 ?
                         products.map(product => (

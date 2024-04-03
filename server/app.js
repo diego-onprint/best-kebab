@@ -58,6 +58,33 @@ app.get("/api/products/:id", async (req, res) => {
     res.status(200).send({ products: result })
 })
 
+// PRODUCT VARIATION
+app.get("/api/product-variation/:id", async (req, res) => {
+
+    const url = `${baseUrl}products/${req.params.id}/variations`
+    let result
+
+    try {
+
+        const wooResponse = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${auth}`,
+            },
+        })
+
+        result = await wooResponse.json()
+
+    } catch (err) {
+
+        res.status(500).send({ ok: false, msg: err })
+
+    }
+
+    res.status(200).send({ variations: result })
+})
+
 // CATEGORIES
 app.get("/api/categories", async (req, res) => {
 
@@ -253,6 +280,56 @@ app.post("/api/new-order", async (req, res) => {
     }
 
     io.emit("new-order", { success: true, data: result })
+
+    res.send({ ok: true, result: result }).status(200)
+})
+
+// CRETE NEW LOCAL ORDER
+app.post("/api/new-local-order", async (req, res) => {
+
+    // create woo order
+    const url = `${baseUrl}orders`
+
+    let result
+
+    const data = req.body
+
+    console.log("DATA.....", data)
+
+    // TODO format order
+    const order = {
+        payment_method: 'bacs',
+        payment_method_title: 'Direct Bank Transfer',
+        set_paid: true,
+        billing: {
+            first_name: data.customer,
+        },
+        shipping: {
+            first_name: data.table,
+        },
+        line_items: data.products
+    }
+
+    try {
+
+        const wooResponse = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${auth}`,
+            },
+            body: JSON.stringify(order),
+        })
+
+        result = await wooResponse.json()
+
+    } catch (err) {
+
+        res.status(500).send({ ok: false, msg: err })
+
+    }
+
+    io.emit("new-local-order", { success: true, data: result })
 
     res.send({ ok: true, result: result }).status(200)
 })

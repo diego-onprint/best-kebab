@@ -13,6 +13,8 @@ const Cart = () => {
     const dispatch = useDispatch<AppDispatch>()
     const total = useSelector<RootState, CartTotal>(state => state.cart.total)
 
+    // console.log("CART........", cartProducts)
+
     // TODO maybe use reducer
     const [disabled, setDisabled] = useState(cartProducts.length === 0)
     const [loading, setLoading] = useState(false)
@@ -69,13 +71,30 @@ const Cart = () => {
             <dl className="divide-y flex flex-col flex-1 overflow-auto px-4">
                 {
                     cartProducts.map(product => (
-                        <li key={product.id} className="flex py-4 justify-between">
-                            <div className="flex gap-2">
-                                <p className="font-semibold">{product.qty}</p>
-                                <dt className="truncate max-w-60">{product.name}</dt>
+                        <li key={product.id} className="flex gap-6 py-4 justify-between">
+                            <div className="flex-1">
+                                <div className="flex justify-between">
+                                    <div className="flex gap-2">
+                                        <p className="font-semibold">{product.qty}</p>
+                                        <dt className="truncate max-w-60">{product.name}</dt>
+                                    </div>
+                                    <dd className="font-semibold">
+                                        <span className="text-sm">CHF. </span>
+                                        {product.price}
+                                    </dd>
+                                </div>
+                                {
+                                    product.variation ?
+                                        <div className="flex justify-between gap-2 pl-4 text-zinc-400">
+                                            <p>{product.variation.attributes[0].option}</p>
+                                            <dt className="truncate max-w-60">
+                                                <span className="text-sm">CHF. </span>
+                                                {product.variation.price}
+                                            </dt>
+                                        </div> : null
+                                }
                             </div>
                             <div className="flex gap-10">
-                                <dd className="font-semibold">${product.price}</dd>
                                 <button onClick={() => handleDelete(product.id)} className="text-red-400 cursor-pointer" type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                                         <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clipRule="evenodd" />
@@ -106,7 +125,7 @@ const Cart = () => {
                 </button>
                 <button
                     onClick={handleCheckout}
-                    className={`primary-button col-span-8 disabled:opacity-50 disabled:hover:bg-green-500`}
+                    className={`primary-button col-span-8 disabled:opacity-50`}
                     disabled={disabled}
                 >
                     {loading ? <Spinner /> : "Checkout"}
