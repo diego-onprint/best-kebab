@@ -39,7 +39,7 @@ const Options = ({ id, setVariation }: PropsTypes) => {
                                             className="cursor-pointer"
                                             onChange={() => handleSelected(variation)}
                                         />
-                                        <label>{variation.attributes[0].option} (CHF. {variation.price})</label>
+                                        <label>{variation.attributes[0].option}</label>
                                     </div>
                                 )
                             }) :

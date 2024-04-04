@@ -4,11 +4,11 @@
 
 @layer components {
   .primary-button {
-    @apply bg-green-500 hover:bg-green-600 disabled:bg-zinc-100 disabled:hover:bg-zinc-100 py-4 px-2 rounded-lg transition-colors flex justify-center;
+    @apply button-base bg-green-500 hover:bg-green-600 disabled:bg-zinc-100 disabled:hover:bg-zinc-100;
   }
 
   .ghost-button {
-    @apply bg-zinc-300 hover:bg-zinc-400 py-4 rounded-lg transition-colors;
+    @apply button-base bg-zinc-300 hover:bg-zinc-400;
   }
 
   .section-title {
@@ -17,6 +17,12 @@
 
   .box {
     @apply bg-white rounded-md p-4 shadow-md shadow-slate-200;
+  }
+}
+
+@layer utilities {
+  .button-base {
+    @apply py-4 px-2 rounded-lg transition-colors flex justify-center;
   }
 }
 

@@ -307,7 +307,7 @@ app.post("/api/new-local-order", async (req, res) => {
         shipping: {
             first_name: data.table,
         },
-        line_items: data.products
+        line_items: data.products,
     }
 
     try {
