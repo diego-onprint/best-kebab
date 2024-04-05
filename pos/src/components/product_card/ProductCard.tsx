@@ -17,7 +17,7 @@ const ProductCard = ({ product }: PropsTypes) => {
         role="button"
         tabIndex={0}
         key={product.id}
-        className="col-span-6 sm:col-span-4 lg:col-span-3 h-22 border border-zinc-100 bg-white rounded-lg"
+        className="col-span-6 sm:col-span-4 lg:col-span-3 h-24 border border-zinc-200 bg-white rounded-lg"
       >
         <div className="p-2">
           <h3>{product.name}</h3>

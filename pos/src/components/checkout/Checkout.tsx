@@ -1,9 +1,11 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { createLocalTicketHtml } from "../../utils/createLocalTicketHtml"
-import { useSelector } from "react-redux"
-import { RootState } from "../../store/store"
+import { useSelector, useDispatch } from "react-redux"
+import { RootState, AppDispatch } from "../../store/store"
 import { CartProduct, CartTotal } from "../../types"
+import { clearCart } from "../../store/cart/cartSlice"
 import Calculator from "./calculator/Calculator"
+import Spinner from "../spinner/Spinner"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -13,6 +15,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
     const cart = useSelector<RootState, CartProduct[]>(state => state.cart.products)
     const total = useSelector<RootState, CartTotal>(state => state.cart.total)
+    const dispatch = useDispatch<AppDispatch>()
     const windowRef = useRef(window)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -73,6 +76,9 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                 setError("An error ocurred placing order in Woocommerce")
             }
 
+            dispatch(clearCart())
+            setOpenCheckout(false)
+
         } catch (err) {
 
             console.error(err)
@@ -82,8 +88,6 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
             setLoading(false)
         }
-
-        console.log("API POST RESULT....", json)
 
         // CREATE TICKET HTML
         const ticketHtml = createLocalTicketHtml(json.result)
@@ -114,8 +118,14 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                     </div>
                     <Calculator />
                     <div className="grid grid-cols-12 gap-2">
-                        <button onClick={() => setOpenCheckout(false)} className="ghost-button col-span-5">Cancel</button>
-                        <button onClick={printLocalOrder} className="primary-button col-span-7">Checkout</button>
+                        <button onClick={() => setOpenCheckout(false)} disabled={loading} className="ghost-button col-span-5">Cancel</button>
+                        <button onClick={printLocalOrder} disabled={loading} className="primary-button col-span-7">
+                            {
+                                loading ?
+                                <Spinner /> :
+                                "Checkout"
+                            }
+                        </button>
                         {error ? <p className="absolute bottom-0 text-red-500">{error}</p> : null}
                     </div>
                 </div>

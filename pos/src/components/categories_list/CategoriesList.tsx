@@ -2,9 +2,11 @@ import { Link } from "react-router-dom"
 import { useGetCategoriesQuery } from '../../store/api/apiSlice'
 import type { Category } from '../../types'
 
-const CategoriesList = () => {
+const CategoriesList = ({ id }: { id: string | undefined }) => {
 
-    const { data, isLoading } = useGetCategoriesQuery()
+    const { data, isLoading } = useGetCategoriesQuery(id)
+
+    console.log(data)
 
     return (
         <>
@@ -15,10 +17,12 @@ const CategoriesList = () => {
                         {
                             data?.categories.map((category: Category) => {
                                 return (
-                                    <Link key={category.id} className="col-span-6 @xs/main:col-span-4 @md/main:col-span-3 aspect-square border border-zinc-00 bg-white rounded-lg" to={`/category/${category.id}`}>
-                                        <div className="p-2 flex h-full">
-                                            <h3>{category.name}</h3>
-                                        </div>
+                                    <Link
+                                        to={category.description === "has-subcategories" ? `/categories/${category.id}` : `/category/${category.id}`}
+                                        key={category.id}
+                                        className="col-span-6 @xs/main:col-span-4 @md/main:col-span-3 h-24 grid place-items-center border border-zinc-200 bg-white rounded-lg"
+                                    >
+                                        <h3>{category.name}</h3>
                                     </Link>
                                 )
                             })

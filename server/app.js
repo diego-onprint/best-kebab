@@ -86,9 +86,12 @@ app.get("/api/product-variation/:id", async (req, res) => {
 })
 
 // CATEGORIES
-app.get("/api/categories", async (req, res) => {
+app.get("/api/categories/:id", async (req, res) => {
 
-    const url = `${baseUrl}products/categories`
+    // 18 IS THE DEFAULT PARENT CATEGORY FOR POS CATEGORIES
+    const parent = req.params.id === "undefined" ? 18 : req.params.id
+    
+    const url = `${baseUrl}products/categories?per_page=100&parent=${parent}`
     let result
 
     try {

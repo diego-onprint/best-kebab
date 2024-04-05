@@ -5,6 +5,7 @@ import Products from "./pages/products/Products"
 import Layout from "./components/layout/Layout"
 import Reports from "./pages/reports/Reports"
 import Orders from "./pages/orders/Orders"
+import Tables from "./pages/tables/Tables"
 
 // TODO dynamic imports!
 
@@ -16,7 +17,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/categories/:id" element={<Categories />} />
           <Route path="/category/:id" element={<Products />} />
+          <Route path="/tables" element={<Tables />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/orders" element={<Orders />} />
         </Routes>

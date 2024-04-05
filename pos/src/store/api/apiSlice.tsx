@@ -7,8 +7,8 @@ export const api = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl}),
     endpoints: (builder) => ({
-        getCategories: builder.query<{ categories: Category[]}, void>({
-            query: () => "categories"
+        getCategories: builder.query<{ categories: Category[]}, string | undefined>({
+            query: (id) => `categories/${id}`
         }),
         getProductsByCategory: builder.query<{products: Product[]}, string | undefined>({
             query: (id) => `products/${id}`

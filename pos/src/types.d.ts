@@ -11,7 +11,7 @@ export type Category = {
     name: string
     slug: string
     image: ProductImage
-
+    description: string
 }
 
 type ProductImage = {
@@ -45,4 +45,17 @@ export type ProductVariation = {
     description: string
     id: number
     price: string
+}
+
+// TABLES
+export type Tables = {
+    tables: Table[]
+    activeTable: Table["id"]
+}
+
+export type Table = {
+    cart: Cart
+    id: number
+    capacity: number
+    name: string
 }
