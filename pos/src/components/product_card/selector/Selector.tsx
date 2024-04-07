@@ -1,11 +1,12 @@
 import { useState, Dispatch, SetStateAction } from "react"
-import { useDispatch } from "react-redux"
-import { addProduct } from "../../../store/cart/cartSlice"
+import { useDispatch, useSelector } from "react-redux"
 import Options from "../options/Options"
 import ErrorBoundary from "../../error_boundary/ErrorBoundary"
 import ErrorFallback from "../../error_fallback/ErrorFallback"
-import type { AppDispatch } from "../../../store/store"
-import type { Product, ProductVariation } from "../../../types"
+import { addProduct } from "../../../store/cart/cartSlice"
+import { addTableProduct } from "../../../store/tables/tablesSlice"
+import { AppDispatch, RootState } from "../../../store/store"
+import type { Product, ProductVariation, Table } from "../../../types"
 import Counter from "../counter/Counter"
 
 type PropsTypes = {
@@ -16,20 +17,35 @@ type PropsTypes = {
 
 const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
 
-    const [variation, setVariation] = useState<ProductVariation>()
     const dispatch = useDispatch<AppDispatch>()
+    // const [variation, setVariation] = useState<ProductVariation>()
+    const [selectedVarations, setSelectedVarations] = useState([])
+    const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
     const [qty, setQty] = useState(1)
 
     const handleAdd = (product: Product) => {
-      const productToAdd = {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        qty: qty,
-        variation: variation
-      }
-      dispatch(addProduct(productToAdd))
-      setOpenSelector(!openSelector)
+        const productToAdd = {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            qty: qty,
+            // variation: variation
+            variations: selectedVarations
+        }
+
+        console.log(productToAdd)
+
+        // if (activeTable !== -1) {
+
+        //     dispatch(addTableProduct(productToAdd))
+
+        // } else {
+
+        //     dispatch(addProduct(productToAdd))
+        // }
+
+        // setOpenSelector(!openSelector)
+
     }
 
     return (
@@ -43,7 +59,13 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                     </div>
                     <div className="col-span-6">
                         <ErrorBoundary fallback={<ErrorFallback>Error fetching options</ErrorFallback>}>
-                            {product.variations.length > 0 ? <Options id={product.id} setVariation={setVariation}/> : null}
+                            {
+                                product.variations.length > 0 ?
+                                    <Options
+                                        id={product.id}
+                                        selectedVariations={selectedVarations}
+                                        setSelectedVariations={setSelectedVarations}
+                                    /> : null}
                         </ErrorBoundary>
                     </div>
                 </div>
@@ -53,7 +75,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                         onClick={() => handleAdd(product)}
                         onKeyDown={(e) => e.key === "Enter" && handleAdd(product)}
                         className="primary-button col-span-8"
-                        // disabled={!variation}
+                    // disabled={!variation}
                     >
                         Add
                     </button>

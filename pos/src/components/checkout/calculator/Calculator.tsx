@@ -1,18 +1,19 @@
 import { useState } from "react"
-import { useSelector } from "react-redux"
-import type { RootState } from "../../../store/store"
 import type { CartTotal } from "../../../types"
 
-const Calculator = () => {
+type PropsTypes = {
+    total: CartTotal
+}
+
+const Calculator = ({ total }: PropsTypes) => {
 
     const [amount, setAmount] = useState<string | null>(null)
     const [change, setChange] = useState<string | null>(null)
     const [diffError, setDiffError] = useState<string | null>(null)
-    const total = useSelector<RootState, CartTotal>(state => state.cart.total)
 
     const handleAmount = (e: React.MouseEvent<HTMLButtonElement>) => {
 
-        if(diffError) setDiffError(null)
+        if (diffError) setDiffError(null)
 
         if (!amount || amount === "0" && e.currentTarget.value !== "0") {
             setAmount(e.currentTarget.value)

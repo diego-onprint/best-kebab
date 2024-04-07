@@ -1,6 +1,7 @@
 import { useState } from "react"
 import type { Product } from "../../types"
 import Selector from "./selector/Selector"
+import { formatPrice } from "../../utils/formatPrice"
 
 type PropsTypes = {
   product: Product
@@ -9,6 +10,8 @@ type PropsTypes = {
 const ProductCard = ({ product }: PropsTypes) => {
 
   const [openSelector, setOpenSelector] = useState(false)
+
+  // console.log(product)
 
   return (
     <>
@@ -21,7 +24,7 @@ const ProductCard = ({ product }: PropsTypes) => {
       >
         <div className="p-2">
           <h3>{product.name}</h3>
-          <p>CHF. <span className="font-bold">{product.price}</span></p>
+          <p>CHF. <span className="font-bold">{formatPrice(product.price)}</span></p>
         </div>
       </article>
       {openSelector ? <Selector product={product} openSelector={openSelector} setOpenSelector={setOpenSelector} /> : null}

@@ -32,6 +32,7 @@ export const cartSlice = createSlice({
         },
         removeProduct: (state, action: PayloadAction<CartProductId>) => {
             const index = state.products.findIndex(product => product.id === action.payload)
+            console.log(index)
             state.products.splice(index, 1)
             state.total = getTotal(state)
         },

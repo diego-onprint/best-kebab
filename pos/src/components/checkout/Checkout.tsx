@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { createLocalTicketHtml } from "../../utils/createLocalTicketHtml"
 import { useSelector, useDispatch } from "react-redux"
-import { RootState, AppDispatch } from "../../store/store"
-import { CartProduct, CartTotal } from "../../types"
 import { clearCart } from "../../store/cart/cartSlice"
 import Calculator from "./calculator/Calculator"
 import Spinner from "../spinner/Spinner"
+import { RootState, AppDispatch } from "../../store/store"
+import type { Cart, Table } from "../../types"
+import { createPrintOnlyTicketHtml } from "../../utils/createPrintOnlyTicketHtml"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -13,17 +14,44 @@ type PropsTypes = {
 
 const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
-    const cart = useSelector<RootState, CartProduct[]>(state => state.cart.products)
-    const total = useSelector<RootState, CartTotal>(state => state.cart.total)
     const dispatch = useDispatch<AppDispatch>()
+    const cart = useSelector<RootState, Cart>(state => state.cart)
+    const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
+    const currentTable = useSelector<RootState, Table>(state => {
+        const tables = state.tables.tables
+        const table = tables.find(table => table.id === activeTable)
+        return table
+    })
+
+    const checkoutCart = currentTable ? currentTable.cart : cart
+
     const windowRef = useRef(window)
+
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [paymentMethod, setPaymentMethod] = useState("cash")
 
+    const onlyPrintLocalOrder = () => {
+        const ticketHtml = createPrintOnlyTicketHtml(checkoutCart)
+
+        const printWindow = windowRef.current.open("")
+
+        if (printWindow && ticketHtml) {
+            printWindow.document.write(ticketHtml)
+            printWindow.document.close()
+            printWindow.print()
+            printWindow.close()
+        } else {
+            console.error("Ocurrió un error al intentar imprimir la ventana")
+        }
+    }
+
     const printLocalOrder = async () => {
 
         setLoading(true)
+
+        console.log(checkoutCart.products)
+        console.log("Cart", checkoutCart)
 
         let json
 
@@ -32,7 +60,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
             const newOrderUrl = import.meta.env.DEV ? "http://localhost:8080/api/new-local-order" : "https://onprintpos.diegoui.com.ar/api/new-local-order"
 
-            const parsedCart = cart.map(product => {
+            const parsedCart = checkoutCart.products.map(product => {
 
                 if (product.variation) {
 
@@ -52,9 +80,6 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                     quantity: product.qty
                 }
             })
-
-            console.log("Cart", cart)
-            // console.log("Parsed Cart", parsedCart)
 
             const orderData = {
                 customer: "Table 4",
@@ -76,8 +101,8 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                 setError("An error ocurred placing order in Woocommerce")
             }
 
-            dispatch(clearCart())
-            setOpenCheckout(false)
+            // dispatch(clearCart())
+            // setOpenCheckout(false)
 
         } catch (err) {
 
@@ -114,12 +139,13 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                 <div className="col-span-9 px-4 flex flex-col gap-4">
                     <div className="flex justify-between bg-zinc-100 rounded-md p-6">
                         <div className="text-xl font-semibold">Total</div>
-                        <div className="text-xl font-semibold">{total}</div>
+                        <div className="text-xl font-semibold">{checkoutCart.total}</div>
                     </div>
-                    <Calculator />
+                    <Calculator total={checkoutCart.total} />
                     <div className="grid grid-cols-12 gap-2">
-                        <button onClick={() => setOpenCheckout(false)} disabled={loading} className="ghost-button col-span-5">Cancel</button>
-                        <button onClick={printLocalOrder} disabled={loading} className="primary-button col-span-7">
+                        <button onClick={() => setOpenCheckout(false)} disabled={loading} className="ghost-button col-span-3">Cancel</button>
+                        <button onClick={onlyPrintLocalOrder} disabled={loading} className="ghost-button col-span-3">Print</button>
+                        <button onClick={printLocalOrder} disabled={loading} className="primary-button col-span-6">
                             {
                                 loading ?
                                 <Spinner /> :
