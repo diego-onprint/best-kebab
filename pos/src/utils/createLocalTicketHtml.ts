@@ -3,12 +3,23 @@ export const createLocalTicketHtml = (data) => {
     console.log(data)
 
     const items = data.line_items.map(item => {
+
+        const variations = item.meta_data.length > 0 ? item.meta_data.map(variation => {
+            return `
+                <div class="item">
+                    <div style="width: 30px;"></div>
+                    <div class="variation">${variation.value}</div>
+                </div>
+            `
+        }).join('') : ``
+
         return `
             <div class="item">
                 <div style="width: 25px;">${item.quantity}</div>
                 <div style="flex: 1;">${item.name}</div>
                 <div><span class="chf">CHF. </span>${item.price}</div>
             </div>
+            ${variations}
             `
     }).join('')
 
@@ -112,6 +123,11 @@ export const createLocalTicketHtml = (data) => {
                     justify-content: space-between;
                     margin-bottom: 5px;
                     column-gap: 5px;
+                }
+
+                .variation {
+                    flex: 1;
+                    font-size: 12px;
                 }
 
                 .emph {

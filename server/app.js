@@ -17,15 +17,15 @@ app.use(cors())
 app.use(express.json());
 
 //FOR PROD
-// const io = new Server(httpServer)
-// app.use(express.static('dist'))
+const io = new Server(httpServer)
+app.use(express.static('dist'))
 
 //FOR DEV
-const io = new Server(httpServer, {
-    cors: {
-        origin: "http://localhost:5173"
-    }
-})
+// const io = new Server(httpServer, {
+//     cors: {
+//         origin: "http://localhost:5173"
+//     }
+// })
 
 io.on("connection", socket => {
     console.log("user connected")

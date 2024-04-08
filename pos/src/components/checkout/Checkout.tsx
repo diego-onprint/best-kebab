@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { createLocalTicketHtml } from "../../utils/createLocalTicketHtml"
 import { useSelector, useDispatch } from "react-redux"
 import { clearCart } from "../../store/cart/cartSlice"
+import { clearTableCart } from "../../store/tables/tablesSlice"
 import Calculator from "./calculator/Calculator"
 import Spinner from "../spinner/Spinner"
 import { RootState, AppDispatch } from "../../store/store"
@@ -50,17 +51,12 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
         setLoading(true)
 
-        console.log(checkoutCart.products)
-        console.log("Cart", checkoutCart)
-
-        let json
-
         const printCheckoutTicket = (content) => {
             // CREATE TICKET HTML
             const ticketHtml = createLocalTicketHtml(content)
-   
+
             const printWindow = windowRef.current.open("")
-    
+
             if (printWindow && ticketHtml) {
                 printWindow.document.write(ticketHtml)
                 printWindow.document.close()
@@ -69,7 +65,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             } else {
                 console.error("Ocurrió un error al intentar imprimir la ventana")
             }
-       }
+        }
 
         // PLACE ORDER IN WOOCOMMERCE
         try {
@@ -78,16 +74,24 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
             const parsedCart = checkoutCart.products.map(product => {
 
-                if (product.variation) {
+                //IF VARIATIONS, CALCULATE THE TOTAL - WOOCOMMERCE DOESNT ADD AUTOMATICALLY THE VARIATION PRICE TO THE TOTAL
+                if (product.variations.length > 0) {
 
-                    //CALCULATE THE TOTAL WHEN VARIATIONS - WOOCOMMERCE DOESNT ADD AUTOMATICALLY THE VARIATION PRICE TO THE TOTAL
-                    const productTotal = Number(product.price) * product.qty + Number(product.variation.price)
+                    const variationsTotalPrice = product.variations.reduce((acc, curr) => {
+                        return acc + Number(curr.price)
+                    }, 0)
+                    
+                    const variationsName = product.variations.map(variation => variation.name).join("/")
+
+                    const productTotalPrice = Number(product.price) * product.qty + variationsTotalPrice
+
+                    console.log("total price", productTotalPrice)
 
                     return {
                         product_id: product.id,
-                        variation_id: product.variation.id,
+                        meta_data: [{ key: "Variations", value: variationsName}],
                         quantity: product.qty,
-                        total: productTotal.toString()
+                        total: productTotalPrice.toString()
                     }
                 }
 
@@ -98,7 +102,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             })
 
             const orderData = {
-                customer: "Table 4",
+                customer: currentTable ? "table" : "Takeaway",
                 payment_method: "Bank Transfer / Cash",
                 products: parsedCart,
             }
@@ -111,14 +115,16 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
             const response = await fetch(newOrderUrl, options)
 
-            json = await response.json()
+            const json = await response.json()
 
             if (json.result.data?.status === 400) {
+                console.log("GETREAGFADHDAF")
                 setError("An error ocurred placing order in Woocommerce")
             }
 
-            // dispatch(clearCart())
-            // setOpenCheckout(false)
+            currentTable ? dispatch(clearTableCart()) : dispatch(clearCart()) 
+            setOpenCheckout(false)
+            printCheckoutTicket(json.result)
 
         } catch (err) {
 
@@ -129,8 +135,6 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
             setLoading(false)
         }
-
-       printCheckoutTicket(json.result)
     }
 
     return (
@@ -152,8 +156,8 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                         <button onClick={handleCheckout} disabled={loading} className="primary-button col-span-6">
                             {
                                 loading ?
-                                <Spinner /> :
-                                "Checkout"
+                                    <Spinner /> :
+                                    "Checkout"
                             }
                         </button>
                         {error ? <p className="absolute bottom-0 text-red-500">{error}</p> : null}

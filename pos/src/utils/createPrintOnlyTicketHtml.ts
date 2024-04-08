@@ -2,34 +2,9 @@ import { formatPrice } from "./formatPrice"
 
 export const createPrintOnlyTicketHtml = (data) => {
 
-    // const variations = data.products.map(product => {
-    //     return product.variations.map(variation => {
-    //         return `
-    //             <div class="item-variation">
-    //                 <div style="flex: 1;">${variation.name}</div>
-    //                 <div><span class="chf">CHF. </span>${formatPrice((variation.price).toString())}</div>
-    //             </div>
-    //         `
-    //     })
-    // }).join('')
-
-    const getVariations = (product) => {
-
-        const variation = product.variations.map(variation => {
-            return `
-                <div class="item-variation">
-                    <div style="flex: 1;">${variation.name}</div>
-                    <div><span class="chf">CHF. </span>${formatPrice((variation.price).toString())}</div>
-                </div>
-            `
-        }).join('')
-
-        return variation
-    }
-
     const items = data.products.map(product => {
 
-        const variation = product.variations.length > 0 ? product.variations.map(variation => {
+        const variations = product.variations.length > 0 ? product.variations.map(variation => {
             return `
                 <div class="item">
                     <div style="width: 25px;"></div>
@@ -47,7 +22,7 @@ export const createPrintOnlyTicketHtml = (data) => {
                 </div>
                 <div><span class="chf">CHF. </span>${formatPrice((product.price * product.qty).toString())}</div>
             </div>
-            ${variation}
+            ${variations}
             `
     }).join('')
 
