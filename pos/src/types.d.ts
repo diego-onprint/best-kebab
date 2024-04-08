@@ -4,6 +4,7 @@ export type Product = {
     price: string
     images: ProductImage[]
     variations: number[]
+    timestamp: string
 }
 
 export type Category = {
@@ -21,7 +22,7 @@ type ProductImage = {
 }
 
 //CART
-export type CartProduct = Pick<Product, 'id' | 'name' | 'price'> & { 
+export type CartProduct = Product & { 
     qty: number 
     variation: ProductVariation
 }

@@ -2,6 +2,8 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react"
 import { useGetProductsVariationsQuery } from "../../../store/api/apiSlice"
 import { Product, ProductVariation } from "../../../types"
 import { formatVariations } from "../../../utils/formatVariations"
+import Option from "./option/Option"
+import { createTimestamp } from "../../../utils/createTimestamp"
 
 type PropsTypes = {
     id: Product["id"]
@@ -13,31 +15,35 @@ const Options = ({ id, selectedVariations, setSelectedVariations }: PropsTypes) 
     const { data } = useGetProductsVariationsQuery(id)
     const [formatedVariations, setFormatedVariations] = useState(null)
 
-    // const handleSelected = (variation: ProductVariation) => {
-    //     setVariation({
-    //         attributes: [...variation.attributes],
-    //         id: variation.id,
-    //         price: variation.price,
-    //         description: variation.description
-    //     })
-    // }
-
     const handleSelected = (option) => {
+
+        const timestamp = createTimestamp()
+
+        const parsedOption = {
+            ...option,
+            timestamp: timestamp 
+        }
 
         // Check if same parent to overwrite
         const sameParentIndex = selectedVariations.findIndex(selectedVariation => selectedVariation.parent === option.parent)
 
         //If not same parent add new option
         if (sameParentIndex === -1) {
-
-            return setSelectedVariations([...selectedVariations, option])
-
+            return setSelectedVariations([...selectedVariations, parsedOption])
         }
 
-        
-        //Else overwrite the selected option
+        //If same option selected, remove option 
+        const index = selectedVariations.findIndex(selectedVariation => selectedVariation.id === option.id)
+        const isSelected = index !== -1 ? true : false
+
+        if (isSelected) {
+            const filteredSelection = selectedVariations.filter(selectedVariation => selectedVariation.id !== option.id)
+            return setSelectedVariations([...filteredSelection])
+        }
+
+        //Else overwrite the selected option for same parent
         const filteredOptions = selectedVariations.filter(selectedVariation => selectedVariation.parent !== option.parent)
-        setSelectedVariations([...filteredOptions, option])
+        setSelectedVariations([...filteredOptions, parsedOption])
 
 
     }
@@ -59,21 +65,16 @@ const Options = ({ id, selectedVariations, setSelectedVariations }: PropsTypes) 
                             formatedVariations.map(variation => {
                                 return (
                                     <div key={variation.name}>
-                                        <h3>{variation.name}</h3>
+                                        <h3 className="font-semibold pb-1">{variation.name}</h3>
                                         {
                                             variation.options.map(option => {
                                                 return (
-                                                    <div className="flex gap-2 items-center" key={option.id}>
-                                                        <input
-                                                            value={option.id}
-                                                            type="radio"
-                                                            id={option.id.toString()}
-                                                            name={variation.name}
-                                                            className="cursor-pointer"
-                                                            onChange={() => handleSelected(option)}
-                                                        />
-                                                        <label>{option.name}</label>
-                                                    </div>
+                                                    <Option
+                                                        option={option}
+                                                        handleSelected={handleSelected}
+                                                        selectedVariations={selectedVariations}
+                                                        key={option.id}
+                                                    />
                                                 )
                                             })
                                         }

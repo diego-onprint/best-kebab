@@ -32,15 +32,15 @@ const CartView = ({
 
     return (
         <>
-            <div className="bg-white flex flex-col w-[380px]">
+            <div className="bg-white flex flex-col w-[475px]">
                 <div className="flex gap-4 shadow-md p-3">
                     {
                         currentTable ?
-                        <button onClick={clearTable} className="w-10 cursor-pointer">
-                            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                            </svg>
-                        </button> : null
+                            <button onClick={clearTable} className="w-10 cursor-pointer">
+                                <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                                </svg>
+                            </button> : null
                     }
                     <h3 className="font-semibold">{currentTable ? currentTable.name : "Takeaway Order"}</h3>
                 </div>
@@ -48,7 +48,7 @@ const CartView = ({
                     <dl className="divide-y flex flex-col flex-1 overflow-auto px-4">
                         {
                             products.map(product => (
-                                <li key={product.id} className="flex gap-6 py-4 justify-between items-start">
+                                <li key={product.timestamp} className="flex gap-6 py-4 justify-between items-start">
                                     <div className="flex-1">
                                         <div className="flex justify-between">
                                             <div className="flex gap-2">
@@ -61,16 +61,20 @@ const CartView = ({
                                             </dd>
                                         </div>
                                         {/* LOOP OVER ARRAYOOF VARIATION OPTIONS SELECTED */}
-                                        {/* {
-                                            product.variation ?
-                                                <div className="flex justify-between gap-2 pl-4 text-zinc-400">
-                                                    <p>{product.variation.attributes[0].option}</p>
-                                                    <dt className="truncate max-w-60">
-                                                        <span className="text-sm">CHF. </span>
-                                                        {formatPrice(product.variation.price)}
-                                                    </dt>
-                                                </div> : null
-                                        } */}
+                                        {
+                                            product.variations ?
+                                                product.variations.map(variation => {
+                                                    return (
+                                                        <div key={variation.timestamp} className="flex justify-between gap-2 pl-4 text-zinc-400">
+                                                            <p>{variation.name} ({variation.parent})</p>
+                                                            <dt className="truncate max-w-60">
+                                                                <span className="text-sm">CHF. </span>
+                                                                {formatPrice(variation.price)}
+                                                            </dt>
+                                                        </div>
+                                                    )
+                                                }) : null
+                                        }
                                     </div>
                                     <div className="flex gap-10">
                                         <button onClick={() => handleDelete(product.id)} className="text-red-400 cursor-pointer" type="button">

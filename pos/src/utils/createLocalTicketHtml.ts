@@ -1,5 +1,7 @@
 export const createLocalTicketHtml = (data) => {
 
+    console.log(data)
+
     const items = data.line_items.map(item => {
         return `
             <div class="item">

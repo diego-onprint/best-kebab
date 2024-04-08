@@ -24,14 +24,18 @@ const Calculator = ({ total }: PropsTypes) => {
 
     const handleReturn = () => {
         setAmount(prev => prev.slice(0, -1))
+        setChange("0")
+    }
+
+    const handleClear = () => {
+        setAmount("0")
+        setChange("0")
     }
 
     const handleResult = () => {
 
         const amountNum = parseFloat(amount)
         const totalNum = parseFloat(total)
-
-        console.table([amountNum, totalNum, (amountNum - totalNum).toFixed(2)])
 
         if (amountNum > totalNum) {
             setChange(((amountNum - totalNum).toFixed(2)).toString())
@@ -57,7 +61,7 @@ const Calculator = ({ total }: PropsTypes) => {
                 <button value="9" onClick={handleAmount} className="ghost-button rounded-md">9</button>
                 <button value="8" onClick={handleAmount} className="ghost-button rounded-md">8</button>
                 <button value="7" onClick={handleAmount} className="ghost-button rounded-md">7</button>
-                <button onClick={() => setAmount("0")} className="ghost-button rounded-md">Clear</button>
+                <button onClick={handleClear} className="ghost-button rounded-md">Clear</button>
 
                 <button value="6" onClick={handleAmount} className="ghost-button rounded-md">6</button>
                 <button value="5" onClick={handleAmount} className="ghost-button rounded-md">5</button>

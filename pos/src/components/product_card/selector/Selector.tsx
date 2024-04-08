@@ -8,6 +8,7 @@ import { addTableProduct } from "../../../store/tables/tablesSlice"
 import { AppDispatch, RootState } from "../../../store/store"
 import type { Product, ProductVariation, Table } from "../../../types"
 import Counter from "../counter/Counter"
+import { createTimestamp } from "../../../utils/createTimestamp"
 
 type PropsTypes = {
     product: Product
@@ -24,27 +25,28 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
     const [qty, setQty] = useState(1)
 
     const handleAdd = (product: Product) => {
+
+        const timestamp = createTimestamp()
+
         const productToAdd = {
             id: product.id,
             name: product.name,
             price: product.price,
             qty: qty,
-            // variation: variation
-            variations: selectedVarations
+            variations: selectedVarations,
+            timestamp: timestamp
         }
 
-        console.log(productToAdd)
+        if (activeTable !== -1) {
 
-        // if (activeTable !== -1) {
+            dispatch(addTableProduct(productToAdd))
 
-        //     dispatch(addTableProduct(productToAdd))
+        } else {
 
-        // } else {
+            dispatch(addProduct(productToAdd))
+        }
 
-        //     dispatch(addProduct(productToAdd))
-        // }
-
-        // setOpenSelector(!openSelector)
+        setOpenSelector(!openSelector)
 
     }
 

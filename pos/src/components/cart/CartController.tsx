@@ -27,7 +27,7 @@ const CartController = () => {
 
     const [openCheckout, setOpenCheckout] = useState(false)
 
-    // console.log("CART........", cartProducts)
+    console.log("CART........", cartProducts)
 
     // TODO use reducer
     const [disabled, setDisabled] = useState(products.length === 0)

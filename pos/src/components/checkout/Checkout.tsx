@@ -31,7 +31,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
     const [error, setError] = useState("")
     const [paymentMethod, setPaymentMethod] = useState("cash")
 
-    const onlyPrintLocalOrder = () => {
+    const printLocalOrder = () => {
         const ticketHtml = createPrintOnlyTicketHtml(checkoutCart)
 
         const printWindow = windowRef.current.open("")
@@ -46,7 +46,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
         }
     }
 
-    const printLocalOrder = async () => {
+    const handleCheckout = async () => {
 
         setLoading(true)
 
@@ -54,6 +54,22 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
         console.log("Cart", checkoutCart)
 
         let json
+
+        const printCheckoutTicket = (content) => {
+            // CREATE TICKET HTML
+            const ticketHtml = createLocalTicketHtml(content)
+   
+            const printWindow = windowRef.current.open("")
+    
+            if (printWindow && ticketHtml) {
+                printWindow.document.write(ticketHtml)
+                printWindow.document.close()
+                printWindow.print()
+                printWindow.close()
+            } else {
+                console.error("Ocurrió un error al intentar imprimir la ventana")
+            }
+       }
 
         // PLACE ORDER IN WOOCOMMERCE
         try {
@@ -114,19 +130,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             setLoading(false)
         }
 
-        // CREATE TICKET HTML
-        const ticketHtml = createLocalTicketHtml(json.result)
-
-        const printWindow = windowRef.current.open("")
-
-        if (printWindow && ticketHtml) {
-            printWindow.document.write(ticketHtml)
-            printWindow.document.close()
-            printWindow.print()
-            printWindow.close()
-        } else {
-            console.error("Ocurrió un error al intentar imprimir la ventana")
-        }
+       printCheckoutTicket(json.result)
     }
 
     return (
@@ -144,8 +148,8 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                     <Calculator total={checkoutCart.total} />
                     <div className="grid grid-cols-12 gap-2">
                         <button onClick={() => setOpenCheckout(false)} disabled={loading} className="ghost-button col-span-3">Cancel</button>
-                        <button onClick={onlyPrintLocalOrder} disabled={loading} className="ghost-button col-span-3">Print</button>
-                        <button onClick={printLocalOrder} disabled={loading} className="primary-button col-span-6">
+                        <button onClick={printLocalOrder} disabled={loading} className="ghost-button col-span-3">Print</button>
+                        <button onClick={handleCheckout} disabled={loading} className="primary-button col-span-6">
                             {
                                 loading ?
                                 <Spinner /> :

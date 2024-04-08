@@ -2,15 +2,52 @@ import { formatPrice } from "./formatPrice"
 
 export const createPrintOnlyTicketHtml = (data) => {
 
-    console.log(data)
+    // const variations = data.products.map(product => {
+    //     return product.variations.map(variation => {
+    //         return `
+    //             <div class="item-variation">
+    //                 <div style="flex: 1;">${variation.name}</div>
+    //                 <div><span class="chf">CHF. </span>${formatPrice((variation.price).toString())}</div>
+    //             </div>
+    //         `
+    //     })
+    // }).join('')
 
-    const items = data.products.map(item => {
+    const getVariations = (product) => {
+
+        const variation = product.variations.map(variation => {
+            return `
+                <div class="item-variation">
+                    <div style="flex: 1;">${variation.name}</div>
+                    <div><span class="chf">CHF. </span>${formatPrice((variation.price).toString())}</div>
+                </div>
+            `
+        }).join('')
+
+        return variation
+    }
+
+    const items = data.products.map(product => {
+
+        const variation = product.variations.length > 0 ? product.variations.map(variation => {
+            return `
+                <div class="item">
+                    <div style="width: 25px;"></div>
+                    <div class="variation">${variation.name}</div>
+                    <div class="chf">CHF. ${formatPrice((variation.price).toString())}</div>
+                </div>
+            `
+        }).join('') : ``
+
         return `
             <div class="item">
-                <div style="width: 25px;">${item.qty}</div>
-                <div style="flex: 1;">${item.name}</div>
-                <div><span class="chf">CHF. </span>${formatPrice((item.price * item.qty).toString())}</div>
+                <div style="width: 25px;">${product.qty}</div>
+                <div style="flex: 1;">
+                    ${product.name}
+                </div>
+                <div><span class="chf">CHF. </span>${formatPrice((product.price * product.qty).toString())}</div>
             </div>
+            ${variation}
             `
     }).join('')
 
@@ -110,8 +147,13 @@ export const createPrintOnlyTicketHtml = (data) => {
                 .item {
                     display: flex;
                     justify-content: space-between;
-                    margin-bottom: 5px;
+                    margin-bottom: 15px;
                     column-gap: 5px;
+                }
+
+                .variation {
+                    flex: 1;
+                    font-size: 12px;
                 }
 
                 .emph {
