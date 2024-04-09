@@ -4,6 +4,7 @@ import { Product, ProductVariation } from "../../../types"
 import { formatVariations } from "../../../utils/formatVariations"
 import Option from "./option/Option"
 import { createTimestamp } from "../../../utils/createTimestamp"
+import OptionsMenu from "./options_menu/OptionsMenu"
 
 type PropsTypes = {
     id: Product["id"]
@@ -64,21 +65,12 @@ const Options = ({ id, selectedVariations, setSelectedVariations }: PropsTypes) 
                         formatedVariations ?
                             formatedVariations.map(variation => {
                                 return (
-                                    <div key={variation.name}>
-                                        <h3 className="font-semibold pb-1">{variation.name}</h3>
-                                        {
-                                            variation.options.map(option => {
-                                                return (
-                                                    <Option
-                                                        option={option}
-                                                        handleSelected={handleSelected}
-                                                        selectedVariations={selectedVariations}
-                                                        key={option.id}
-                                                    />
-                                                )
-                                            })
-                                        }
-                                    </div>
+                                    <OptionsMenu
+                                        key={variation.id}
+                                        variation={variation}
+                                        handleSelected={handleSelected}
+                                        selectedVariations={selectedVariations}
+                                    />
                                 )
                             }) :
                             <div className="flex flex-col gap-2">

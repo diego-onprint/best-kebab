@@ -23,8 +23,10 @@ type ProductImage = {
 
 //CART
 export type CartProduct = Product & { 
+    uid: string
     qty: number 
     variation: ProductVariation
+    notes: string
 }
 
 export type Cart = {

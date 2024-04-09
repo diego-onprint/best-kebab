@@ -1,6 +1,4 @@
-export const createLocalTicketHtml = (data) => {
-
-    console.log(data)
+export const createLocalTicketHtml = (data, tax, currentClient: string) => {
 
     const items = data.line_items.map(item => {
 
@@ -63,7 +61,7 @@ export const createLocalTicketHtml = (data) => {
                 <div>Kasse</div>
             </div>
             <div class="item" style="margin-top: 5px;">
-                <div style="font-size: 14px;">MwSt. CHF. ${"revisar"} -> 8.1% MwsT. inkl</div>
+                <div style="font-size: 14px;">MwSt. CHF. ${tax.total} -> ${tax.rate}% MwsT. inkl</div>
             </div>
             <div class="item">
                 <div class="emph">Gesamt</div>

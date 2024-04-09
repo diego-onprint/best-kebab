@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import type { Cart, CartProduct, CartProductId } from "../../types"
+import type { Cart, CartProduct } from "../../types"
 import type { PayloadAction } from "@reduxjs/toolkit"
 
 const initialState: Cart = {
@@ -36,8 +36,8 @@ export const cartSlice = createSlice({
             state.products.push(action.payload)
             state.total = getTotal(state)
         },
-        removeProduct: (state, action: PayloadAction<CartProductId>) => {
-            const index = state.products.findIndex(product => product.id === action.payload)
+        removeProduct: (state, action: PayloadAction<CartProduct["uid"]>) => {
+            const index = state.products.findIndex(product => product.uid === action.payload)
             console.log(index)
             state.products.splice(index, 1)
             state.total = getTotal(state)

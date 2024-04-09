@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react"
+import { useState, Dispatch, SetStateAction, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Options from "../options/Options"
 import ErrorBoundary from "../../error_boundary/ErrorBoundary"
@@ -20,6 +20,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
 
     const dispatch = useDispatch<AppDispatch>()
     // const [variation, setVariation] = useState<ProductVariation>()
+    const notesRef = useRef()
     const [selectedVarations, setSelectedVarations] = useState([])
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
     const [qty, setQty] = useState(1)
@@ -30,11 +31,13 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
 
         const productToAdd = {
             id: product.id,
+            uid: crypto.randomUUID(),
             name: product.name,
             price: product.price,
             qty: qty,
             variations: selectedVarations,
-            timestamp: timestamp
+            timestamp: timestamp,
+            notes: notesRef.current.value,
         }
 
         if (activeTable !== -1) {
@@ -58,6 +61,10 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                     <div className="col-span-4">
                         <h4 className="mb-2">Quantity</h4>
                         <Counter qty={qty} setQty={setQty} />
+                        <div className="mt-4">
+                            <label className="mb-2">Notes</label>
+                            <textarea rows={3} className="w-full p-2 border border-zinc-200 resize-none rounded-md" ref={notesRef} />
+                        </div>
                     </div>
                     <div className="col-span-6">
                         <ErrorBoundary fallback={<ErrorFallback>Error fetching options</ErrorFallback>}>
@@ -77,7 +84,6 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                         onClick={() => handleAdd(product)}
                         onKeyDown={(e) => e.key === "Enter" && handleAdd(product)}
                         className="primary-button col-span-8"
-                    // disabled={!variation}
                     >
                         Add
                     </button>

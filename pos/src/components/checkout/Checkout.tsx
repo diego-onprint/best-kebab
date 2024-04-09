@@ -8,6 +8,7 @@ import Spinner from "../spinner/Spinner"
 import { RootState, AppDispatch } from "../../store/store"
 import type { Cart, Table } from "../../types"
 import { createPrintOnlyTicketHtml } from "../../utils/createPrintOnlyTicketHtml"
+import { calculatePercentage } from "../../utils/calculatePercentage"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -15,6 +16,7 @@ type PropsTypes = {
 
 const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
+    const windowRef = useRef(window)
     const dispatch = useDispatch<AppDispatch>()
     const cart = useSelector<RootState, Cart>(state => state.cart)
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
@@ -23,18 +25,27 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
         const table = tables.find(table => table.id === activeTable)
         return table
     })
-
+    const currentClient = currentTable ? currentTable.name : "Takeaway"
     const checkoutCart = currentTable ? currentTable.cart : cart
+    const tax = currentTable ? {
+        rate: 8.1,
+        total: calculatePercentage(checkoutCart.total, 8.1).toFixed(2) 
+    } : {
+        rate: 2.6,
+        total: calculatePercentage(checkoutCart.total, 2.6).toFixed(2),
+    }
 
-    const windowRef = useRef(window)
+    console.log(currentTable)
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [paymentMethod, setPaymentMethod] = useState("cash")
 
     const printLocalOrder = () => {
-        const ticketHtml = createPrintOnlyTicketHtml(checkoutCart)
+        const ticketHtml = createPrintOnlyTicketHtml(checkoutCart, tax, currentClient)
 
+        // USE THE COMMENTED WHEN --KIOSK-PRINTING IN CHROME
+        // const printWindow = windowRef.current.open(undefined, undefined, "width=50, height=50")
         const printWindow = windowRef.current.open("")
 
         if (printWindow && ticketHtml) {
@@ -53,7 +64,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
         const printCheckoutTicket = (content) => {
             // CREATE TICKET HTML
-            const ticketHtml = createLocalTicketHtml(content)
+            const ticketHtml = createLocalTicketHtml(content, tax, currentClient)
 
             const printWindow = windowRef.current.open("")
 
@@ -66,6 +77,8 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                 console.error("Ocurrió un error al intentar imprimir la ventana")
             }
         }
+
+        console.log(checkoutCart)
 
         // PLACE ORDER IN WOOCOMMERCE
         try {
@@ -80,7 +93,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                     const variationsTotalPrice = product.variations.reduce((acc, curr) => {
                         return acc + Number(curr.price)
                     }, 0)
-                    
+
                     const variationsName = product.variations.map(variation => variation.name).join("/")
 
                     const productTotalPrice = Number(product.price) * product.qty + variationsTotalPrice
@@ -89,13 +102,22 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
                     return {
                         product_id: product.id,
-                        meta_data: [{ key: "Variations", value: variationsName}],
+                        meta_data: [
+                            {
+                                key: "Variations",
+                                value: variationsName
+                            },
+                            {
+                                key: "Notes",
+                                value: product.notes
+                            }],
                         quantity: product.qty,
                         total: productTotalPrice.toString()
                     }
                 }
 
                 return {
+                    meta_data: [{ key: "Notes", value: product.notes }],
                     product_id: product.id,
                     quantity: product.qty
                 }
@@ -118,11 +140,10 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             const json = await response.json()
 
             if (json.result.data?.status === 400) {
-                console.log("GETREAGFADHDAF")
                 setError("An error ocurred placing order in Woocommerce")
             }
 
-            currentTable ? dispatch(clearTableCart()) : dispatch(clearCart()) 
+            currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
             setOpenCheckout(false)
             printCheckoutTicket(json.result)
 

@@ -61,7 +61,7 @@ app.get("/api/products/:id", async (req, res) => {
 // PRODUCT VARIATION
 app.get("/api/product-variation/:id", async (req, res) => {
 
-    const url = `${baseUrl}products/${req.params.id}/variations`
+    const url = `${baseUrl}products/${req.params.id}/variations?per_page=99`
     let result
 
     try {

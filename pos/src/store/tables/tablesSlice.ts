@@ -71,10 +71,10 @@ export const tablesSlice = createSlice({
             table.cart.products.push(action.payload)
             table.cart.total = getTotal(table.cart.products)
         },
-        removeTableProduct: (state, action: PayloadAction<CartProductId>) => {
+        removeTableProduct: (state, action: PayloadAction<CartProduct["uid"]>) => {
             const tableIndex = state.tables.findIndex((table: Table) => state.activeTable === table.id)
             const table = state.tables[tableIndex]
-            const productIndex = table.cart.products.findIndex(product => product.id === action.payload)
+            const productIndex = table.cart.products.findIndex(product => product.uid === action.payload)
             table.cart.products.splice(productIndex, 1)
             table.cart.total = getTotal(table.cart.products)
         },

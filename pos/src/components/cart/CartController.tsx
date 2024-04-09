@@ -23,8 +23,6 @@ const CartController = () => {
 
     const products = currentTable ? currentTable.cart.products : cartProducts
 
-    console.log("CURRENT TABLE....", currentTable)
-
     const [openCheckout, setOpenCheckout] = useState(false)
 
     console.log("CART........", cartProducts)
@@ -38,7 +36,7 @@ const CartController = () => {
 
     const handleClearCart = () => {
 
-        if (activeTable !== -1) {
+        if (currentTable) {
 
             dispatch(clearTableCart())
 
@@ -49,14 +47,14 @@ const CartController = () => {
 
     }
 
-    const handleDelete = (id: CartProductId) => {
+    const handleDelete = (id: CartProduct["uid"]) => {
 
-        if (activeTable !== -1) {
-
+        if (currentTable) {
+            
             dispatch(removeTableProduct(id))
-
+            
         } else {
-
+            
             dispatch(removeProduct(id))
         }
     }

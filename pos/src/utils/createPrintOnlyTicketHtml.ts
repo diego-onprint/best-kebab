@@ -1,6 +1,6 @@
 import { formatPrice } from "./formatPrice"
 
-export const createPrintOnlyTicketHtml = (data) => {
+export const createPrintOnlyTicketHtml = (data, tax, currentClient: string) => {
 
     const items = data.products.map(product => {
 
@@ -14,6 +14,13 @@ export const createPrintOnlyTicketHtml = (data) => {
             `
         }).join('') : ``
 
+        const notes = product.notes.length > 0 ? `
+                <div class="notes">
+                    <div class="variation">Notes:</div>
+                    <div class="variation">${product.notes}</div>
+                </div>
+        ` : ``
+
         return `
             <div class="item">
                 <div style="width: 25px;">${product.qty}</div>
@@ -23,11 +30,12 @@ export const createPrintOnlyTicketHtml = (data) => {
                 <div><span class="chf">CHF. </span>${formatPrice((product.price * product.qty).toString())}</div>
             </div>
             ${variations}
+            ${notes}
             `
     }).join('')
 
     const ticket = `
-        <div>
+        <div style="max-width: 350px; margin: 0 auto;">
             <div class="logo-container">
                 <img class="logo" src="/assets/lovely-logo.jpg" alt="" />
             </div>
@@ -39,7 +47,7 @@ export const createPrintOnlyTicketHtml = (data) => {
             </div>
             <hr class="separator" />
             <div class="order-details">
-                <div>Table: Print no checkout</div>
+                <div>Table: ${currentClient}</div>
             </div>
             <hr class="separator" />
             <div class="items-list">
@@ -64,7 +72,7 @@ export const createPrintOnlyTicketHtml = (data) => {
                 <div>Kasse</div>
             </div>
             <div class="item" style="margin-top: 5px;">
-                <div style="font-size: 14px;">MwSt. CHF. ${"revisar"} -> 8.1% MwsT. inkl</div>
+                <div style="font-size: 14px;">MwSt. CHF. ${tax.total} -> ${tax.rate}% MwsT. inkl</div>
             </div>
             <div class="item">
                 <div class="emph">Gesamt</div>
@@ -124,6 +132,11 @@ export const createPrintOnlyTicketHtml = (data) => {
                     justify-content: space-between;
                     margin-bottom: 15px;
                     column-gap: 5px;
+                }
+
+                .notes {
+                    margin-left: 30px;
+                    margin-bottom: 15px;
                 }
 
                 .variation {
