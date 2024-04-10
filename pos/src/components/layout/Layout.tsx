@@ -11,7 +11,7 @@ const Layout = ({ children }: PropsTypes) => {
     <div className="relative flex w-full h-screen overflow-hidden">
         <SideBar />
         {children}
-        {/* <Cart /> */}
+        <Cart />
     </div>
   )
 }

@@ -24,35 +24,33 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
     const [qty, setQty] = useState(1)
 
-    // const handleAdd = (product: Product) => {
+    const handleAdd = () => {
 
-    //     const timestamp = createTimestamp()
+        const timestamp = createTimestamp()
 
-    //     const productToAdd = {
-    //         id: product.id,
-    //         uid: crypto.randomUUID(),
-    //         name: product.name,
-    //         price: product.price,
-    //         qty: qty,
-    //         variations: selectedVarations,
-    //         timestamp: timestamp,
-    //         notes: notesRef.current.value,
-    //     }
+        const productToAdd = {
+            id: product.id,
+            uid: product.id + timestamp,
+            name: product.name,
+            price: product.price,
+            qty: qty,
+            variations: selectedVarations,
+            timestamp: timestamp,
+            notes: notesRef.current.value,
+        }
 
-    //     if (activeTable !== -1) {
+        if (activeTable !== -1) {
 
-    //         dispatch(addTableProduct(productToAdd))
+            dispatch(addTableProduct(productToAdd))
 
-    //     } else {
+        } else {
 
-    //         dispatch(addProduct(productToAdd))
-    //     }
+            dispatch(addProduct(productToAdd))
+        }
 
-    //     setOpenSelector(!openSelector)
+        setOpenSelector(!openSelector)
 
-    // }
-
-    console.log(product)
+    }
 
     return (
         <section className="fixed inset-0 bg-black/10 z-[900] grid place-items-center">
@@ -67,24 +65,20 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                             <textarea rows={3} className="w-full p-2 border border-zinc-200 resize-none rounded-md" ref={notesRef} />
                         </div>
                     </div>
-                    <div className="col-span-6">
-                        {/* <ErrorBoundary fallback={<ErrorFallback>Error fetching options</ErrorFallback>}>
-                            {
-                                product.variations.length > 0 ?
-                                    <Options
-                                        id={product.id}
-                                        selectedVariations={selectedVarations}
-                                        setSelectedVariations={setSelectedVarations}
-                                    /> : null}
-                        </ErrorBoundary> */}
-                    </div>
+                    {
+                        product.variations.length > 0 ?
+                        <div className="col-span-6">
+                            <Options
+                                variations={product.variations}
+                                selectedVariations={selectedVarations}
+                                setSelectedVariations={setSelectedVarations}
+                            />
+                        </div> : null
+                    }
                 </div>
                 <div className="grid grid-cols-12 gap-4 mt-6">
                     <button onClick={() => setOpenSelector(!openSelector)} className="ghost-button col-span-4">Cancel</button>
-                    <button
-                        onClick={() => handleAdd(product)}
-                        onKeyDown={(e) => e.key === "Enter" && handleAdd(product)}
-                        className="primary-button col-span-8"
+                    <button onClick={handleAdd} className="primary-button col-span-8"
                     >
                         Add
                     </button>

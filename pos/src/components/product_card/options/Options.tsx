@@ -11,12 +11,9 @@ type PropsTypes = {
     setVariation: Dispatch<SetStateAction<ProductVariation>>
 }
 
-const Options = ({ id, selectedVariations, setSelectedVariations }: PropsTypes) => {
+const Options = ({ variations, selectedVariations, setSelectedVariations }: PropsTypes) => {
 
-    const { data } = useGetProductsVariationsQuery(id)
-    const [formatedVariations, setFormatedVariations] = useState(null)
-
-    const handleSelected = (option) => {
+        const handleSelected = (option) => {
 
         const timestamp = createTimestamp()
 
@@ -49,12 +46,6 @@ const Options = ({ id, selectedVariations, setSelectedVariations }: PropsTypes) 
 
     }
 
-    useEffect(() => {
-        if (data) {
-            setFormatedVariations(formatVariations(data.variations))
-        }
-    }, [data])
-
     return (
         <div className="w-full">
             <label>Options</label>
@@ -62,22 +53,16 @@ const Options = ({ id, selectedVariations, setSelectedVariations }: PropsTypes) 
                 <legend className="sr-only">Select options</legend>
                 <div className="flex flex-col gap-2 mt-2">
                     {
-                        formatedVariations ?
-                            formatedVariations.map(variation => {
-                                return (
-                                    <OptionsMenu
-                                        key={variation.id}
-                                        variation={variation}
-                                        handleSelected={handleSelected}
-                                        selectedVariations={selectedVariations}
-                                    />
-                                )
-                            }) :
-                            <div className="flex flex-col gap-2">
-                                <div className="w-20 h-4 bg-zinc-300"></div>
-                                <div className="w-20 h-4 bg-zinc-300"></div>
-                                <div className="w-20 h-4 bg-zinc-300"></div>
-                            </div>
+                        variations.map(variation => {
+                            return (
+                                <OptionsMenu
+                                    key={variation.id}
+                                    variation={variation}
+                                    handleSelected={handleSelected}
+                                    selectedVariations={selectedVariations}
+                                />
+                            )
+                        })
                     }
                 </div>
             </fieldset>

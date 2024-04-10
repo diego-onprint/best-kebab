@@ -8,7 +8,7 @@ const OptionsMenu = ({ variation, handleSelected, selectedVariations }) => {
   useEffect(() => {
 
     const handleClick = (e) => {
-      console.log(e.target.className, typeof e.target.className)
+      // console.log(e.target.className, typeof e.target.className)
     }
 
     window.addEventListener("click", handleClick)
@@ -29,6 +29,7 @@ const OptionsMenu = ({ variation, handleSelected, selectedVariations }) => {
                 handleSelected={handleSelected}
                 selectedVariations={selectedVariations}
                 key={option.id}
+                setOpen={setOpen}
               />
             )
           })

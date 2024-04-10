@@ -43,8 +43,7 @@ function App() {
           <Route path="/categories" element={<Categories />} />
           <Route path="/subcategories/:id" element={<Subcategories />} />
           <Route path="/products/:id" element={<Products />} />
-          {/* <Route path="/category/:id" element={<Products />} /> */}
-          {/* <Route path="/tables" element={<Tables />} /> */}
+          <Route path="/tables" element={<Tables />} />
           {/* <Route path="/reports" element={<Reports />} /> */}
           {/* <Route path="/orders" element={<Orders />} /> */}
         </Routes>

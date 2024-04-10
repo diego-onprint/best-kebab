@@ -64,7 +64,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
         const printCheckoutTicket = (content) => {
             // CREATE TICKET HTML
-            const ticketHtml = createLocalTicketHtml(content, tax, currentClient)
+            const ticketHtml = createLocalTicketHtml(checkoutCart, tax, currentClient)
 
             const printWindow = windowRef.current.open("")
 
@@ -78,8 +78,6 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             }
         }
 
-        console.log(checkoutCart)
-
         // PLACE ORDER IN WOOCOMMERCE
         try {
 
@@ -91,16 +89,15 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                 if (product.variations.length > 0) {
 
                     const variationsTotalPrice = product.variations.reduce((acc, curr) => {
-                        return acc + Number(curr.price)
+                        return acc + curr.price
                     }, 0)
 
                     const variationsName = product.variations.map(variation => variation.name).join("/")
 
-                    const productTotalPrice = Number(product.price) * product.qty + variationsTotalPrice
-
-                    console.log("total price", productTotalPrice)
+                    const productTotalPrice = product.price * product.qty + variationsTotalPrice
 
                     return {
+                        name: product.name,
                         product_id: product.id,
                         meta_data: [
                             {
@@ -117,9 +114,11 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                 }
 
                 return {
-                    meta_data: [{ key: "Notes", value: product.notes }],
+                    name: product.name,
                     product_id: product.id,
-                    quantity: product.qty
+                    meta_data: [{ key: "Notes", value: product.notes }],
+                    quantity: product.qty,
+                    total: product.price.toString(),
                 }
             })
 
@@ -142,6 +141,8 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             if (json.result.data?.status === 400) {
                 setError("An error ocurred placing order in Woocommerce")
             }
+
+            console.log(json)
 
             currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
             setOpenCheckout(false)
