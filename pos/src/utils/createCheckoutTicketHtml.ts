@@ -1,15 +1,8 @@
 import { formatPrice } from "./formatPrice"
 
-export const createPrintOnlyTicketHtml = (data, tax, currentClient: string, paymentMethod: string) => {
+export const createCheckoutTicketHtml = (data, tax, currentClient: string, paymentMethod: string) => {
 
     const items = data.products.map(product => {
-
-        const notes = product.notes.length > 0 ? `
-                <p>
-                    <span class="text-sm">Notes:</span>
-                    <span class="text-sm">${product.notes}</span>
-                </p>
-        ` : ``
 
         if (product.variations.length > 0) {
 
@@ -27,7 +20,6 @@ export const createPrintOnlyTicketHtml = (data, tax, currentClient: string, paym
                     <td rowspan=${product.variations.length + 1}>${product.qty}</td>
                     <td class="text-md" style="flex: 1;">
                         ${product.name}
-                        ${notes}
                     </td>
                     <td class="text-md" style="width: 55px;">${formatPrice((product.price * product.qty).toString())}</td>
                 </tr>
@@ -41,7 +33,6 @@ export const createPrintOnlyTicketHtml = (data, tax, currentClient: string, paym
                     <td>${product.qty}</td>
                     <td class="text-md">
                         ${product.name}
-                        ${notes}
                     </td>
                     <td class="text-md" style="width: 55px;">${formatPrice((product.price * product.qty).toString())}</td>
                 </tr>

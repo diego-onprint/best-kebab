@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import type { Tables, Table, CartProduct } from "../../types"
-import { TablesEmptyState } from "../../models/tables.model"
 import { setLocalStorageItem } from "../../utils/localStorage"
+import { TablesEmptyState } from "../../models/tables.model"
+import type { Tables, Table, CartProduct } from "../../types"
 
 const initialState: Tables = {
     tables: TablesEmptyState,

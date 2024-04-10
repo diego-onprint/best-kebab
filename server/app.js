@@ -297,6 +297,7 @@ app.get("/api/categories", async (req, res) => {
     res.status(200).send({ categories: parentCategories })
 })
 
+// SUBCATEGORIES
 app.get("/api/subcategories/:id", async (req, res) => {
 
     const subcategories = categories.filter(category => {
@@ -306,6 +307,7 @@ app.get("/api/subcategories/:id", async (req, res) => {
     res.status(200).send({ subcategories: subcategories })
 })
 
+// PRODUCTS
 app.get("/api/products/:id", async (req, res) => {
 
     const filteredProducts = products.filter(category => {
@@ -361,8 +363,46 @@ app.post("/api/new-local-order", async (req, res) => {
 })
 
 
+app.get("/api/orders", async (req, res) => {
 
+    const url = `${baseUrl}orders?page=${req.query.page}&per_page=20`
+    const nextPage = parseInt(req.query.page) + 1
+    const nextUrl = `${baseUrl}orders?page=${nextPage}`
 
+    let orders
+    let hasNextPage
+
+    try {
+
+        const wooResponse = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${auth}`,
+            },
+        })
+
+        orders = await wooResponse.json()
+
+        const nextResponse = await fetch(nextUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${auth}`,
+            },
+        })
+
+        const nextResult = await nextResponse.json()
+
+        hasNextPage = nextResult.length > 0
+
+    } catch (err) {
+
+        res.status(500).send({ ok: false, msg: err })
+    }
+
+    res.status(200).send({ orders: orders, hasNextPage })
+})
 
 
 
@@ -513,46 +553,46 @@ app.get("/api/total-orders-report", async (req, res) => {
 })
 
 // GET ORDERS
-app.get("/api/orders", async (req, res) => {
+// app.get("/api/orders", async (req, res) => {
 
-    const url = `${baseUrl}orders?page=${req.query.page}&per_page=20`
-    const nextPage = parseInt(req.query.page) + 1
-    const nextUrl = `${baseUrl}orders?page=${nextPage}`
+//     const url = `${baseUrl}orders?page=${req.query.page}&per_page=20`
+//     const nextPage = parseInt(req.query.page) + 1
+//     const nextUrl = `${baseUrl}orders?page=${nextPage}`
 
-    let orders
-    let hasNextPage
+//     let orders
+//     let hasNextPage
 
-    try {
+//     try {
 
-        const wooResponse = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Basic ${auth}`,
-            },
-        })
+//         const wooResponse = await fetch(url, {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Authorization: `Basic ${auth}`,
+//             },
+//         })
 
-        orders = await wooResponse.json()
+//         orders = await wooResponse.json()
 
-        const nextResponse = await fetch(nextUrl, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Basic ${auth}`,
-            },
-        })
+//         const nextResponse = await fetch(nextUrl, {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Authorization: `Basic ${auth}`,
+//             },
+//         })
 
-        const nextResult = await nextResponse.json()
+//         const nextResult = await nextResponse.json()
 
-        hasNextPage = nextResult.length > 0
+//         hasNextPage = nextResult.length > 0
 
-    } catch (err) {
+//     } catch (err) {
 
-        res.status(500).send({ ok: false, msg: err })
-    }
+//         res.status(500).send({ ok: false, msg: err })
+//     }
 
-    res.status(200).send({ orders: orders, hasNextPage })
-})
+//     res.status(200).send({ orders: orders, hasNextPage })
+// })
 
 
 // CRETE NEW ORDER

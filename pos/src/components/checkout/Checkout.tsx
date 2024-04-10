@@ -1,14 +1,15 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
-import { createLocalTicketHtml } from "../../utils/createLocalTicketHtml"
 import { useSelector, useDispatch } from "react-redux"
-import { clearCart } from "../../store/cart/cartSlice"
-import { clearTableCart } from "../../store/tables/tablesSlice"
 import Calculator from "./calculator/Calculator"
 import Spinner from "../spinner/Spinner"
+import { clearCart } from "../../store/cart/cartSlice"
+import { clearTableCart } from "../../store/tables/tablesSlice"
+import { calculatePercentage } from "../../utils/calculatePercentage"
+import { createCheckoutTicketHtml } from "../../utils/createCheckoutTicketHtml"
+import { createPrintOnlyTicketHtml } from "../../utils/createPrintOnlyTicketHtml"
 import { RootState, AppDispatch } from "../../store/store"
 import type { Cart, Table } from "../../types"
-import { createPrintOnlyTicketHtml } from "../../utils/createPrintOnlyTicketHtml"
-import { calculatePercentage } from "../../utils/calculatePercentage"
+import { printHtml } from "../../utils/print/print"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -39,43 +40,20 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
-    const [paymentMethod, setPaymentMethod] = useState("cash")
+    const [paymentMethod, setPaymentMethod] = useState("Kasse")
 
-    const printLocalOrder = () => {
-        const ticketHtml = createPrintOnlyTicketHtml(checkoutCart, tax, currentClient)
-
-        // USE THE COMMENTED WHEN --KIOSK-PRINTING IN CHROME
-        // const printWindow = windowRef.current.open(undefined, undefined, "width=50, height=50")
-        const printWindow = windowRef.current.open("")
-
-        if (printWindow && ticketHtml) {
-            printWindow.document.write(ticketHtml)
-            printWindow.document.close()
-            printWindow.print()
-            printWindow.close()
-        } else {
-            console.error("Ocurrió un error al intentar imprimir la ventana")
-        }
+    const printTicket = () => {
+        const ticketHtml = createPrintOnlyTicketHtml(checkoutCart, tax, currentClient, paymentMethod)
+        printHtml(windowRef.current, ticketHtml)
     }
 
     const handleCheckout = async () => {
 
         setLoading(true)
 
-        const printCheckoutTicket = (content) => {
-            // CREATE TICKET HTML
-            const ticketHtml = createLocalTicketHtml(checkoutCart, tax, currentClient)
-
-            const printWindow = windowRef.current.open("")
-
-            if (printWindow && ticketHtml) {
-                printWindow.document.write(ticketHtml)
-                printWindow.document.close()
-                printWindow.print()
-                printWindow.close()
-            } else {
-                console.error("Ocurrió un error al intentar imprimir la ventana")
-            }
+        const printCheckoutTicket = () => {
+            const ticketHtml = createCheckoutTicketHtml(checkoutCart, tax, currentClient, paymentMethod)
+            printHtml(windowRef.current, ticketHtml)
         }
 
         // PLACE ORDER IN WOOCOMMERCE
@@ -143,10 +121,13 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             }
 
             console.log(json)
-
+            // DONT USE WOOCOMMERCE RESPONSE DATA TIL FIX PRODUCTION ERROR
+            // printCheckoutTicket(json.result)
+            printCheckoutTicket()
+            
             currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
             setOpenCheckout(false)
-            printCheckoutTicket(json.result)
+            
 
         } catch (err) {
 
@@ -163,8 +144,8 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
         <div className="grid place-items-center fixed inset-0 bg-zinc-950/30">
             <div className="relative grid grid-cols-12 bg-white divide-x rounded-md p-6 w-11/12 max-w-3xl">
                 <div className="col-span-3 flex flex-col gap-2 px-6">
-                    <button onClick={() => setPaymentMethod("cash")} className={`button-base bg-zinc-200 ${paymentMethod === "cash" && "outline outline-green-400"}`}>Kasse</button>
-                    <button onClick={() => setPaymentMethod("credit")} className={`button-base bg-zinc-200 ${paymentMethod === "credit" && "outline outline-green-400"}`}>Kredikarte</button>
+                    <button onClick={() => setPaymentMethod("Kasse")} className={`button-base bg-zinc-200 ${paymentMethod === "Kasse" && "outline outline-green-400"}`}>Kasse</button>
+                    <button onClick={() => setPaymentMethod("Kredikarte")} className={`button-base bg-zinc-200 ${paymentMethod === "Kredikarte" && "outline outline-green-400"}`}>Kredikarte</button>
                 </div>
                 <div className="col-span-9 px-4 flex flex-col gap-4">
                     <div className="flex justify-between bg-zinc-100 rounded-md p-6">
@@ -174,7 +155,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                     <Calculator total={checkoutCart.total} />
                     <div className="grid grid-cols-12 gap-2">
                         <button onClick={() => setOpenCheckout(false)} disabled={loading} className="ghost-button col-span-3">Cancel</button>
-                        <button onClick={printLocalOrder} disabled={loading} className="ghost-button col-span-3">Print</button>
+                        <button onClick={printTicket} disabled={loading} className="ghost-button col-span-3">Print</button>
                         <button onClick={handleCheckout} disabled={loading} className="primary-button col-span-6">
                             {
                                 loading ?
