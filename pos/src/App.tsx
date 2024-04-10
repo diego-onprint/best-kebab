@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import Dashboard from "./pages/dashboard/Dashboard"
 import Categories from "./pages/categories/Categories"
@@ -6,10 +7,32 @@ import Layout from "./components/layout/Layout"
 import Reports from "./pages/reports/Reports"
 import Orders from "./pages/orders/Orders"
 import Tables from "./pages/tables/Tables"
+import { getLocalStorageItem } from "./utils/localStorage"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "./store/store"
+import { updateCartInitialState } from "./store/cart/cartSlice"
+import { updateTablesInitialState } from "./store/tables/tablesSlice"
 
 // TODO dynamic imports!
 
 function App() {
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+
+    const cartLocalStorage = getLocalStorageItem("cart")
+    const tablesLocalStorage = getLocalStorageItem("tables")
+
+    if (cartLocalStorage) {
+      dispatch(updateCartInitialState(cartLocalStorage))
+    }
+
+    if (tablesLocalStorage) {
+      dispatch(updateTablesInitialState(tablesLocalStorage))
+    }
+
+  }, [])
 
   return (
     <Layout>

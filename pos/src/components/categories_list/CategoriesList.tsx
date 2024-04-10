@@ -6,8 +6,6 @@ const CategoriesList = ({ id }: { id: string | undefined }) => {
 
     const { data, isLoading } = useGetCategoriesQuery(id)
 
-    console.log(data)
-
     return (
         <>
             {

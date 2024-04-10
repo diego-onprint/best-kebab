@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { Cart, CartProduct } from "../../types"
 import type { PayloadAction } from "@reduxjs/toolkit"
+import { getLocalStorageItem, isInLocalStorage, setLocalStorageItem } from "../../utils/localStorage"
 
 const initialState: Cart = {
     products: [],
@@ -28,6 +29,10 @@ const getTotal = (state: Cart) => {
     return total.toFixed(2)
 }
 
+const updateCartLocalStorage = (state) => {
+    setLocalStorageItem("cart", { products: [...state.products], total: state.total})
+}
+
 export const cartSlice = createSlice({
     name: "cart",
     initialState,
@@ -35,18 +40,29 @@ export const cartSlice = createSlice({
         addProduct: (state, action: PayloadAction<CartProduct>) => {
             state.products.push(action.payload)
             state.total = getTotal(state)
+            updateCartLocalStorage(state)
         },
         removeProduct: (state, action: PayloadAction<CartProduct["uid"]>) => {
             const index = state.products.findIndex(product => product.uid === action.payload)
-            console.log(index)
             state.products.splice(index, 1)
             state.total = getTotal(state)
+            updateCartLocalStorage(state)
         },
         clearCart: (state) => {
             state.products = []
             state.total = getTotal(state)
+            updateCartLocalStorage(state)
         },
+        updateCartInitialState: (state, action) => {
+            state.products = action.payload.products
+            state.total = action.payload.total
+        }
     },
 })
 
-export const { addProduct, removeProduct, clearCart } = cartSlice.actions
+export const { 
+    addProduct, 
+    removeProduct, 
+    clearCart,
+    updateCartInitialState,
+} = cartSlice.actions

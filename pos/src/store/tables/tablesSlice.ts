@@ -1,45 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import type { Tables, Table, CartProduct, CartProductId, Product } from "../../types"
+import type { Tables, Table, CartProduct } from "../../types"
+import { TablesEmptyState } from "../../models/tables.model"
+import { setLocalStorageItem } from "../../utils/localStorage"
 
 const initialState: Tables = {
-    tables: [
-        {
-            id: 1,
-            cart: { products: [], total: "0" },
-            capacity: 2,
-            name: "Salon 1"
-        },
-        {
-            id: 2,
-            cart: { products: [], total: "0" },
-            capacity: 2,
-            name: "Salon 2"
-        },
-        {
-            id: 3,
-            cart: { products: [], total: "0" },
-            capacity: 4,
-            name: "Salon 3"
-        },
-        {
-            id: 4,
-            cart: { products: [], total: "0" },
-            capacity: 2,
-            name: "Terrase 1"
-        },
-        {
-            id: 5,
-            cart: { products: [], total: "0" },
-            capacity: 6,
-            name: "Terrase 2"
-        },
-        {
-            id: 6,
-            cart: { products: [], total: "0" },
-            capacity: 4,
-            name: "Terrase"
-        },
-    ],
+    tables: TablesEmptyState,
     activeTable: -1
 }
 
@@ -58,6 +23,10 @@ const getTotal = (products: CartProduct[]) => {
     return total.toFixed(2)
 }
 
+const updateTablesLocalStorage = (state) => {
+    setLocalStorageItem("tables", [...state.tables])
+}
+
 export const tablesSlice = createSlice({
     name: "tables",
     initialState: initialState,
@@ -70,6 +39,7 @@ export const tablesSlice = createSlice({
             const table = state.tables[index]
             table.cart.products.push(action.payload)
             table.cart.total = getTotal(table.cart.products)
+            updateTablesLocalStorage(state)
         },
         removeTableProduct: (state, action: PayloadAction<CartProduct["uid"]>) => {
             const tableIndex = state.tables.findIndex((table: Table) => state.activeTable === table.id)
@@ -77,13 +47,18 @@ export const tablesSlice = createSlice({
             const productIndex = table.cart.products.findIndex(product => product.uid === action.payload)
             table.cart.products.splice(productIndex, 1)
             table.cart.total = getTotal(table.cart.products)
+            updateTablesLocalStorage(state)
         },
         clearTableCart: (state) => {
             const tableIndex = state.tables.findIndex((table: Table) => state.activeTable === table.id)
             const table = state.tables[tableIndex]
             table.cart.products = []
             table.cart.total = getTotal(table.cart.products)
+            updateTablesLocalStorage(state)
         },
+        updateTablesInitialState: (state, action) => {
+            state.tables = action.payload
+        }
     }
 })
 
@@ -92,4 +67,5 @@ export const {
     addTableProduct,
     removeTableProduct,
     clearTableCart,
+    updateTablesInitialState,
 } = tablesSlice.actions
