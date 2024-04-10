@@ -8,7 +8,11 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl}),
     endpoints: (builder) => ({
         getCategories: builder.query<{ categories: Category[]}, string | undefined>({
-            query: (id) => `categories/${id}`,
+            query: () => `categories/`,
+            keepUnusedDataFor: 21600,
+        }),
+        getSubCategories: builder.query<{ categories: Category[]}, string | undefined>({
+            query: (id) => `subcategories/${id}`,
             keepUnusedDataFor: 21600,
         }),
         getProductsByCategory: builder.query<{products: Product[]}, string | undefined>({
@@ -30,6 +34,7 @@ export const api = createApi({
 
 export const { 
     useGetCategoriesQuery, 
+    useGetSubCategoriesQuery,
     useGetProductsByCategoryQuery,
     useGetProductsVariationsQuery,
     useGetOrdersQuery, 

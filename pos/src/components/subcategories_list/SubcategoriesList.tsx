@@ -1,28 +1,25 @@
 import { Link } from "react-router-dom"
-import { useGetCategoriesQuery } from '../../store/api/apiSlice'
-import type { Category } from '../../types'
+import { useGetSubCategoriesQuery } from '../../store/api/apiSlice'
 
-const CategoriesList = () => {
+const SubcategoriesList = ({ id }: { id: string | undefined }) => {
 
-    const { data, isLoading } = useGetCategoriesQuery()
+    const { data, isFetching } = useGetSubCategoriesQuery(id)
 
     return (
         <>
             {
-                isLoading ?
+                isFetching ?
                     <div>Loading...</div> :
                     <div className="grid grid-cols-12 gap-2 py-2">
                         {
-                            data?.categories.map((category: Category) => {
-
-
+                            data.subcategories.map(subcategory => {
                                 return (
                                     <Link
-                                        to={category.subcategories ? `/subcategories/${category.id}` : `/category/${category.id}`}
-                                        key={category.id}
+                                        to={`/products/${subcategory.id}`}
+                                        key={subcategory.id}
                                         className="col-span-6 @xs/main:col-span-4 @md/main:col-span-3 h-24 grid place-items-center border border-zinc-200 bg-white rounded-lg"
                                     >
-                                        <h3>{category.name}</h3>
+                                        <h3>{subcategory.name}</h3>
                                     </Link>
                                 )
                             })
@@ -33,4 +30,4 @@ const CategoriesList = () => {
     )
 }
 
-export default CategoriesList
+export default SubcategoriesList

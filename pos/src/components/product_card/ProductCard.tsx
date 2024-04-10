@@ -11,8 +11,6 @@ const ProductCard = ({ product }: PropsTypes) => {
 
   const [openSelector, setOpenSelector] = useState(false)
 
-  // console.log(product)
-
   return (
     <>
       <article
