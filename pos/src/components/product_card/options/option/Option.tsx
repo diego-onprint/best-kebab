@@ -2,17 +2,17 @@
 const Option = ({ option, handleSelected, selectedVariations, setOpen }) => {
 
     const index = selectedVariations.findIndex(selectedVariation => selectedVariation.id === option.id)
-    const isSelected = index !== -1 ? true : false
+    const isSelected = index !== -1
     
     const handleClick = () => {
         handleSelected(option)
-        setOpen(false)
+        // setOpen(false)
     }
 
     return (
         <div className="flex gap-2 items-center">
             <button
-                className={`${isSelected ? "bg-zinc-200" : "bg-none"} p-2 rounded-md text-left`}
+                className={`clickable ${isSelected ? "bg-zinc-200" : "bg-none"} p-2 rounded-md text-left`}
                 onClick={handleClick}
             >
                 {option.name} 

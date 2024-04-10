@@ -4,22 +4,22 @@ import { Product, ProductVariation } from "../../../types"
 import { formatVariations } from "../../../utils/formatVariations"
 import Option from "./option/Option"
 import { createTimestamp } from "../../../utils/createTimestamp"
-import OptionsMenu from "./options_menu/OptionsMenu"
+import VariationButton from "./variation_button/VariationButton"
 
 type PropsTypes = {
     id: Product["id"]
     setVariation: Dispatch<SetStateAction<ProductVariation>>
 }
 
-const Options = ({ variations, selectedVariations, setSelectedVariations }: PropsTypes) => {
+const VariationsMenu = ({ variations, selectedVariations, setSelectedVariations }: PropsTypes) => {
 
-        const handleSelected = (option) => {
+    const handleSelected = (option) => {
 
         const timestamp = createTimestamp()
 
         const parsedOption = {
             ...option,
-            timestamp: timestamp 
+            timestamp: timestamp
         }
 
         // Check if same parent to overwrite
@@ -42,20 +42,20 @@ const Options = ({ variations, selectedVariations, setSelectedVariations }: Prop
         //Else overwrite the selected option for same parent
         const filteredOptions = selectedVariations.filter(selectedVariation => selectedVariation.parent !== option.parent)
         setSelectedVariations([...filteredOptions, parsedOption])
-
-
     }
 
+    console.log(selectedVariations)
+
     return (
-        <div className="w-full">
+        <>
             <label>Options</label>
-            <fieldset>
+            <fieldset className="mt-2">
                 <legend className="sr-only">Select options</legend>
-                <div className="flex flex-col gap-2 mt-2">
+                <div className="grid grid-cols-12 gap-2">
                     {
                         variations.map(variation => {
                             return (
-                                <OptionsMenu
+                                <VariationButton
                                     key={variation.id}
                                     variation={variation}
                                     handleSelected={handleSelected}
@@ -66,8 +66,8 @@ const Options = ({ variations, selectedVariations, setSelectedVariations }: Prop
                     }
                 </div>
             </fieldset>
-        </div>
+        </>
     )
 }
 
-export default Options
+export default VariationsMenu
