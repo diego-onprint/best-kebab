@@ -21,8 +21,8 @@ const getTotal = (state: Cart) => {
             }, 0)
         }
 
-        // Add to accumulator the product price by qty plus de subtotal from variations
-        return acc + Number(curr.price) * curr.qty + variationsPrice
+        // Add to accumulator the: (product price plus de subtotal from variations) by qty
+        return acc + (Number(curr.price) + variationsPrice) * curr.qty 
 
     }, 0)
     

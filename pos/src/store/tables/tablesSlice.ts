@@ -12,11 +12,16 @@ const getTotal = (products: CartProduct[]) => {
 
     const total = products.reduce((acc, curr) => {
 
-        let variationPrice = 0
+        let variationsPrice = 0
 
-        if (curr.variation) variationPrice = Number(curr.variation.price) * curr.qty
+        if (curr.variations.length > 0) {
+            variationsPrice = curr.variations.reduce((accumulator, current) => {
+                return accumulator + Number(current.price)
+            }, 0)
+        }
 
-        return acc + Number(curr.price) * curr.qty + variationPrice
+        // Add to accumulator the: (product price plus de subtotal from variations) by qty
+        return acc + (Number(curr.price) + variationsPrice) * curr.qty 
 
     }, 0)
 

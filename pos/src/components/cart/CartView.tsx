@@ -33,19 +33,19 @@ const CartView = ({
     return (
         <>
             <div className="bg-white flex flex-col w-[475px]">
-                <div className="flex gap-4 shadow-md p-3">
-                    {
-                        currentTable ?
-                            <button onClick={clearTable} className="w-10 cursor-pointer">
-                                <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                                </svg>
-                            </button> : null
-                    }
-                    <h3 className="font-semibold">{currentTable ? currentTable.name : "Takeaway Order"}</h3>
-                </div>
-                <div className="flex flex-col flex-1 pt-1">
-                    <dl className="divide-y flex flex-col flex-1 overflow-auto px-4">
+                <div className="flex flex-col flex-1 h-full pt-1">
+                    <div className="flex gap-4 shadow-md p-3">
+                        {
+                            currentTable ?
+                                <button onClick={clearTable} className="w-10 cursor-pointer">
+                                    <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                                    </svg>
+                                </button> : null
+                        }
+                        <h3 className="font-semibold">{currentTable ? currentTable.name : "Takeaway Order"}</h3>
+                    </div>
+                    <dl className="divide-y flex flex-col flex-1 overflow-auto px-4 flex-grow">
                         {
                             products.map(product => (
                                 <li key={product.timestamp} className="flex gap-6 py-4 justify-between items-start">
@@ -60,7 +60,7 @@ const CartView = ({
                                                 {formatPrice(product.price)}
                                             </dd>
                                         </div>
-                                        {/* LOOP OVER ARRAYOOF VARIATION OPTIONS SELECTED */}
+                                        {/* LOOP OVER ARRAY OF VARIATION OPTIONS SELECTED */}
                                         {
                                             product.variations ?
                                                 product.variations.map(variation => {

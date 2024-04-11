@@ -13,10 +13,15 @@ const TablesList = () => {
         dispatch(setActiveTable(id))
     }
 
+    // console.log("TABLES....", tables)
+
     return (
         <div className="grid grid-cols-12 gap-2 py-2">
             {
                 tables.map(table => {
+
+                    console.log(table)
+
                     return (
                         <article
                             onClick={() => handleTable(table.id)}

@@ -98,6 +98,22 @@ module.exports = [
         parent: "burger"
     },
     {
+        id: "classic-menu",
+        name: "Classic Menu",
+        description: "Bodenständiger und kleine Portion Supper Dipperfrites",
+        price: 20,
+        variations: burgerVariations,
+        parent: "burger"
+    },
+    {
+        id: "handwerker-menu",
+        name: "Handwerker Menu",
+        description: "Handwerker und kleine Portion Supper Dipperfrites",
+        price: 25,
+        variations: burgerVariations,
+        parent: "burger"
+    },
+    {
         id: "chili-cheese-habanero-veggie",
         name: "Chili-Cheese Habanero Veggie",
         description: "Hamburgerbrot mit Sesam, Veggie-Pattie aus Couscous und Gemüse, Salat, Guacamole, Cheddar-Käse, Chili-Cheese Habanerossauce, Jalapeños",
@@ -322,5 +338,581 @@ module.exports = [
             }
         ],
         parent: "hahnchen"
+    },
+    {
+        id: "nusstraum",
+        name: "Nusstraum",
+        description: "grüner Blattsalat, Nüsse & Kerne, Blüten und Honig-Senfdressing",
+        price: 17.9,
+        variations: [],
+        parent: "salat"
+    },
+    {
+        id: "sonnengruss",
+        name: "Sonnengruss",
+        description: "grüner Blattsalat, Mozzarella, Tomaten Rucola und Granatapfeldressing",
+        price: 15.9,
+        variations: [],
+        parent: "salat"
+    },
+    {
+        id: "apfelbaum-vegan",
+        name: "Apfelbaum Vegan",
+        description: "grüner Blattsalat, Äpfel, Sonnenblumenkerne Granatapfeldressing",
+        price: 14.9,
+        variations: [],
+        parent: "salat"
+    },
+    {
+        id: "rostisalat",
+        name: "Röstisalat",
+        description: "grüner Blattsalat, Walnuss, Blüten/Kerne und Röstisticks-Senfdressing",
+        price: 16.9,
+        variations: [],
+        parent: "salat"
+    },
+    {
+        id: "nusstraum-vorspeise",
+        name: "Nusstraum (Vorspeise)",
+        description: "grüner Blattsalat, Nüsse & Kerne, Blüten und Honig-Senfdressing",
+        price: 11.5,
+        variations: [],
+        parent: "vorspeisen"
+    },
+    {
+        id: "sonnengruss-vorspeise",
+        name: "Sonnengruss (Vorspeise)",
+        description: "grüner Blattsalat, Mozzarella, Tomaten Rucola und Granatapfeldressing",
+        price: 9.5,
+        variations: [],
+        parent: "vorspeisen"
+    },
+    {
+        id: "apfelbaum-vegan-vorspeise",
+        name: "Apfelbaum Vegan (Vorspeise)",
+        description: "grüner Blattsalat, Äpfel, Sonnenblumenkerne Granatapfeldressing",
+        price: 8.5,
+        variations: [],
+        parent: "vorspeisen"
+    },
+    {
+        id: "rostisalat-vorspeise",
+        name: "Röstisalat (Vorspeise)",
+        description: "grüner Blattsalat, Walnuss, Blüten/Kerne und Röstisticks-Senfdressing",
+        price: 10.5,
+        variations: [],
+        parent: "vorspeisen"
+    },
+    {
+        id: "tortilla-chips-mit-zwei-dips",
+        name: "Tortilla-Chips mit zwei Dips",
+        description: "Mais-Chips mit einem Avocado- und Salsadip",
+        price: 12.5,
+        variations: [],
+        parent: "vorspeisen"
+    },
+    {
+        id: "gruner-blattsalat",
+        name: "grüner Blattsalat",
+        description: "gemischter grüner Salat hausgemachtes Honig-Senf Dressing",
+        price: 8.5,
+        variations: [],
+        parent: "vorspeisen"
+    },
+    {
+        id: "nachos-mit-zwei-dips",
+        name: "Nachos mit zwei Dips",
+        description: "Mais-Chips überbacken mit Cheddar-Käse, Avocadodip und Salsa",
+        price: 17.5,
+        variations: [],
+        parent: "vorspeisen"
+    },
+    {
+        id: "fischburger",
+        name: "Fischburger",
+        description: "Hamburgerbrot, Seelachs paniert, Zwiebel, Tomate und Salat hausgemachte Tartarsauce",
+        price: 24.9,
+        variations: [],
+        parent: "fisch"
+    },
+    {
+        id: "fischersfritz",
+        name: "Fischersfritz",
+        description: "Kibberlinge paniert, glasierte Kartoffeln und Karotten, Salat hausgemachte Tartar-Sauce",
+        price: 26.9,
+        variations: [],
+        parent: "fisch"
+    },
+    {
+        id: "ketchupmonster",
+        name: "Ketchupmonster",
+        description: "Hamburgerbrot, hausgemachtes Rind-Pattie 90g, Ketchup",
+        price: 12.9,
+        variations: [],
+        parent: "kinder"
+    },
+    {
+        id: "kaseburger",
+        name: "Käseburger",
+        description: "Hamburgerbrot, hausgemachtes Rind-Pattie 90g, Cheddar Ketchup",
+        price: 14.9,
+        variations: [],
+        parent: "kinder"
+    },
+    {
+        id: "schnippoburger",
+        name: "Schnippoburger",
+        description: "Hamburgerbrot, Pouletschnitzel paniert Cocktailsaucep",
+        price: 13.9,
+        variations: [],
+        parent: "kinder"
+    },
+    {
+        id: "chicken-nuggets-mit-dipperfries",
+        name: "Chicken-Nuggets mit Dipperfries",
+        description: "Chicken-Nuggets aus Pouletfleisch mit Dipper-Frites",
+        price: 16.9,
+        variations: [],
+        parent: "kinder"
+    },
+    {
+        id: "coca-cola-3dl",
+        name: "COCA-COLA 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "coca-cola-5dl",
+        name: "COCA-COLA 5DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "eistee-lemon-3dl",
+        name: "EISTEE LEMON 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "eistee-lemon-5dl",
+        name: "EISTEE LEMON 5DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "eistee-peache-3dl",
+        name: "EISTEE PEACHE 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "eistee-peache-5dl",
+        name: "EISTEE PEACHE 5DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "",
+        name: "",
+        description: "",
+        price: 16.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "fanta-3dl",
+        name: "FANTA 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "fanta-5dl",
+        name: "FANTA 5DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "fanta-mango-3dl",
+        name: "FANTA MANGO 3DL",
+        description: "",
+        price: 4.5,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "fanta-mango-5dl",
+        name: "FANTA MANGO 5DL",
+        description: "",
+        price: 5.5,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "sprite-3dl",
+        name: "SPRITE 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "sprite-5dl",
+        name: "SPRITE 5DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "rivella-rot-3dl",
+        name: "RIVELLA ROT 3DL",
+        description: "",
+        price: 4.5,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "rivella-rot-5dl",
+        name: "RIVELLA ROT 5DL",
+        description: "",
+        price: 5.5,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "uludag-limonade",
+        name: "ULUDAG LIMONADE",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "uludag-orange-fanta",
+        name: "ULUDAG ORANGE (FANTA)",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "capri-sun-3dl",
+        name: "CAPRI-SUN 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "matee-3dl",
+        name: "MATEE 3DL",
+        description: "",
+        price: 5.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "fanta-exotic-3dl",
+        name: "FANTA EXOTIC 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "apfelschorle-3dl",
+        name: "APFELSCHORLE 3DL",
+        description: "",
+        price: 4.5,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "apfelschorle-5dl",
+        name: "APFELSCHORLE 5DL",
+        description: "",
+        price: 5.5,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "mineralwasser-3dl",
+        name: "MINERALWASSER 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "mineralwasser-5dl",
+        name: "MINERALWASSER 5DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "hugo-2.5dl",
+        name: "HUGO 2.5DL",
+        description: "",
+        price: 12,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "aperol-spritz-2.5dl",
+        name: "APEROL SPRITZ 2.5DL",
+        description: "",
+        price: 12,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "campari-spritz-2.5dl",
+        name: "CAMPARI SPRITZ 2.5DL",
+        description: "",
+        price: 12,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "weisswein-spritz-2.5dl",
+        name: "Weisswein spritz 2.5DL",
+        description: "",
+        price: 8.5,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "amaretto-sauer-2.5dl",
+        name: "Amaretto Sauer 2.5DL",
+        description: "",
+        price: 13.9,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "gin-tonic-2.5dl",
+        name: "Gin Tonic 2.5DL",
+        description: "",
+        price: 13.9,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "espresso-martini-2.5dl",
+        name: "Espresso Martini 2.5DL",
+        description: "",
+        price: 13.9,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "whysky-sauer-2.5dl",
+        name: "whysky Sauer 2.5DL",
+        description: "",
+        price: 13.9,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "whysky-sauer-2.5dl",
+        name: "whysky Sauer 2.5DL",
+        description: "",
+        price: 13.9,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "aufmunterung-2.5dl",
+        name: "AUFMUNTERUNG 2.5DL",
+        description: "Vermouth, Cava, Mineral und Berry Schweppes mit Beeren",
+        price: 13.9,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "apfelboom-5dl",
+        name: "Apfelboom 5DL",
+        description: "Apfelsaft, Mineral, Citronensaft",
+        price: 7.9,
+        variations: [],
+        parent: "spritziges-alkoholfrei"
+    },
+    {
+        id: "tropicalflash-5dl",
+        name: "Tropicalflash 5DL",
+        description: "frischer Orangensaft, Mangofanta, Mineral",
+        price: 7.9,
+        variations: [],
+        parent: "spritziges-alkoholfrei"
+    },
+    {
+        id: "sauerbauer-5dl",
+        name: "SAUERBAUER 5DL",
+        description: "Mineral, Sirup, Limettensaft",
+        price: 7.9,
+        variations: [],
+        parent: "spritziges-alkoholfrei"
+    },
+    {
+        id: "saxer-neftenbach-7.5sl",
+        name: "Saxer Neftenbach 7.5DL",
+        description: "(Nobler Blauer, der Besondere) - Schweiz",
+        price: 52,
+        variations: [],
+        parent: "weine-rot"
+    },
+    {
+        id: "resalte-vendimia-ribera-duero-7.5dl",
+        name: "Resalte Vendimia Seleccionada Ribera del Duero 7.5DL",
+        description: "Spanien",
+        price: 48,
+        variations: [],
+        parent: "weine-rot"
+    },
+    {
+        id: "coto-de-imaz-reserva-rioja",
+        name: "Coto de Imaz Reserva Rioja 7.5DL",
+        description: "Spanien",
+        price: 45,
+        variations: [],
+        parent: "weine-rot"
+    },
+    {
+        id: "kaiken-reserva-cabernet-sauv-mendoza-7.5dl",
+        name: "Kaiken Reserva Cabernet Sauvignon Mendoza..7.5DL",
+        description: "Argentinien",
+        price: 42,
+        variations: [],
+        parent: "weine-rot"
+    },
+    {
+        id: "ojo-de-agua",
+        name: "Ojo de Agua 7.5DL",
+        description: "Argentinien",
+        price: 45,
+        variations: [],
+        parent: "weine-rot"
+    },
+    {
+        id: "puglia-primitivo-massaro-7.5dl",
+        name: "Puglia IGT Primitivo Massaro 7.5DL",
+        description: "",
+        price: 45,
+        variations: [],
+        parent: "weine-rot"
+    },
+    {
+        id: "puglia-primitivo-massaro-1.0dl",
+        name: "Puglia IGT Primitivo Massaro 1.0DL",
+        description: "",
+        price: 7.9,
+        variations: [],
+        parent: "weine-rot"
+    },
+    {
+        id: "stadtwein-rieslig-silvaner",
+        name: "Stadtwein Rieslig Silvaner",
+        description: "Schweiz",
+        price: 45,
+        variations: [],
+        parent: "weine-weiss"
+    },
+    {
+        id: "ojo-de-agua-torrontes-7.5dl",
+        name: "Ojo de Agua Torrontes 7.5DL",
+        description: "Argentinien",
+        price: 42,
+        variations: [],
+        parent: "weine-weiss"
+    },
+    {
+        id: "ojo-de-agua-torrontes-1.0dl",
+        name: "Ojo de Agua Torrontes 1.0DL",
+        description: "Argentinien",
+        price: 6.9,
+        variations: [],
+        parent: "weine-weiss"
+    },
+    {
+        id: "appenzeller-3dl",
+        name: "APPENZELLER 3DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "appenzeller-5dl",
+        name: "APPENZELLER 5DL",
+        description: "",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "appenzeller-weizenbier-5dl",
+        name: "APPENZELLER WEIZENBIER 5DL",
+        description: "",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "appenzeller-33cl",
+        name: "APPENZELLER 33CL",
+        description: "",
+        price: 4.5,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "erdinger-alkoholfrei-dunkel-5dl",
+        name: "ERDINGER ALKOHOLFREI (DUNKEL) 5DL",
+        description: "Dunkel",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "corona-33cl",
+        name: "CORONA 33CL",
+        description: "",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "superbock-33cl",
+        name: "SUPERBOCK 33cl",
+        description: "",
+        price: 4.5,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "mohl-5dl",
+        name: "MÖHL 5DL",
+        description: "Apfelwein trüb mit oder ohne bier",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
     },
 ]

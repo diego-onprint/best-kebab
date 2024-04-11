@@ -36,8 +36,6 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
         total: calculatePercentage(checkoutCart.total, 2.6).toFixed(2),
     }
 
-    console.log(currentTable)
-
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [paymentMethod, setPaymentMethod] = useState("Kasse")
@@ -59,7 +57,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
         // PLACE ORDER IN WOOCOMMERCE
         try {
 
-            const newOrderUrl = import.meta.env.DEV ? "http://localhost:8080/api/new-local-order" : "https://onprintpos.diegoui.com.ar/api/new-local-order"
+            const newOrderUrl = import.meta.env.DEV ? "http://localhost:8080/api/new-local-order" : "https://lovely-burger-pos.diegoui.com.ar/api/new-local-order"
 
             const parsedCart = checkoutCart.products.map(product => {
 
@@ -72,7 +70,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
                     const variationsName = product.variations.map(variation => variation.name).join("/")
 
-                    const productTotalPrice = product.price * product.qty + variationsTotalPrice
+                    const productTotalPrice = (Number(product.price) + variationsTotalPrice) * product.qty 
 
                     return {
                         name: product.name,
@@ -87,7 +85,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                                 value: product.notes
                             }],
                         quantity: product.qty,
-                        total: productTotalPrice.toString()
+                        total: productTotalPrice .toString()
                     }
                 }
 
@@ -96,12 +94,12 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                     product_id: product.id,
                     meta_data: [{ key: "Notes", value: product.notes }],
                     quantity: product.qty,
-                    total: product.price.toString(),
+                    total: (Number(product.price) * product.qty).toString(),
                 }
             })
 
             const orderData = {
-                customer: currentTable ? "table" : "Takeaway",
+                customer: currentTable ? currentClient : "Takeaway",
                 payment_method: "Bank Transfer / Cash",
                 products: parsedCart,
             }
@@ -121,7 +119,8 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
             }
 
             console.log(json)
-            // DONT USE WOOCOMMERCE RESPONSE DATA TIL FIX PRODUCTION ERROR
+            
+            // MAYBE PARSE WOO RESPONSE TO SET TICKET?
             // printCheckoutTicket(json.result)
             printCheckoutTicket()
             

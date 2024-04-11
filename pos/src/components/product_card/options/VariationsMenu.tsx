@@ -44,8 +44,6 @@ const VariationsMenu = ({ variations, selectedVariations, setSelectedVariations 
         setSelectedVariations([...filteredOptions, parsedOption])
     }
 
-    console.log(selectedVariations)
-
     return (
         <>
             <label>Options</label>
