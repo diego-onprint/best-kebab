@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import Calculator from "./calculator/Calculator"
-import Spinner from "../spinner/Spinner"
+import Spinner from "../common/spinner/Spinner"
 import { clearCart } from "../../store/cart/cartSlice"
 import { clearTableCart } from "../../store/tables/tablesSlice"
 import { calculatePercentage } from "../../utils/calculatePercentage"
@@ -9,7 +9,7 @@ import { createCheckoutTicketHtml } from "../../utils/createCheckoutTicketHtml"
 import { createPrintOnlyTicketHtml } from "../../utils/createPrintOnlyTicketHtml"
 import { RootState, AppDispatch } from "../../store/store"
 import type { Cart, Table } from "../../types"
-import { printHtml } from "../../utils/print/print"
+import { printHtml } from "../../utils/print/printHtml"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -30,7 +30,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
     const checkoutCart = currentTable ? currentTable.cart : cart
     const tax = currentTable ? {
         rate: 8.1,
-        total: calculatePercentage(checkoutCart.total, 8.1).toFixed(2) 
+        total: calculatePercentage(checkoutCart.total, 8.1).toFixed(2)
     } : {
         rate: 2.6,
         total: calculatePercentage(checkoutCart.total, 2.6).toFixed(2),
@@ -42,7 +42,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
     const printTicket = () => {
         const ticketHtml = createPrintOnlyTicketHtml(checkoutCart, tax, currentClient, paymentMethod)
-        printHtml(windowRef.current, ticketHtml)
+        printHtml("to-print", ticketHtml)
     }
 
     const handleCheckout = async () => {
@@ -51,7 +51,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
         const printCheckoutTicket = () => {
             const ticketHtml = createCheckoutTicketHtml(checkoutCart, tax, currentClient, paymentMethod)
-            printHtml(windowRef.current, ticketHtml)
+            printHtml("to-print", ticketHtml)
         }
 
         // PLACE ORDER IN WOOCOMMERCE
@@ -70,7 +70,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
 
                     const variationsName = product.variations.map(variation => variation.name).join("/")
 
-                    const productTotalPrice = (Number(product.price) + variationsTotalPrice) * product.qty 
+                    const productTotalPrice = (Number(product.price) + variationsTotalPrice) * product.qty
 
                     return {
                         name: product.name,
@@ -85,7 +85,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                                 value: product.notes
                             }],
                         quantity: product.qty,
-                        total: productTotalPrice .toString()
+                        total: productTotalPrice.toString()
                     }
                 }
 
@@ -118,15 +118,15 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                 setError("An error ocurred placing order in Woocommerce")
             }
 
-            console.log(json)
-            
+            // console.log(json)
+
             // MAYBE PARSE WOO RESPONSE TO SET TICKET?
             // printCheckoutTicket(json.result)
             printCheckoutTicket()
-            
+
             currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
             setOpenCheckout(false)
-            
+
 
         } catch (err) {
 
@@ -140,17 +140,13 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
     }
 
     return (
-        <div className="grid place-items-center fixed inset-0 bg-zinc-950/30">
-            <div className="relative grid grid-cols-12 bg-white divide-x rounded-md p-6 w-11/12 max-w-3xl">
+        <div className="grid place-items-center fixed inset-0 py-5 bg-zinc-950/30">
+            <div className="relative grid grid-cols-12 bg-white divide-x rounded-md p-6 w-11/12 max-w-screen-2xl">
                 <div className="col-span-3 flex flex-col gap-2 px-6">
                     <button onClick={() => setPaymentMethod("Kasse")} className={`button-base bg-zinc-200 ${paymentMethod === "Kasse" && "outline outline-green-400"}`}>Kasse</button>
                     <button onClick={() => setPaymentMethod("Kredikarte")} className={`button-base bg-zinc-200 ${paymentMethod === "Kredikarte" && "outline outline-green-400"}`}>Kredikarte</button>
                 </div>
                 <div className="col-span-9 px-4 flex flex-col gap-4">
-                    <div className="flex justify-between bg-zinc-100 rounded-md p-6">
-                        <div className="text-xl font-semibold">Total</div>
-                        <div className="text-xl font-semibold">{checkoutCart.total}</div>
-                    </div>
                     <Calculator total={checkoutCart.total} />
                     <div className="grid grid-cols-12 gap-2">
                         <button onClick={() => setOpenCheckout(false)} disabled={loading} className="ghost-button col-span-3">Cancel</button>
@@ -166,6 +162,7 @@ const Checkout = ({ setOpenCheckout }: PropsTypes) => {
                     </div>
                 </div>
             </div>
+            <div id="to-print">dsl;akjfldlaks</div>
         </div>
     )
 }

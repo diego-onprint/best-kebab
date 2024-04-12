@@ -1,4 +1,5 @@
 import { useGetSalesReportQuery } from "../../store/api/apiSlice"
+import Spinner from "../common/spinner/Spinner"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts"
 
 const MonthSalesGraph = () => {
@@ -27,7 +28,9 @@ const MonthSalesGraph = () => {
                             <Line type="monotone" dataKey="shipping" stroke="#efefef" activeDot={{ r: 8 }} />
                         </LineChart>
                     </ResponsiveContainer> :
-                    <p>loading...</p>
+                    <div className="w-full h-full grid place-items-center">
+                        <Spinner color={"text-zinc-300"} />
+                    </div>
             }
         </div>
     )

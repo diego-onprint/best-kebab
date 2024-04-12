@@ -58,7 +58,7 @@ export const tablesSlice = createSlice({
             const tableIndex = state.tables.findIndex((table: Table) => state.activeTable === table.id)
             const table = state.tables[tableIndex]
             table.cart.products = []
-            table.cart.total = getTotal(table.cart.products)
+            table.cart.total = "0"
             updateTablesLocalStorage(state)
         },
         updateTablesInitialState: (state, action) => {

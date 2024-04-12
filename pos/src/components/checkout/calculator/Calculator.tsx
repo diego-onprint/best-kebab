@@ -46,13 +46,17 @@ const Calculator = ({ total }: PropsTypes) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-6 gap-2">
-                <div className={`${!amount && "opacity-50"} relative col-span-3 flex justify-between border border-zinc-200 rounded-md p-6`}>
+            <div className="grid grid-cols-12 gap-2">
+                <div className="flex col-span-4 justify-between bg-zinc-100 rounded-md p-6">
+                    <div className="text-xl font-semibold">Total</div>
+                    <div className="text-xl font-semibold">{total}</div>
+                </div>
+                <div className={`${!amount && "opacity-50"} relative col-span-4 flex justify-between border border-zinc-200 rounded-md p-6`}>
                     <div className="text-md font-semibold">Bill</div>
                     <div className="text-md font-semibold">{amount}</div>
                     {diffError ? <span className="absolute bottom-0 text-red-500">{diffError}</span> : null}
                 </div>
-                <div className={`${!change && "opacity-50"} col-span-3 flex justify-between border border-zinc-200 rounded-md p-6`}>
+                <div className={`${!change && "opacity-50"} col-span-4 flex justify-between border border-zinc-200 rounded-md p-6`}>
                     <div className="text-md font-semibold">Change</div>
                     <div className="text-md font-semibold">{change}</div>
                 </div>

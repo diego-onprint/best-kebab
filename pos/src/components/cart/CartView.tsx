@@ -1,5 +1,5 @@
 import Checkout from "../checkout/Checkout"
-import Spinner from "../spinner/Spinner"
+import Spinner from "../common/spinner/Spinner"
 import type { CartProduct, CartProductId, CartTotal, Table } from "../../types"
 import { Dispatch, SetStateAction } from "react"
 import { formatPrice } from "../../utils/formatPrice"
