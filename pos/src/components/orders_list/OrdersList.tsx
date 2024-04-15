@@ -24,6 +24,8 @@ const OrdersList = ({ page, setHasNextPage, setLoading }) => {
         setLoading(false)
     }
 
+    console.log(data)
+
     return (
         <div>
             {

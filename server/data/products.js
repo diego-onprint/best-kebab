@@ -29,7 +29,7 @@ module.exports = [
         id: "bodenstandiger-rosti",
         name: "Bodenständiger (zum selber belegen) Rösti",
         description: "Brot mit Sesam, Rösti- Patties, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
-        price: 27.9,
+        price: 18.9,
         variations: burgerVariations,
         parent: "rosti"
     },
@@ -115,25 +115,33 @@ module.exports = [
     },
     {
         id: "chili-cheese-habanero-veggie",
-        name: "Chili-Cheese Habanero Veggie",
-        description: "Hamburgerbrot mit Sesam, Veggie-Pattie aus Couscous und Gemüse, Salat, Guacamole, Cheddar-Käse, Chili-Cheese Habanerossauce, Jalapeños",
-        price: 29.4,
-        variations: burgerVariations,
-        parent: "veggie"
-    },
-    {
-        id: "krautergarten-veggie",
-        name: "Kräutergarten Veggie",
-        description: "Brot mit Sesam, Veggie-Pattie aus Couscous und Gemüse,  Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Honig-Senfsauce",
-        price: 31.4,
+        name: "Chili-Cheese Habanero Rösti Veggie",
+        description: "Hamburgerbrot mit Sesam, Rösti- Patties, Salat, Guacamole, Cheddar-Käse, Chili-Cheese Habanerossauce, Jalapeños",
+        price: 25.9,
         variations: burgerVariations,
         parent: "veggie"
     },
     {
         id: "handwerker-veggie",
-        name: "Handwerker Veggie",
-        description: "Hamburgerbrot mit Sesam, Veggie-Pattie aus Couscous und Gemüse, Zwiebelwürfel, 2x Cheddar-Käse, Salat und Cocktailsauce",
-        price: 27.4,
+        name: "Handwerker Rösti Veggie",
+        description: "Hamburgerbrot mit Sesam, Rösti- Patties, Zwiebelwürfel, 2x Cheddar-Käse, Salat und Cocktailsauce",
+        price: 23.9,
+        variations: burgerVariations,
+        parent: "veggie"
+    },
+    {
+        id: "krautergarten-veggie",
+        name: "Kräutergarten Rösti Veggie",
+        description: "Brot mit Sesam, Rösti- Patties, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
+        price: 27.9,
+        variations: burgerVariations,
+        parent: "veggie"
+    },
+    {
+        id: "bodenstandiger-veggie",
+        name: "Bodenständiger (zum selber belegen) Rösti Veggie",
+        description: "Brot mit Sesam, Rösti- Patties, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
+        price: 18.9,
         variations: burgerVariations,
         parent: "veggie"
     },
@@ -146,10 +154,18 @@ module.exports = [
         parent: "xl"
     },
     {
+        id: "crispy-chicken-xl",
+        name: "Crispy Chicken XL",
+        description: "Hamburgerbrot mit Sesam, Hähnchenbrust im knusprigem Cornflakesmantel, Salat, Zwiebelringe, Tomate und Curry-Mayo",
+        price: 33.4,
+        variations: burgerVariations,
+        parent: "xl"
+    },
+    {
         id: "handwerker-xl",
         name: "Handwerker XL",
         description: "Hamburgerbrot mit Sesam, Schweizer Rindfleisch (140 g), Zwiebelwürfel, 2x Cheddar-Käse, Salat und Cocktailsauce",
-        price: 23.9,
+        price: 31.4,
         variations: burgerVariations,
         parent: "xl"
     },
@@ -157,7 +173,15 @@ module.exports = [
         id: "heimat-xl",
         name: "Heimat XL",
         description: "Hamburgerbrot mit Sesam, Schweizer Rindfleisch (140 g), Rösti, Speck, Salat, Spiegelei, karamellisierte Zwiebeln, Knoblauchsauce",
-        price: 31.9,
+        price: 39.4,
+        variations: burgerVariations,
+        parent: "xl"
+    },
+    {
+        id: "hot-crispy-chicken-xl",
+        name: "Hot Crispy Chicken XL",
+        description: "Hot Crispy Chicken",
+        price: 35.4,
         variations: burgerVariations,
         parent: "xl"
     },
@@ -165,15 +189,15 @@ module.exports = [
         id: "krautergarten-xl",
         name: "Kräutergarten XL",
         description: "Brot mit Sesam, Fleisch, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
-        price: 27.9,
+        price: 35.4,
         variations: burgerVariations,
         parent: "xl"
     },
     {
         id: "neftenbacher-saisonal-xl",
-        name: "Neftenbacher (saisonal) XL",
+        name: "Neftenbacher (saisona XLl)",
         description: "Hamburgerbrot mit Sesam, Schweizer Rindfleisch (140 g), Speck, Röstzwiebeln, Essiggurke, Salat, Barbecuesauce",
-        price: 26.9,
+        price: 34.4,
         variations: burgerVariations,
         parent: "xl"
     },
@@ -181,9 +205,153 @@ module.exports = [
         id: "specktraum-xl",
         name: "Specktraum XL",
         description: "Brot mit Sesam, Fleisch, karamellisierte Zwiebeln, Rucola, Speckstreifen und Specksauce",
-        price: 25.9,
+        price: 33.4,
         variations: burgerVariations,
         parent: "xl"
+    },
+    {
+        id: "classic-menu-xl",
+        name: "Classic Menu XL",
+        description: "Bodenständiger und kleine Portion Supper Dipperfrites",
+        price: 27.5,
+        variations: burgerVariations,
+        parent: "xl"
+    },
+    {
+        id: "handwerker-menu-xl",
+        name: "Handwerker Menu XL",
+        description: "Handwerker und kleine Portion Supper Dipperfrites",
+        price: 52.5,
+        variations: burgerVariations,
+        parent: "xl"
+    },
+    {
+        id: "classic-menu",
+        name: "Classic Menu",
+        description: "Bodenständiger und kleine Supper Dipperfrites",
+        price: 20,
+        variations: burgerVariations,
+        parent: "burger-menu"
+    },
+    {
+        id: "handwerker-menu",
+        name: "Handwerker Menu",
+        description: "Handwerker und kleine Supper Dipperfrites",
+        price: 25,
+        variations: burgerVariations,
+        parent: "burger-menu"
+    },
+    {
+        id: "truffelol",
+        name: "Truffelöl",
+        description: "",
+        price: 2,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "supper-dipperfrites",
+        name: "Supper Dipperfrites",
+        description: "",
+        price: 8.9,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "kleine-supper-dipperfrites",
+        name: "Kleine Supper Dipperfrites",
+        description: "",
+        price: 5.5,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "susskartoffelpommes",
+        name: "Süsskartoffelpommes",
+        description: "",
+        price: 9.9,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "kleine-portion-susskartoffelpommes",
+        name: "Kleine Portion Süsskartoffelpommes",
+        description: "",
+        price: 6.5,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "gemischter-gruner-salat",
+        name: "gemischter Grüner Salat",
+        description: "",
+        price: 8.5,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "rostipommes",
+        name: "Röstipommes",
+        description: "",
+        price: 10.9,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "kleine-portion-rostipommes",
+        name: "Kleine Portion Röstipommes",
+        description: "",
+        price: 7.5,
+        variations: [],
+        parent: "beilagen"
+    },
+    {
+        id: "honig-senf",
+        name: "Honig-Senf",
+        description: "",
+        price: 3.5,
+        variations: [],
+        parent: "saucen"
+    },
+    {
+        id: "knoblauch",
+        name: "Knoblauch",
+        description: "",
+        price: 3.5,
+        variations: [],
+        parent: "saucen"
+    },
+    {
+        id: "leicht-scharfe-barbecue",
+        name: "leicht scharfe Barbecue",
+        description: "",
+        price: 3.5,
+        variations: [],
+        parent: "saucen"
+    },
+    {
+        id: "Cocktail",
+        name: "Cocktail",
+        description: "",
+        price: 3.5,
+        variations: [],
+        parent: "saucen"
+    },
+    {
+        id: "guacamole",
+        name: "Guacamole",
+        description: "",
+        price: 3.5,
+        variations: [],
+        parent: "saucen"
+    },
+    {
+        id: "dessert",
+        name: "Dessert",
+        description: "",
+        variations: [],
+        price: 0,
+        parent: "dessert"
     },
     {
         id: "quesadillas-veggie",
@@ -476,6 +644,38 @@ module.exports = [
         parent: "kinder"
     },
     {
+        id: "mineralwasser-3dl",
+        name: "MINERALWASSER 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "mineralwasser-5dl",
+        name: "MINERALWASSER 5DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "kohlensaure-3dl",
+        name: "Kohlensäure 3DL",
+        description: "",
+        price: 3.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
+        id: "kohlensaure-5dl",
+        name: "Kohlensäure 5DL",
+        description: "",
+        price: 4.9,
+        variations: [],
+        parent: "durstloscher"
+    },
+    {
         id: "coca-cola-3dl",
         name: "COCA-COLA 3DL",
         description: "",
@@ -520,14 +720,6 @@ module.exports = [
         name: "EISTEE PEACHE 5DL",
         description: "",
         price: 4.9,
-        variations: [],
-        parent: "durstloscher"
-    },
-    {
-        id: "",
-        name: "",
-        description: "",
-        price: 16.9,
         variations: [],
         parent: "durstloscher"
     },
@@ -652,22 +844,6 @@ module.exports = [
         parent: "durstloscher"
     },
     {
-        id: "mineralwasser-3dl",
-        name: "MINERALWASSER 3DL",
-        description: "",
-        price: 3.9,
-        variations: [],
-        parent: "durstloscher"
-    },
-    {
-        id: "mineralwasser-5dl",
-        name: "MINERALWASSER 5DL",
-        description: "",
-        price: 3.9,
-        variations: [],
-        parent: "durstloscher"
-    },
-    {
         id: "hugo-2.5dl",
         name: "HUGO 2.5DL",
         description: "",
@@ -692,8 +868,16 @@ module.exports = [
         parent: "spritziges-alkoholisch"
     },
     {
-        id: "weisswein-spritz-2.5dl",
-        name: "Weisswein spritz 2.5DL",
+        id: "weisswein-spritz-suss-2.5dl",
+        name: "Weisswein spritz Süss 2.5DL",
+        description: "",
+        price: 8.5,
+        variations: [],
+        parent: "spritziges-alkoholisch"
+    },
+    {
+        id: "weisswein-spritz-sauer-2.5dl",
+        name: "Weisswein spritz Sauer 2.5DL",
         description: "",
         price: 8.5,
         variations: [],
@@ -876,16 +1060,16 @@ module.exports = [
         parent: "bier"
     },
     {
-        id: "appenzeller-33cl",
-        name: "APPENZELLER 33CL",
+        id: "appenzeller-alkoholfrei-33cl",
+        name: "APPENZELLER ALKOHOLFREI 33CL",
         description: "",
         price: 4.5,
         variations: [],
         parent: "bier"
     },
     {
-        id: "erdinger-alkoholfrei-dunkel-5dl",
-        name: "ERDINGER ALKOHOLFREI (DUNKEL) 5DL",
+        id: "erdinger-dunkel-5dl",
+        name: "ERDINGER (DUNKEL) 5DL",
         description: "Dunkel",
         price: 6.9,
         variations: [],
@@ -914,5 +1098,52 @@ module.exports = [
         price: 6.9,
         variations: [],
         parent: "bier"
+    },
+    {
+        id: "mohl-alkoholfrei-5dl",
+        name: "MÖHL Alkoholfrei 5DL",
+        description: "Apfelwein trüb mit oder ohne bier",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "panache-sweet-3dl",
+        name: "Panache Sweet 3DL",
+        description: "",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "panache-sour-3dl",
+        name: "Panache Sour 3DL",
+        description: "",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "panache-sweet-5dl",
+        name: "Panache Sweet 5DL",
+        description: "",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "panache-sour-5dl",
+        name: "Panache Sour 5DL",
+        description: "",
+        price: 6.9,
+        variations: [],
+        parent: "bier"
+    },
+    {
+        id: "kaffe-product",
+        name: "Kaffe",
+        description: "",
+        price: 0,
+        parent: "kaffe"
     },
 ]

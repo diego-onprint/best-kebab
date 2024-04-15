@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addProduct } from "../../../store/cart/cartSlice"
 import { addTableProduct } from "../../../store/tables/tablesSlice"
 import { AppDispatch, RootState } from "../../../store/store"
-import type { Product, ProductVariation, Table } from "../../../types"
+import type { Product, Table } from "../../../types"
 import Counter from "../counter/Counter"
 import { createTimestamp } from "../../../utils/createTimestamp"
 import VariationsMenu from "../options/VariationsMenu"
@@ -57,7 +57,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                 <div className="flex flex-col gap-4">
                     <div>
                         {
-                            product.variations.length > 0 ?
+                            product.variations?.length > 0 ?
                                 <VariationsMenu
                                     variations={product.variations}
                                     selectedVariations={selectedVarations}
