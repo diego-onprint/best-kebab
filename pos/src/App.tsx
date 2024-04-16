@@ -1,20 +1,20 @@
-import { useEffect } from "react"
+import { useEffect, lazy, Suspense } from "react"
 import { Route, Routes } from "react-router-dom"
-import Dashboard from "./pages/dashboard/Dashboard"
-import Categories from "./pages/categories/Categories"
-import Products from "./pages/products/Products"
 import Layout from "./components/layout/Layout"
-// import Reports from "./pages/reports/Reports"
-import Orders from "./pages/orders/Orders"
-import Tables from "./pages/tables/Tables"
-import { getLocalStorageItem } from "./utils/localStorage"
+import { getLocalStorageItem } from "./utils/local_storage/localStorage"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store/store"
 import { updateCartInitialState } from "./store/cart/cartSlice"
 import { updateTablesInitialState } from "./store/tables/tablesSlice"
-import Subcategories from "./pages/subcategories/Subcategories"
+import PageLoader from "./components/common/page_loader/PageLoader"
 
-// TODO dynamic imports!
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
+const Categories = lazy(() => import("./pages/categories/Categories"))
+const Subcategories = lazy(() => import("./pages/subcategories/Subcategories"))
+const Products = lazy(() => import("./pages/products/Products"))
+const Orders = lazy(() => import("./pages/orders/Orders"))
+const Tables = lazy(() => import("./pages/tables/Tables"))
+// const Reports = lazy(() => import("./pages/reports/Reports"))
 
 function App() {
 
@@ -33,19 +33,69 @@ function App() {
       dispatch(updateTablesInitialState(tablesLocalStorage))
     }
 
-  }, [])
+  }, [dispatch])
 
   return (
     <Layout>
       <main className="@container/main flex-1 py-6 px-4 bg-indigo-50/50 overflow-y-auto">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/subcategories/:id" element={<Subcategories />} />
-          <Route path="/products/:id" element={<Products />} />
-          <Route path="/tables" element={<Tables />} />
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Dashboard />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/categories"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Categories />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/subcategories/:id"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Subcategories />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/products/:id"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Products />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/tables"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Tables />
+              </Suspense>
+            }
+          />
           {/* <Route path="/reports" element={<Reports />} /> */}
-          <Route path="/orders" element={<Orders />} />
+          <Route
+            path="/orders"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Orders />
+              </Suspense>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <p>404 page not found</p>
+              </Suspense>
+            }
+          />
         </Routes>
       </main>
     </Layout>

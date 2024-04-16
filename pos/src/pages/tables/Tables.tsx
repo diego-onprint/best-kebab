@@ -1,4 +1,4 @@
-import TablesList from "../../components/tables_list/TablesList"
+import TablesList from "../../components/tables/tables_list/TablesList"
 
 const Tables = () => {
     return (

@@ -1,6 +1,6 @@
-import { useGetOrdersQuery } from "../../store/api/apiSlice"
+import { useGetOrdersQuery } from "../../../store/api/apiSlice"
 import Order from "../order/Order"
-import Spinner from "../common/spinner/Spinner"
+import Spinner from "../../common/spinner/Spinner"
 
 const OrdersList = ({ page, setHasNextPage, setLoading }) => {
 

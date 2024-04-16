@@ -1,8 +1,8 @@
 import { useState } from "react"
-import ErrorBoundary from "../../components/error_boundary/ErrorBoundary"
-import ErrorFallback from "../../components/error_fallback/ErrorFallback"
-import OrdersList from "../../components/orders_list/OrdersList"
-import Pagination from "../../components/pagination/Pagination"
+import ErrorBoundary from "../../components/common/error_boundary/ErrorBoundary"
+import ErrorFallback from "../../components/common/error_fallback/ErrorFallback"
+import OrdersList from "../../components/orders/orders_list/OrdersList"
+import Pagination from "../../components/common/pagination/Pagination"
 
 const Orders = () => {
 

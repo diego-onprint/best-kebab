@@ -1,9 +1,6 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react"
-import { useGetProductsVariationsQuery } from "../../../store/api/apiSlice"
-import { Product, ProductVariation } from "../../../types"
-import { formatVariations } from "../../../utils/formatVariations"
-import Option from "./option/Option"
-import { createTimestamp } from "../../../utils/createTimestamp"
+import { Dispatch, SetStateAction } from "react"
+import { Product, ProductVariation } from "../../../../types"
+import { createTimestamp } from "../../../../utils/create/createTimestamp"
 import VariationButton from "./variation_button/VariationButton"
 
 type PropsTypes = {

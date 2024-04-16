@@ -1,8 +1,9 @@
-import Checkout from "../checkout/Checkout"
+import { Dispatch, SetStateAction, Suspense, lazy } from "react"
 import Spinner from "../common/spinner/Spinner"
 import type { CartProduct, CartProductId, CartTotal, Table } from "../../types"
-import { Dispatch, SetStateAction } from "react"
-import { formatPrice } from "../../utils/formatPrice"
+import { formatPrice } from "../../utils/format/formatPrice"
+
+const Checkout = lazy(() => import("../checkout/Checkout"))
 
 type PropsTypes = {
     products: CartProduct[]
@@ -115,7 +116,12 @@ const CartView = ({
                     </div>
                 </div>
             </div>
-            {openCheckout ? <Checkout setOpenCheckout={setOpenCheckout} /> : null}
+            {
+                openCheckout ?
+                    <Suspense>
+                        <Checkout setOpenCheckout={setOpenCheckout} />
+                    </Suspense> : null
+            }
         </>
     )
 }

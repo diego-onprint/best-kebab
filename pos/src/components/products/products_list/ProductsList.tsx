@@ -1,4 +1,4 @@
-import { useGetProductsByCategoryQuery } from "../../store/api/apiSlice"
+import { useGetProductsByCategoryQuery } from "../../../store/api/apiSlice"
 import ProductCard from "../product_card/ProductCard"
 
 const ProductsList = ({ id }: { id: string | undefined }) => {

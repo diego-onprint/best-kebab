@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { setLocalStorageItem } from "../../utils/localStorage"
+import { setLocalStorageItem } from "../../utils/local_storage/localStorage"
 import { TablesEmptyState } from "../../models/tables.model"
 import type { Tables, Table, CartProduct } from "../../types"
 

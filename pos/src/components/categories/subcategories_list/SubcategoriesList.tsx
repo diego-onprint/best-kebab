@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useGetSubCategoriesQuery } from '../../store/api/apiSlice'
+import { useGetSubCategoriesQuery } from "../../../store/api/apiSlice"
 
 const SubcategoriesList = ({ id }: { id: string | undefined }) => {
 

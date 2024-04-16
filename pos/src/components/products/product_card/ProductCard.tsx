@@ -1,7 +1,7 @@
 import { useState } from "react"
-import type { Product } from "../../types"
 import Selector from "./selector/Selector"
-import { formatPrice } from "../../utils/formatPrice"
+import { formatPrice } from "../../../utils/format/formatPrice"
+import type { Product } from "../../../types"
 
 type PropsTypes = {
   product: Product

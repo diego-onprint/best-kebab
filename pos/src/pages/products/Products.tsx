@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
-import ErrorBoundary from "../../components/error_boundary/ErrorBoundary"
-import ProductsList from "../../components/products_list/ProductsList"
-import ErrorFallback from "../../components/error_fallback/ErrorFallback"
+import ErrorFallback from "../../components/common/error_fallback/ErrorFallback"
+import ErrorBoundary from "../../components/common/error_boundary/ErrorBoundary"
+import ProductsList from "../../components/products/products_list/ProductsList"
 import ReturnButton from "../../components/common/return_button/ReturnButton"
 
 const Products = () => {

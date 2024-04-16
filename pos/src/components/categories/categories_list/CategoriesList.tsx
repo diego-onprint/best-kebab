@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
-import { useGetCategoriesQuery } from '../../store/api/apiSlice'
-import type { Category } from '../../types'
+import { useGetCategoriesQuery } from "../../../store/api/apiSlice"
+import type { Category } from "../../../types"
 
 const CategoriesList = () => {
 

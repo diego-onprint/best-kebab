@@ -14,11 +14,11 @@ const cs = process.env.WOO_SECRET_KEY
 const auth = btoa(`${ck}:${cs}`)
 
 app.use(cors())
-app.use(express.json());
+app.use(express.json())
+app.use(express.static('dist'))
 
 //FOR PROD
 // const io = new Server(httpServer)
-// app.use(express.static('dist'))
 
 //FOR DEV
 const io = new Server(httpServer, {

@@ -22,20 +22,28 @@ type ProductImage = {
 }
 
 //CART
-export type CartProduct = Product & { 
-    uid: string
-    qty: number 
-    variation: ProductVariation
-    notes: string
-}
-
 export type Cart = {
     products: CartProduct[]
     total: string
 }
 
+export type CartProduct = Product & { 
+    uid: string
+    qty: number 
+    variation: CartProductVariation
+    notes: string
+}
+
 export type CartProductId = CartProduct["id"]
 export type CartTotal = Cart["total"]
+
+export type CartProductVariation = {
+    id: string
+    name: string
+    parent: string
+    price: number
+    timestamp: string
+}
 
 
 // API STORE

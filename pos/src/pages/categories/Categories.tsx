@@ -1,6 +1,6 @@
-import CategoriesList from "../../components/categories_list/CategoriesList"
-import ErrorBoundary from "../../components/error_boundary/ErrorBoundary"
-import ErrorFallback from "../../components/error_fallback/ErrorFallback"
+import ErrorBoundary from "../../components/common/error_boundary/ErrorBoundary"
+import ErrorFallback from "../../components/common/error_fallback/ErrorFallback"
+import CategoriesList from "../../components/categories/categories_list/CategoriesList"
 
 const Categories = () => {
 

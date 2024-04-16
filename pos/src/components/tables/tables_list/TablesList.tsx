@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../store/store'
-import { setActiveTable } from '../../store/tables/tablesSlice'
-import type { Table } from '../../types'
+import { AppDispatch, RootState } from '../../../store/store'
+import { setActiveTable } from '../../../store/tables/tablesSlice'
+import type { Table } from '../../../types'
 
 const TablesList = () => {
 
@@ -12,9 +12,7 @@ const TablesList = () => {
     const handleTable = (id: Table["id"]) => {
         dispatch(setActiveTable(id))
     }
-
-    // console.log("TABLES....", tables)
-
+    
     return (
         <div className="grid grid-cols-12 gap-2 py-2">
             {

@@ -1,7 +1,7 @@
 import MonthSalesGraph from "../../components/dashboard/MonthSalesGraph"
 import SummaryBanner from "../../components/dashboard/SummaryBanner"
-import ErrorBoundary from "../../components/error_boundary/ErrorBoundary"
-import ErrorFallback from "../../components/error_fallback/ErrorFallback"
+import ErrorBoundary from "../../components/common/error_boundary/ErrorBoundary"
+import ErrorFallback from "../../components/common/error_fallback/ErrorFallback"
 
 const Dashboard = () => {
   return (

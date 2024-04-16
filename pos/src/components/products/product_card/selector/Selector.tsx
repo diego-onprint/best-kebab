@@ -1,12 +1,12 @@
 import { useState, Dispatch, SetStateAction, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addProduct } from "../../../store/cart/cartSlice"
-import { addTableProduct } from "../../../store/tables/tablesSlice"
-import { AppDispatch, RootState } from "../../../store/store"
-import type { Product, Table } from "../../../types"
 import Counter from "../counter/Counter"
-import { createTimestamp } from "../../../utils/createTimestamp"
 import VariationsMenu from "../options/VariationsMenu"
+import { createTimestamp } from "../../../../utils/create/createTimestamp"
+import { addProduct } from "../../../../store/cart/cartSlice"
+import { addTableProduct } from "../../../../store/tables/tablesSlice"
+import { AppDispatch, RootState } from "../../../../store/store"
+import type { Product, Table } from "../../../../types"
 
 type PropsTypes = {
     product: Product

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { removeProduct, clearCart } from "../../store/cart/cartSlice"
-import type { RootState } from "../../store/store"
-import type { AppDispatch } from "../../store/store"
-import type { CartProduct, CartProductId, CartTotal, Table } from "../../types"
 import CartView from './CartView'
 import { clearTableCart, removeTableProduct, setActiveTable } from "../../store/tables/tablesSlice"
-import ErrorBoundary from "../error_boundary/ErrorBoundary"
-import ErrorFallback from "../error_fallback/ErrorFallback"
+import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
+import ErrorFallback from "../common/error_fallback/ErrorFallback"
+import type { RootState } from "../../store/store"
+import type { AppDispatch } from "../../store/store"
+import type { CartProduct, CartTotal, Table } from "../../types"
 
 const CartController = () => {
 
