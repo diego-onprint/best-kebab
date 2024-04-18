@@ -1,14 +1,15 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { clearCart } from "../../store/cart/cartSlice"
 import { clearTableCart } from "../../store/tables/tablesSlice"
 import { RootState, AppDispatch } from "../../store/store"
 import { formatCart } from "../../utils/format/formatCart"
 import { printTicket } from "../../utils/print/printTicket"
-import { setOrderType, setPaymentMethod } from "../../store/ticket/ticketSlice"
 import { useTicketContext } from "../../context/TicketContext"
+import { setOrderType, setPaymentMethod } from "../../store/ticket/ticketSlice"
 import View from "./View"
-import type { Cart, OrderTypes, PaymentOptions, Table, TicketDataType } from "../../types"
+import type { Cart, Table, TicketDataType } from "../../types"
+import { CustomerData } from "../../models/customer_data"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -22,7 +23,7 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
     const cart = useSelector<RootState, Cart>(state => state.cart)
     const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
-    const ticketDomRef = useTicketContext()
+    const { ticketDomRef, customerData, setCustomerData } = useTicketContext()
     const currentTable = useSelector<RootState, Table>(state => {
         const tables = state.tables.tables
         const table = tables.find(table => table.id === activeTable)
@@ -33,11 +34,25 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
 
-    const handlePaymentMethod = (method: PaymentOptions) => {
+    const handleForm = (e) => {
+        const { name, value } = e.target
+        setCustomerData({
+            ...customerData,
+            [name]: value
+        })
+    }
+
+    const handleCancel = () => {
+        setOpenCheckout(false)
+        setCustomerData(CustomerData)
+        dispatch(setOrderType({name: "Lieferung", value: "delivery"}))
+    }
+
+    const handlePaymentMethod = (method: TicketDataType["paymentMethod"]) => {
         dispatch(setPaymentMethod(method))
     }
 
-    const handleOrderType = (type: OrderTypes) => {
+    const handleOrderType = (type: TicketDataType["orderType"]) => {
         dispatch(setOrderType(type))
     }
 
@@ -89,6 +104,13 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
         }
     }
 
+    // If it is a table set customer data automatically
+    useEffect(() => {
+        if (currentTable) {
+            dispatch(setOrderType({ name: "Tisch", value: "tisch" }))
+        }
+    }, [currentTable, dispatch])
+
     return (
         <View
             loading={loading}
@@ -98,7 +120,8 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
             orderType={ticket.orderType}
             handlePaymentMethod={handlePaymentMethod}
             handleOrderType={handleOrderType}
-            setOpenCheckout={setOpenCheckout}
+            handleForm={handleForm}
+            handleCancel={handleCancel}
             handleCheckout={handleCheckout}
         />
     )

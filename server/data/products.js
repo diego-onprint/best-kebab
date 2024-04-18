@@ -1,4 +1,5 @@
 const burgerVariations = require("./variations/burger-variations")
+const beilagenVariations = require("./variations/beilagen-variations")
 
 module.exports = [
     {
@@ -149,7 +150,7 @@ module.exports = [
         id: "chili-cheese-habanero-xl",
         name: "Chili-Cheese Habanero XL",
         description: "Hamburgerbrot mit Sesam, Schweizer Rindfleisch (140 g), Salat, Guacamole, Cheddar-Käse, Chili-Cheese Habanerossauce, Jalapeños",
-        price: 25.9,
+        price: 33.4,
         variations: burgerVariations,
         parent: "xl"
     },
@@ -242,19 +243,11 @@ module.exports = [
         parent: "burger-menu"
     },
     {
-        id: "truffelol",
-        name: "Truffelöl",
-        description: "",
-        price: 2,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
         id: "supper-dipperfrites",
         name: "Supper Dipperfrites",
         description: "",
         price: 8.9,
-        variations: [],
+        variations: beilagenVariations,
         parent: "beilagen"
     },
     {
@@ -262,7 +255,7 @@ module.exports = [
         name: "Kleine Supper Dipperfrites",
         description: "",
         price: 5.5,
-        variations: [],
+        variations: beilagenVariations,
         parent: "beilagen"
     },
     {
@@ -270,7 +263,7 @@ module.exports = [
         name: "Süsskartoffelpommes",
         description: "",
         price: 9.9,
-        variations: [],
+        variations: beilagenVariations,
         parent: "beilagen"
     },
     {
@@ -278,7 +271,7 @@ module.exports = [
         name: "Kleine Portion Süsskartoffelpommes",
         description: "",
         price: 6.5,
-        variations: [],
+        variations: beilagenVariations,
         parent: "beilagen"
     },
     {
@@ -286,7 +279,7 @@ module.exports = [
         name: "gemischter Grüner Salat",
         description: "",
         price: 8.5,
-        variations: [],
+        variations: beilagenVariations,
         parent: "beilagen"
     },
     {
@@ -294,7 +287,7 @@ module.exports = [
         name: "Röstipommes",
         description: "",
         price: 10.9,
-        variations: [],
+        variations: beilagenVariations,
         parent: "beilagen"
     },
     {
@@ -302,7 +295,7 @@ module.exports = [
         name: "Kleine Portion Röstipommes",
         description: "",
         price: 7.5,
-        variations: [],
+        variations: beilagenVariations,
         parent: "beilagen"
     },
     {
@@ -344,14 +337,6 @@ module.exports = [
         price: 3.5,
         variations: [],
         parent: "saucen"
-    },
-    {
-        id: "dessert",
-        name: "Dessert",
-        description: "",
-        variations: [],
-        price: 0,
-        parent: "dessert"
     },
     {
         id: "quesadillas-veggie",
@@ -412,7 +397,7 @@ module.exports = [
         name: "Crispy Chicken (CH) mit Currysauce",
         description: "Hamburgerbrot mit Sesam, Hähnchenbrust im knusprigem Cornflakesmantel, Salat, Zwiebelringe und Tomate",
         price: 26.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "hahnchen"
     },
     {
@@ -420,7 +405,7 @@ module.exports = [
         name: "Crispy Chicken (CH) mit scharfer Devil-Sauce",
         description: "Hamburgerbrot mit Sesam, Hähnchenbrust im knusprigem Cornflakesmantel, Salat, Zwiebelringe und Tomate",
         price: 27.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "hahnchen"
     },
     {
@@ -600,7 +585,7 @@ module.exports = [
         name: "Fischburger",
         description: "Hamburgerbrot, Seelachs paniert, Zwiebel, Tomate und Salat hausgemachte Tartarsauce",
         price: 24.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "fisch"
     },
     {
@@ -608,7 +593,7 @@ module.exports = [
         name: "Fischersfritz",
         description: "Kibberlinge paniert, glasierte Kartoffeln und Karotten, Salat hausgemachte Tartar-Sauce",
         price: 26.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "fisch"
     },
     {
@@ -902,14 +887,6 @@ module.exports = [
     {
         id: "espresso-martini-2.5dl",
         name: "Espresso Martini 2.5DL",
-        description: "",
-        price: 13.9,
-        variations: [],
-        parent: "spritziges-alkoholisch"
-    },
-    {
-        id: "whysky-sauer-2.5dl",
-        name: "whysky Sauer 2.5DL",
         description: "",
         price: 13.9,
         variations: [],

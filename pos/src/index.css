@@ -25,6 +25,10 @@
     @apply py-4 px-2 rounded-lg transition-colors flex justify-center;
   }
 
+  .input-field {
+    @apply p-2 border border-zinc-200 rounded-md w-full;
+  }
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -72,7 +76,7 @@
 }
 
 .logo {
-  width: 310px;
+  width: 250px;
   height: 130px;
   object-fit: contain;
 }

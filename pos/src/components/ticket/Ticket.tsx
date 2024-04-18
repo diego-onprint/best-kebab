@@ -15,7 +15,7 @@ import { useTicketContext } from "../../context/TicketContext"
 
 const Ticket = () => {
 
-    const ticketDomRef = useTicketContext()
+    const { ticketDomRef, customerData } = useTicketContext()
     const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
     const cart = useSelector<RootState, Cart>(state => state.cart)
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
@@ -26,7 +26,7 @@ const Ticket = () => {
     })
     const currentClient = currentTable ? currentTable.name : "Takeaway"
     const checkoutCart = currentTable ? currentTable.cart : cart
-    const tax = ticket.orderType === "tisch" ? {
+    const tax = ticket.orderType.value === "tisch" ? {
         rate: 8.1,
         total: calculatePercentage(checkoutCart.total, 8.1).toFixed(2)
     } : {
@@ -55,18 +55,24 @@ const Ticket = () => {
                     <p className="text-xl text-center mb-sm">www.lovely-burger.ch</p>
                     <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
                 </div>
-                <div className="mb-4">
-                    <p className="">
+                <div className="mb-2">
+                    <p>
                         <span className="text-xl font-bold">Bestelldatum: </span>
                         <span className="text-xl">{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
                     </p>
-                    <p className="text-xl font-bold py-2 capitalize">{currentClient}</p>
+                    <p className="text-2xl font-bold py-2 capitalize">{ticket.orderType.name}</p>
+                    <p className="text-xl font-bold">Kundendaten:</p>
+                    {customerData.name.length > 0 ? <p>{customerData.name} {customerData.surname}</p> : null}
+                    {customerData.address.length > 0 ? <p>{customerData.address}, {customerData.city}, {customerData.postcode}</p> : null}
+                    {customerData.email.length > 0 ? <p>{customerData.email}</p> : null}
+                    {customerData.phone.length > 0 ? <p>{customerData.phone}</p> : null}
+                    {currentTable ? <p>{currentTable.name}</p> : null}
                 </div>
                 <table className="ticket-table">
                     <thead className="ticket-head">
                         <tr>
                             <th className="ticket-th th qty text-xl align-left">Q</th>
-                            <th className="ticket-th th art text-xl align-left">Artikel</th>
+                            <th className="ticket-th th art text-xl align-left">Produkt</th>
                             <th className="ticket-th text-xl align-left">CHF</th>
                         </tr>
                     </thead>
@@ -102,13 +108,20 @@ const Ticket = () => {
                         }
                     </tbody>
                 </table>
-                <div className="flex flex-col gap-1 mt-4">
-                    <div className="flex justify-between">
+                {
+                    customerData.notes.length > 0 ?
+                    <p className="text-xl mt-2">
+                        <span className="font-semibold">Bemerkung: </span>
+                        <span>{customerData.notes}</span>
+                    </p> : null
+                }
+                <div className="flex flex-col gap-1 mt-2">
+                    {/* <div className="flex justify-between">
                         <p className="text-xl">Rabatt</p>
                         <p className="text-xl">CHF0</p>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between">
-                        <p className="text-xl">Versandgebühr</p>
+                        <p className="text-xl">Versand</p>
                         <p className="text-xl">CHF0</p>
                     </div>
                     <div className="flex justify-between">
@@ -118,7 +131,7 @@ const Ticket = () => {
                     <p className="text-sm">MwSt. CHF. {tax.total} -{'>'} {tax.rate}% MwsT. inkl</p>
                     <p className="text-2xl">
                         <span className="text-xl font-bold">Zahlung: </span>
-                        <span className="capitalize">{ticket.paymentMethod}</span>
+                        <span className="capitalize">{ticket.paymentMethod.name}</span>
                     </p>
                 </div>
             </div >

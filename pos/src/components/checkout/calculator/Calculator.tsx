@@ -45,18 +45,18 @@ const Calculator = ({ total }: PropsTypes) => {
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
             <div className="grid grid-cols-12 gap-2">
-                <div className="flex col-span-4 justify-between bg-zinc-100 rounded-md p-6">
+                <div className="flex col-span-12 justify-between bg-zinc-100 rounded-md p-5">
                     <div className="text-xl font-semibold">Total</div>
                     <div className="text-xl font-semibold">{total}</div>
                 </div>
-                <div className={`${!amount && "opacity-50"} relative col-span-4 flex justify-between border border-zinc-200 rounded-md p-6`}>
+                <div className={`${!amount && "opacity-50"} relative col-span-6 flex justify-between border border-zinc-200 rounded-md p-5`}>
                     <div className="text-md font-semibold">Bill</div>
                     <div className="text-md font-semibold">{amount}</div>
                     {diffError ? <span className="absolute bottom-0 text-red-500 text-sm">{diffError}</span> : null}
                 </div>
-                <div className={`${!change && "opacity-50"} col-span-4 flex justify-between border border-zinc-200 rounded-md p-6`}>
+                <div className={`${!change && "opacity-50"} col-span-6 flex justify-between border border-zinc-200 rounded-md p-5`}>
                     <div className="text-md font-semibold">Change</div>
                     <div className="text-md font-semibold">{change}</div>
                 </div>
@@ -76,7 +76,6 @@ const Calculator = ({ total }: PropsTypes) => {
                 <button value="2" onClick={handleAmount} className="ghost-button rounded-md">2</button>
                 <button value="3" onClick={handleAmount} className="ghost-button rounded-md">3</button>
                 <button onClick={handleResult} className="ghost-button rounded-md row-span-2">Enter</button>
-
 
                 <button value="0" onClick={handleAmount} className="ghost-button rounded-md">0</button>
                 <button value="." onClick={handleAmount} className="ghost-button rounded-md">.</button>

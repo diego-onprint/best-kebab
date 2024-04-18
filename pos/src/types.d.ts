@@ -46,16 +46,16 @@ export type CartProductVariation = {
 }
 
 // TICKET
-export type PaymentOptions = "kasse" | "kredikarte"
-
-export type OrderTypes = "delivery" | "takeaway" | "tisch"
-
 export type TicketDataType = {
-    paymentMethod: PaymentOptions
-    orderType: OrderTypes
+    paymentMethod: {
+        name: "Kreditkarten" | "Barzahlung" | "Twint"
+        value: "credit" | "cash" | "twint"
+    }
+    orderType: {
+        name: "Lieferung" | "Abholung" | "Tisch"
+        value: "delivery" | "takeaway" | "tisch"
+    }
 }
-
-
 
 // API STORE
 export type ProductVariationResponse = {
@@ -80,4 +80,55 @@ export type Table = {
     id: number
     capacity: number
     name: string
+}
+
+// ORDERS
+export type Order = {
+    billing: {
+        first_name: string
+        last_name?: string
+        address_1?: string
+        addres_2?: string
+        city?: string
+        company?: string
+        country?: string
+        email?: string
+        phone?: string
+        postcode?: string
+        state?: string
+    }
+    date_crated?: string
+    line_items: WooItem[]
+    number: string
+    payment_method_title: string
+    billing?: {
+        first_name: string
+        last_name?: string
+        address_1?: string
+        addres_2?: string
+        city?: string
+        company?: string
+        country?: string
+        email?: string
+        phone?: string
+        postcode?: string
+        state?: string
+    }
+}
+
+export type WooItem = {
+    id: number
+    name: string
+    price: number
+    total: string
+    meta_data: {
+        id: number
+        key: string
+        value: string
+    }
+}
+
+export type NewOrderNotification = {
+    showNotification: boolean
+    newOrders: Order[]
 }

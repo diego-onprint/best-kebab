@@ -5,16 +5,19 @@ import { printTicket } from '../../../utils/print/printTicket'
 const PrintButton = ({ 
     children,
     loading = false,
+    disabled = false,
     buttonStyle = "",
 }: 
 { 
     children: ReactNode
-    loading?: false
+    loading?: boolean
+    disabled?: boolean
     buttonStyle: string
 }) => {
 
     const [notification, setNotification] = useState(false)
-    const ticketDomRef = useTicketContext()
+    const { ticketDomRef } = useTicketContext()
+
 
     const handlePrint = () => {
         printTicket(ticketDomRef.current)
@@ -24,7 +27,7 @@ const PrintButton = ({
 
     return (
         <>
-            <button onClick={handlePrint} disabled={loading} className={buttonStyle}>
+            <button onClick={handlePrint} disabled={loading || disabled} className={buttonStyle}>
                 { children }
             </button>
             {
