@@ -52,34 +52,36 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
 
     return (
         <section className="fixed inset-0 bg-black/10 z-[900] grid place-items-center">
-            <div className="flex flex-col gap-4 w-[90%] max-w-xl bg-white rounded-lg p-5">
-                <h3 className="font-semibold text-xl">{product.name}</h3>
-                <div className="flex flex-col gap-4">
-                    <div>
-                        {
-                            product.variations?.length > 0 ?
-                                <VariationsMenu
-                                    variations={product.variations}
-                                    selectedVariations={selectedVarations}
-                                    setSelectedVariations={setSelectedVarations}
-                                /> : null
-                        }
+            <div className="flex flex-col gap-1 w-[90%] max-w-xl bg-white rounded-lg p-5">
+                <div className="flex flex-col gap-2">
+                    <div className="flex justify-between">
+                        <div className="flex items-center">
+                            <h3 className="font-semibold text-xl">{product.name}</h3>
+                        </div>
+                        <div className="flex items-center justify-end gap-4 flex-1">
+                            <h4 className="font-semibold">Qty</h4>
+                            <Counter qty={qty} setQty={setQty} />
+                        </div>
                     </div>
+                    {
+                        product.variations?.length > 0 ?
+                            <VariationsMenu
+                                variations={product.variations}
+                                selectedVariations={selectedVarations}
+                                setSelectedVariations={setSelectedVarations}
+                            /> : null
+                    }
                     <div>
-                        <h4 className="mb-2">Quantity</h4>
-                        <Counter qty={qty} setQty={setQty} />
-                    </div>
-                    <div className="mt-4">
                         <label className="mb-2">Notes</label>
-                        <textarea rows={3} className="w-full p-2 border border-zinc-200 resize-none rounded-md" ref={notesRef} />
+                        <textarea rows={2} className="w-full p-2 border border-zinc-200 resize-none rounded-md" ref={notesRef} />
                     </div>
-                </div>
-                <div className="grid grid-cols-12 gap-4 mt-6">
-                    <button onClick={() => setOpenSelector(!openSelector)} className="ghost-button col-span-4">Cancel</button>
-                    <button onClick={handleAdd} className="primary-button col-span-8"
-                    >
-                        Add
-                    </button>
+                    <div className="grid grid-cols-12 gap-4">
+                        <button onClick={() => setOpenSelector(!openSelector)} className="ghost-button col-span-4">Cancel</button>
+                        <button onClick={handleAdd} className="primary-button col-span-8"
+                        >
+                            Add
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

@@ -8,7 +8,7 @@ const MonthSalesGraph = () => {
     const parsedData = !isFetching && Object.entries(data.summary.totals).map(([date, values]) => ({ name: date, orders: values.orders, sales: values.sales, shipping: values.shipping }))
 
     // console.log(data)
-    console.log(parsedData)
+    // console.log(parsedData)
 
     return (
         <div className="w-full h-96">

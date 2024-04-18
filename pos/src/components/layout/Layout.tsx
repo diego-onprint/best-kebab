@@ -3,15 +3,17 @@ import SideBar from './side_bar/SideBar'
 import Cart from '../cart/Cart'
 
 type PropsTypes = {
-    children: ReactNode
+  children: ReactNode
 }
 
 const Layout = ({ children }: PropsTypes) => {
   return (
     <div className="relative flex w-full h-screen overflow-hidden">
-        <SideBar />
+      <SideBar />
+      <main className="@container/main flex-1 py-6 px-4 bg-indigo-50/50 overflow-y-auto">
         {children}
-        <Cart />
+      </main>
+      <Cart />
     </div>
   )
 }

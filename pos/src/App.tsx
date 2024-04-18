@@ -1,4 +1,5 @@
 import { useEffect, lazy, Suspense } from "react"
+import { socket } from "./socket"
 import { Route, Routes } from "react-router-dom"
 import Layout from "./components/layout/Layout"
 import { getLocalStorageItem } from "./utils/local_storage/localStorage"
@@ -7,6 +8,8 @@ import { AppDispatch } from "./store/store"
 import { updateCartInitialState } from "./store/cart/cartSlice"
 import { updateTablesInitialState } from "./store/tables/tablesSlice"
 import PageLoader from "./components/common/page_loader/PageLoader"
+import Ticket from "./components/ticket/Ticket"
+import TicketContextProvider from "./context/TicketContext"
 
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
 const Categories = lazy(() => import("./pages/categories/Categories"))
@@ -22,6 +25,7 @@ function App() {
 
   useEffect(() => {
 
+    // Update state on start depending on localStorage
     const cartLocalStorage = getLocalStorageItem("cart")
     const tablesLocalStorage = getLocalStorageItem("tables")
 
@@ -32,12 +36,25 @@ function App() {
     if (tablesLocalStorage) {
       dispatch(updateTablesInitialState(tablesLocalStorage))
     }
-
   }, [dispatch])
 
+  useEffect(() => {
+
+    const handleSocketNewOrder = () => {
+      console.log("NEW-ORDER!!")
+    }
+
+    socket.on("new-order", handleSocketNewOrder)
+
+    return () => {
+      socket.off("new-order", handleSocketNewOrder)
+    }
+  }, [])
+
   return (
-    <Layout>
-      <main className="@container/main flex-1 py-6 px-4 bg-indigo-50/50 overflow-y-auto">
+    <TicketContextProvider>
+      <Layout>
+        <Ticket />
         <Routes>
           <Route
             path="/"
@@ -97,8 +114,8 @@ function App() {
             }
           />
         </Routes>
-      </main>
-    </Layout>
+      </Layout>
+    </TicketContextProvider>
   )
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { removeProduct, clearCart } from "../../store/cart/cartSlice"
-import CartView from './CartView'
+import View from './View'
 import { clearTableCart, removeTableProduct, setActiveTable } from "../../store/tables/tablesSlice"
 import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
 import ErrorFallback from "../common/error_fallback/ErrorFallback"
@@ -9,7 +9,7 @@ import type { RootState } from "../../store/store"
 import type { AppDispatch } from "../../store/store"
 import type { CartProduct, CartTotal, Table } from "../../types"
 
-const CartController = () => {
+const Controller = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const cartProducts = useSelector<RootState, CartProduct[]>(state => state.cart.products)
@@ -63,7 +63,7 @@ const CartController = () => {
 
     return (
         <ErrorBoundary fallback={<ErrorFallback>Cart Error</ErrorFallback>}>
-            <CartView 
+            <View 
                 products={products}
                 total={total}
                 disabled={disabled}
@@ -79,4 +79,4 @@ const CartController = () => {
     )
 }
 
-export default CartController
+export default Controller

@@ -1,9 +1,11 @@
 export type Product = {
-    id: number
+    id: string
     name: string
-    price: string
+    price: number
     images: ProductImage[]
     description: string
+    parent: string
+    variations: []
 }
 
 type ProductImage = {
@@ -13,11 +15,9 @@ type ProductImage = {
 }
 
 export type Category = {
-    id: number
+    id: string
     name: string
-    slug: string
-    image: ProductImage
-    
+    parent: string
 }
 
 export type CartProduct = Product & { qty: number, localId: string }

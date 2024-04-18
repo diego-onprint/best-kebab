@@ -1,14 +1,14 @@
-import { Dispatch, SetStateAction, useState, useRef } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { clearCart } from "../../store/cart/cartSlice"
 import { clearTableCart } from "../../store/tables/tablesSlice"
-import { calculatePercentage } from "../../utils/calculate/calculatePercentage"
 import { RootState, AppDispatch } from "../../store/store"
-import type { Cart, Table } from "../../types"
-import View from "./View"
 import { formatCart } from "../../utils/format/formatCart"
-import { formatPrice } from "../../utils/format/formatPrice"
 import { printTicket } from "../../utils/print/printTicket"
+import { setOrderType, setPaymentMethod } from "../../store/ticket/ticketSlice"
+import { useTicketContext } from "../../context/TicketContext"
+import View from "./View"
+import type { Cart, OrderTypes, PaymentOptions, Table, TicketDataType } from "../../types"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -20,7 +20,9 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
 
     const dispatch = useDispatch<AppDispatch>()
     const cart = useSelector<RootState, Cart>(state => state.cart)
+    const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
+    const ticketDomRef = useTicketContext()
     const currentTable = useSelector<RootState, Table>(state => {
         const tables = state.tables.tables
         const table = tables.find(table => table.id === activeTable)
@@ -28,24 +30,17 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
     })
     const currentClient = currentTable ? currentTable.name : "Takeaway"
     const checkoutCart = currentTable ? currentTable.cart : cart
-    const ticketDomRef = useRef()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
-    const [paymentMethod, setPaymentMethod] = useState("Kasse")
-    // Can be "delivery" (tax 2.5%), "takeaway" (tax 2.5%), or "onsite" (tax 8.1%)
-    const [condition, setCondition] = useState("delivery")
-    const tax = condition === "onsite" ? {
-        rate: 8.1,
-        total: calculatePercentage(checkoutCart.total, 8.1).toFixed(2)
-    } : {
-        rate: 2.5,
-        total: calculatePercentage(checkoutCart.total, 2.6).toFixed(2),
+
+    const handlePaymentMethod = (method: PaymentOptions) => {
+        dispatch(setPaymentMethod(method))
     }
 
-    const handlePrintTicket = () => {
-        printTicket(ticketDomRef.current)
+    const handleOrderType = (type: OrderTypes) => {
+        dispatch(setOrderType(type))
     }
-    
+
     const handleCheckout = async () => {
 
         setLoading(true)
@@ -95,96 +90,17 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
     }
 
     return (
-        <>
-            <View
-                loading={loading}
-                error={error}
-                checkoutCart={checkoutCart}
-                paymentMethod={paymentMethod}
-                setPaymentMethod={setPaymentMethod}
-                setOpenCheckout={setOpenCheckout}
-                handlePrintTicket={handlePrintTicket}
-                handleCheckout={handleCheckout}
-                condition={condition}
-                setCondition={setCondition}
-            />
-
-            {/* TICKET TO PRINT */}
-            <div className="absolute -top-[800px] -right-[800px] bg-white w-[800px] p-4">
-                <div className="max-w-[650px]" ref={ticketDomRef}>
-                    <div className="logo-container">
-                        <img className="logo" src="/assets/lovely-logo.jpg" alt="" />
-                    </div>
-                    <div>
-                        <div>Seuzachstrasse 2,</div>
-                        <div>8413 Neftenbach</div>
-                        <div>www.lovely-burger.ch</div>
-                        <div>MWST CHE-166.937.519</div>
-                    </div>
-                    <div style={{ "margin": "10px 0" }}>
-                        <p>{currentClient}</p>
-                        <p>Zahlung: {paymentMethod}</p>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th className="th qty text-sm align-left">Q</th>
-                                <th className="th art text-sm align-left">Artikel</th>
-                                <th className="text-sm align-left">CHF</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            {
-                                checkoutCart.products.map(product => {
-
-                                    console.log(product)
-                                    return (
-                                        <>
-                                            <tr>
-                                                <td rowSpan={product.variations.length + 1}>{product.qty}</td>
-                                                <td className="text-md" style={{ "flex": 1 }}>
-                                                    {product.name}
-                                                    {product.notes.length > 0 ? product.notes : null}
-                                                </td>
-                                                <td className="text-md" style={{ "width": "55px" }}>{formatPrice((product.price * product.qty).toString())}</td>
-                                            </tr>
-                                            {
-                                                product.variations.length > 0 ?
-                                                    product.variations.map((variation) => {
-                                                        return (
-                                                            <tr key={variation.id}>
-                                                                <td className="text-sm">{variation.name}</td>
-                                                                <td className="text-sm">{formatPrice((variation.price).toString())}</td>
-                                                            </tr>
-                                                        )
-                                                    }) : null
-                                            }
-                                        </>
-                                    )
-                                })
-                            }
-                            <tr>
-                                <td rowSpan={3}></td>
-                                <td>Rabatt</td>
-                                <td className="text-md">0</td>
-                            </tr>
-                            <tr>
-                                <td>Versandgebühr</td>
-                                <td className="text-md">0</td>
-                            </tr>
-                            <tr>
-                                <td className="emph">Gesamt</td>
-                                <td className="emph">{checkoutCart.total}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div className="text-md tax">
-                        <div className="text-sm">MwSt. CHF. {tax.total} -{'>'} {tax.rate}% MwsT. inkl</div>
-                    </div>
-                </div >
-            </div>
-        </>
+        <View
+            loading={loading}
+            error={error}
+            checkoutCart={checkoutCart}
+            paymentMethod={ticket.paymentMethod}
+            orderType={ticket.orderType}
+            handlePaymentMethod={handlePaymentMethod}
+            handleOrderType={handleOrderType}
+            setOpenCheckout={setOpenCheckout}
+            handleCheckout={handleCheckout}
+        />
     )
 }
 

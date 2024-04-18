@@ -5,9 +5,7 @@ import Spinner from "../../common/spinner/Spinner"
 const OrdersList = ({ page, setHasNextPage, setLoading }) => {
 
     const { data, error, isFetching, isLoading } = useGetOrdersQuery({ page: page })
-
-    console.log(data)
-
+    
     //case not found -404- or sorts
     if (error) throw Error
 
@@ -23,8 +21,6 @@ const OrdersList = ({ page, setHasNextPage, setLoading }) => {
     else {
         setLoading(false)
     }
-
-    console.log(data)
 
     return (
         <div>

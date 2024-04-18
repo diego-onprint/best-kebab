@@ -1,18 +1,17 @@
 import { useState } from "react"
-// import { useSelector } from "react-redux"
-// import { RootState } from "../../../store/store"
 import { Link } from "react-router-dom"
+import useSocketConnectionStatus from "../../../hooks/useSocketConnectionStatus"
 
 const SideBar = () => {
 
-  // const { status: connectionStatus } = useSelector<RootState, { status: boolean }>(state => state.status)
+  const { socketConnected } = useSocketConnectionStatus()
   const [active, setActive] = useState("/")
 
   return (
     <header className="flex flex-col gap-8 px-1 py-2 shadow-lg">
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
-          {/* <span className={`absolute right-1 top-2 w-2 h-2 ring-2 ring-white rounded-full ${connectionStatus ? "bg-green-400" : "bg-red-500"}`}></span> */}
+          <span className={`absolute -right-1 top-1 w-2 h-2 ring-2 ring-white rounded-full ${socketConnected ? "bg-green-400" : "bg-red-500"}`}></span>
           <picture className="w-8 h-8 grid place-items-center">
             <source srcSet="/assets/lovely-small.webp" type="image/webp" />
             <img src="/assets/lovely-small.png" />

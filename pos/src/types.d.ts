@@ -45,6 +45,17 @@ export type CartProductVariation = {
     timestamp: string
 }
 
+// TICKET
+export type PaymentOptions = "kasse" | "kredikarte"
+
+export type OrderTypes = "delivery" | "takeaway" | "tisch"
+
+export type TicketDataType = {
+    paymentMethod: PaymentOptions
+    orderType: OrderTypes
+}
+
+
 
 // API STORE
 export type ProductVariationResponse = {

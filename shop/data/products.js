@@ -1,6 +1,6 @@
-const burgerVariations = require("./variations/burger-variations")
+import { burgerVariations } from "./variations/burger-variations"
 
-module.exports = [
+export const products = [
     {
         id: "chili-cheese-habanero-rosti",
         name: "Chili-Cheese Habanero Rösti",
@@ -115,7 +115,7 @@ module.exports = [
     },
     {
         id: "chili-cheese-habanero-veggie",
-        name: "Chili-Cheese Habanero Veggie",
+        name: "Chili-Cheese Habanero Rösti Veggie",
         description: "Hamburgerbrot mit Sesam, Rösti- Patties, Salat, Guacamole, Cheddar-Käse, Chili-Cheese Habanerossauce, Jalapeños",
         price: 25.9,
         variations: burgerVariations,
@@ -123,15 +123,15 @@ module.exports = [
     },
     {
         id: "handwerker-veggie",
-        name: "Handwerker Veggie",
-        description: "Hamburgerbrot mit Sesam, Rösti-Patties, Zwiebelwürfel, 2x Cheddar-Käse, Salat und Cocktailsauce",
+        name: "Handwerker Rösti Veggie",
+        description: "Hamburgerbrot mit Sesam, Rösti- Patties, Zwiebelwürfel, 2x Cheddar-Käse, Salat und Cocktailsauce",
         price: 23.9,
         variations: burgerVariations,
         parent: "veggie"
     },
     {
         id: "krautergarten-veggie",
-        name: "Kräutergarten Veggie",
+        name: "Kräutergarten Rösti Veggie",
         description: "Brot mit Sesam, Rösti- Patties, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
         price: 27.9,
         variations: burgerVariations,
@@ -139,7 +139,7 @@ module.exports = [
     },
     {
         id: "bodenstandiger-veggie",
-        name: "Bodenständiger (zum selber belegen) Veggie",
+        name: "Bodenständiger (zum selber belegen) Rösti Veggie",
         description: "Brot mit Sesam, Rösti- Patties, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
         price: 18.9,
         variations: burgerVariations,
@@ -1111,7 +1111,7 @@ module.exports = [
         id: "panache-sweet-3dl",
         name: "Panache Sweet 3DL",
         description: "",
-        price: 4.5,
+        price: 6.9,
         variations: [],
         parent: "bier"
     },
@@ -1119,7 +1119,7 @@ module.exports = [
         id: "panache-sour-3dl",
         name: "Panache Sour 3DL",
         description: "",
-        price: 4.5,
+        price: 6.9,
         variations: [],
         parent: "bier"
     },
@@ -1140,119 +1140,10 @@ module.exports = [
         parent: "bier"
     },
     {
-        id: "brownie-vanilleeis",
-        name: "Brownie + Vanilleis",
+        id: "kaffe-product",
+        name: "Kaffe",
         description: "",
-        price: 12.5,
-        parent: "dessert"
-    },
-    {
-        id: "lava-vanilleeis",
-        name: "Lava + Vanilleis",
-        description: "",
-        price: 12.5,
-        parent: "dessert"
-    },
-    {
-        id: "kleine-kuchen",
-        name: "kleine Kuchen",
-        description: "",
-        price: 6.5,
-        parent: "dessert"
-    },
-    {
-        id: "grosse-kuchen",
-        name: "grosse Kuchen",
-        description: "",
-        price: 9.5,
-        parent: "dessert"
-    },
-    {
-        id: "eiscream",
-        name: "Eiscream",
-        description: "",
-        price: 3.50,
-        variations: [
-            {
-                id: "taste",
-                name: "Taste",
-                options: [
-                    {
-                        id: "erdbeere",
-                        name: "Erdbeere",
-                        price: 0,
-                        parent: "taste"
-                    },
-                    {
-                        id: "vanille",
-                        name: "Vanille",
-                        price: 0,
-                        parent: "taste"
-                    },
-                    {
-                        id: "schokolade",
-                        name: "Schokolade",
-                        price: 0,
-                        parent: "taste"
-                    },
-                    {
-                        id: "sonstiges",
-                        name: "Sonstiges",
-                        price: 0,
-                        parent: "taste"
-                    },
-                ]
-            }
-        ],
-        parent: "dessert"
-    },
-    {
-        id: "espresso",
-        name: "Espresso",
-        description: "",
-        price: 4,
-        parent: "kaffe"
-    },
-    {
-        id: "dopio",
-        name: "Dopio",
-        description: "",
-        price: 5.5,
-        parent: "kaffe"
-    },
-    {
-        id: "kaffeecreme",
-        name: "Kaffeecreme",
-        description: "",
-        price: 4.5,
-        parent: "kaffe"
-    },
-    {
-        id: "capuccino",
-        name: "Capuccino",
-        description: "",
-        price: 5.5,
-        parent: "kaffe"
-    },
-    {
-        id: "special",
-        name: "Special",
-        description: "",
-        price: 6.5,
-        parent: "kaffe"
-    },
-    {
-        id: "tee",
-        name: "Tee",
-        description: "",
-        price: 4.5,
-        parent: "kaffe"
-    },
-    {
-        id: "schoko",
-        name: "Schoko",
-        description: "",
-        price: 5.5,
+        price: 0,
         parent: "kaffe"
     },
 ]

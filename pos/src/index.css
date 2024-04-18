@@ -24,6 +24,17 @@
   .button-base {
     @apply py-4 px-2 rounded-lg transition-colors flex justify-center;
   }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 }
 
 * {
@@ -57,29 +68,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 .logo {
-  width: 200px;
+  width: 310px;
   height: 130px;
   object-fit: contain;
 }
 
-table, td, th {
-  border: 1px solid black;
-}
-
-td, th {
-  padding: 5px;
-}
-
-table {
+.ticket-table {
   width: 100%;
   border-collapse: collapse;
 }
 
+.ticket-table, .ticket-td, .ticket-th {
+  border: 1px solid black;
+}
+
+.ticket-td, .ticket-th {
+  padding: 5px;
+}
+
 .qty {
   width: 10px;
+}
+
+.qty-col {
+  position: relative;
+}
+
+.mb-sm {
+  margin-bottom: 4px;
 }
 
 .art {
@@ -87,15 +107,15 @@ table {
 }
 
 .item {
-display: flex; 
+  display: flex; 
 }
 
 .text-sm {
-  font-size: 16px;
+  font-size: 20px;
 }
 
-.text-md {
-  font-size: 18px;
+.text-center {
+  text-align: center;
 }
 
 .align-left {
@@ -104,10 +124,4 @@ display: flex;
 
 .emph {
   font-weight: bold;
-  font-size: 16px;
-}
-
-.tax {
-  margin-top: 10px;
-  text-align: right;
 }
