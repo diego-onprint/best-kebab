@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, Suspense, lazy } from "react"
 import Spinner from "../common/spinner/Spinner"
 import type { CartProduct, CartProductId, CartTotal, Table } from "../../types"
-import { formatPrice } from "../../utils/format/formatPrice"
 import PrintButton from "../common/print_button/PrintButton"
+import Item from "./Item/Item"
 
 const Checkout = lazy(() => import("../checkout/Checkout"))
 
@@ -32,6 +32,8 @@ const View = ({
     currentTable,
 }: PropsTypes) => {
 
+    // TODO If something is selected open Bemerkung for kitchen
+
     return (
         <>
             <div className="bg-white flex flex-col w-[475px]">
@@ -56,53 +58,14 @@ const View = ({
                             </PrintButton>
                         </div>
                     </div>
-                    <dl className="divide-y flex flex-col flex-1 overflow-auto px-4 flex-grow">
-                        {
-                            products.map(product => (
-                                <li key={product.timestamp} className="flex gap-6 py-4 justify-between items-start">
-                                    <div className="flex-1">
-                                        <div className="flex justify-between">
-                                            <div className="flex gap-2">
-                                                <p className="font-semibold">{product.qty}</p>
-                                                <dt className="truncate max-w-52">{product.name}</dt>
-                                            </div>
-                                            <dd className="font-semibold">
-                                                <span className="text-sm">CHF. </span>
-                                                {formatPrice(product.price)}
-                                            </dd>
-                                        </div>
-                                        {/* LOOP OVER ARRAY OF VARIATION OPTIONS SELECTED */}
-                                        {
-                                            product.variations ?
-                                                product.variations.map(variation => {
-                                                    return (
-                                                        <div key={variation.timestamp} className="flex justify-between gap-2 pl-4 text-zinc-400">
-                                                            <p>{variation.name}</p>
-                                                            <dt className="truncate max-w-60">
-                                                                <span className="text-sm">CHF. </span>
-                                                                {formatPrice(variation.price)}
-                                                            </dt>
-                                                        </div>
-                                                    )
-                                                }) : null
-                                        }
-                                    </div>
-                                    <div className="flex gap-10">
-                                        <button onClick={() => handleDelete(product.uid)} className="text-red-400 cursor-pointer" type="button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                                <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clipRule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </li>
-                            ))
-                        }
+                    <dl className="divide-y flex flex-col flex-1 overflow-auto flex-grow">
+                        {products.map(product => <Item product={product} key={product.timestamp} handleDelete={handleDelete} />)}
                     </dl>
                     <dl className="divide-y border-t">
-                        <div className="flex justify-between p-4">
+                        {/* <div className="flex justify-between p-4">
                             <dt>Subtotal</dt>
                             <dl>CHF. {currentTable ? currentTable.cart.total : total}</dl>
-                        </div>
+                        </div> */}
                         <div className="flex justify-between p-4">
                             <dt className="text-xl font-semibold">Total</dt>
                             <dl className="text-xl font-bold">CHF. {currentTable ? currentTable.cart.total : total}</dl>

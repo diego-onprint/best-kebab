@@ -4,6 +4,7 @@ import { cartSlice } from "./cart/cartSlice"
 import { statusSlice } from "./status/statusSlice"
 import { api } from "./api/apiSlice"
 import { ticketSlice } from "./ticket/ticketSlice"
+import { kitchenTicketSlice } from "./ticket_kitchen/kitchenTicketSlice"
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         status: statusSlice.reducer,
         api: api.reducer,
         ticket: ticketSlice.reducer,
+        kitchenTicket: kitchenTicketSlice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
 })

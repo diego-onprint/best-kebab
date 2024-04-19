@@ -10,6 +10,7 @@ import PageLoader from "./components/common/page_loader/PageLoader"
 import Ticket from "./components/ticket/Ticket"
 import TicketContextProvider from "./context/TicketContext"
 import NewOrderNotificationContextProvider from "./context/NewOrderNotificationContext"
+import KitchenTicket from "./components/ticket/KitchenTicket"
 
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
 const Categories = lazy(() => import("./pages/categories/Categories"))
@@ -44,6 +45,7 @@ function App() {
       <NewOrderNotificationContextProvider>
         <Layout>
           <Ticket />
+          <KitchenTicket />
           <Routes>
             <Route
               path="/"

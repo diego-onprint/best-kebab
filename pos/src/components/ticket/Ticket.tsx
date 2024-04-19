@@ -15,7 +15,7 @@ import { useTicketContext } from "../../context/TicketContext"
 
 const Ticket = () => {
 
-    const { ticketDomRef, customerData } = useTicketContext()
+    const { ticketDomRef, customerData, orderNumber } = useTicketContext()
     const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
     const cart = useSelector<RootState, Cart>(state => state.cart)
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
@@ -24,7 +24,7 @@ const Ticket = () => {
         const table = tables.find(table => table.id === activeTable)
         return table
     })
-    const currentClient = currentTable ? currentTable.name : "Takeaway"
+    // const currentClient = currentTable ? currentTable.name : "Takeaway"
     const checkoutCart = currentTable ? currentTable.cart : cart
     const tax = ticket.orderType.value === "tisch" ? {
         rate: 8.1,
@@ -56,6 +56,14 @@ const Ticket = () => {
                     <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
                 </div>
                 <div className="mb-2">
+                    {/* HERE PRINT THE ORDER NUMBER FOR GENERATED TAKEAWAY ORDERS: TKW#0001 */}
+                    {
+                        orderNumber.length > 0 ?
+                            <p>
+                                <span className="text-xl font-bold">Bestellung: </span>
+                                <span className="text-xl">#{orderNumber}</span>
+                            </p> : null
+                    }
                     <p>
                         <span className="text-xl font-bold">Bestelldatum: </span>
                         <span className="text-xl">{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
@@ -110,10 +118,10 @@ const Ticket = () => {
                 </table>
                 {
                     customerData.notes.length > 0 ?
-                    <p className="text-xl mt-2">
-                        <span className="font-semibold">Bemerkung: </span>
-                        <span>{customerData.notes}</span>
-                    </p> : null
+                        <p className="text-xl mt-2">
+                            <span className="font-semibold">Bemerkung: </span>
+                            <span>{customerData.notes}</span>
+                        </p> : null
                 }
                 <div className="flex flex-col gap-1 mt-2">
                     {/* <div className="flex justify-between">

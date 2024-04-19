@@ -23,7 +23,7 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
     const cart = useSelector<RootState, Cart>(state => state.cart)
     const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
     const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
-    const { ticketDomRef, customerData, setCustomerData } = useTicketContext()
+    const { ticketDomRef, customerData, setCustomerData, setOrderNumber } = useTicketContext()
     const currentTable = useSelector<RootState, Table>(state => {
         const tables = state.tables.tables
         const table = tables.find(table => table.id === activeTable)
@@ -60,9 +60,6 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
 
         setLoading(true)
 
-        // Print before placing order, case fails it still prints and order can be created manually
-        printTicket(ticketDomRef.current)
-
         // PLACE ORDER IN WOOCOMMERCE
         try {
 
@@ -90,7 +87,14 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
                 setError("An error ocurred placing order in Woocommerce")
             }
 
-            currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
+            console.log("JSON", json)
+
+            // currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
+            setOrderNumber(json.result.number)
+            setTimeout(() => {
+                printTicket(ticketDomRef.current)
+                setOrderNumber("")
+            }, 500)
             setOpenCheckout(false)
 
         } catch (err) {
