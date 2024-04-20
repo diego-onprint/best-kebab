@@ -2,7 +2,8 @@ import { ReactNode, createContext, createRef, useContext, useState, useRef } fro
 import { CustomerData } from "../models/customer_data"
 
 const TicketContext = createContext(null)
-const ticketDomRef = createRef()
+// const ticketDomRef = createRef()
+// const kitchenTicketDomRef = createRef()
 
 export const useTicketContext = () => useContext(TicketContext)
 
@@ -12,6 +13,7 @@ const TicketContextProvider = ({ children }: { children: ReactNode}) => {
   const [customerData, setCustomerData] = useState(CustomerData)
   const [orderNumber, setOrderNumber] = useState<string>("")
   const kitchenTicketDomRef = useRef()
+  const ticketDomRef = useRef()
 
   const values = {
     ticketDomRef,

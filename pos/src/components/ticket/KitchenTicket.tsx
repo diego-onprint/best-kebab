@@ -28,57 +28,60 @@ const KitchenTicket = () => {
     }, [])
 
     return (
-        <div className="max-w-[650px] px-6" ref={kitchenTicketDomRef}>
-            <div className="logo-container">
-                <img className="logo" src="/assets/lovely-burger-ticket-logo.png" alt="" />
+        <div className="absolute bg-white w-[600px] p-4 -top-[800px] -left-[800px]">
+
+            <div className="max-w-[650px] px-6" ref={kitchenTicketDomRef}>
+                <div className="logo-container">
+                    <img className="logo" src="/assets/lovely-burger-ticket-logo.png" alt="" />
+                </div>
+                <div className="mb-4">
+                    <p className="text-xl text-center mb-sm">Seuzachstrasse 2,</p>
+                    <p className="text-xl text-center mb-sm">8413 Neftenbach</p>
+                    <p className="text-xl text-center mb-sm">www.lovely-burger.ch</p>
+                    <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
+                </div>
+                <p className="text-2xl font-bold py-2 capitalize">Küche</p>
+                <table className="ticket-table">
+                    <thead className="ticket-head">
+                        <tr>
+                            <th className="ticket-th th qty text-xl align-left">Q</th>
+                            <th className="ticket-th th art text-xl align-left">Produkt</th>
+                            <th className="ticket-th text-xl align-left">CHF</th>
+                        </tr>
+                    </thead>
+                    <tbody className="ticket-body">
+                        {
+                            products.map(product => {
+                                return (
+                                    <Fragment key={product.uid}>
+                                        <tr>
+                                            <td className="ticket-td qty-col" rowSpan={product.variations.length + 1}>
+                                                <p className="absolute top-3 text-sm">{product.qty}</p>
+                                            </td>
+                                            <td className="ticket-td text-2xl" style={{ "flex": 1 }}>
+                                                <p>{product.name}</p>
+                                                {product.notes.length > 0 ? <p className="text-sm">Notes: {product.notes}</p> : null}
+                                            </td>
+                                            <td className="ticket-td text-2xl" style={{ "width": "55px" }}>{formatPrice((product.price * product.qty).toString())}</td>
+                                        </tr>
+                                        {
+                                            product.variations.length > 0 ?
+                                                product.variations.map((variation) => {
+                                                    return (
+                                                        <tr key={variation.id}>
+                                                            <td className="ticket-td text-sm">{variation.name}</td>
+                                                            <td className="ticket-td text-sm">{formatPrice((variation.price).toString())}</td>
+                                                        </tr>
+                                                    )
+                                                }) : null
+                                        }
+                                    </Fragment>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
-            <div className="mb-4">
-                <p className="text-xl text-center mb-sm">Seuzachstrasse 2,</p>
-                <p className="text-xl text-center mb-sm">8413 Neftenbach</p>
-                <p className="text-xl text-center mb-sm">www.lovely-burger.ch</p>
-                <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
-            </div>
-            <p className="text-2xl font-bold py-2 capitalize">Küche</p>
-            <table className="ticket-table">
-                <thead className="ticket-head">
-                    <tr>
-                        <th className="ticket-th th qty text-xl align-left">Q</th>
-                        <th className="ticket-th th art text-xl align-left">Produkt</th>
-                        <th className="ticket-th text-xl align-left">CHF</th>
-                    </tr>
-                </thead>
-                <tbody className="ticket-body">
-                    {
-                        products.map(product => {
-                            return (
-                                <Fragment key={product.id}>
-                                    <tr>
-                                        <td className="ticket-td qty-col" rowSpan={product.variations.length + 1}>
-                                            <p className="absolute top-3 text-sm">{product.qty}</p>
-                                        </td>
-                                        <td className="ticket-td text-2xl" style={{ "flex": 1 }}>
-                                            <p>{product.name}</p>
-                                            {product.notes.length > 0 ? <p className="text-sm">Notes: {product.notes}</p> : null}
-                                        </td>
-                                        <td className="ticket-td text-2xl" style={{ "width": "55px" }}>{formatPrice((product.price * product.qty).toString())}</td>
-                                    </tr>
-                                    {
-                                        product.variations.length > 0 ?
-                                            product.variations.map((variation) => {
-                                                return (
-                                                    <tr key={variation.id}>
-                                                        <td className="ticket-td text-sm">{variation.name}</td>
-                                                        <td className="ticket-td text-sm">{formatPrice((variation.price).toString())}</td>
-                                                    </tr>
-                                                )
-                                            }) : null
-                                    }
-                                </Fragment>
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
         </div>
     )
 }

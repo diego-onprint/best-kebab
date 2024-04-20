@@ -72,7 +72,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                             /> : null
                     }
                     <div>
-                        <label className="mb-2">Notes</label>
+                        <label className="mb-2 font-semibold">Bemerkung</label>
                         <textarea rows={2} className="w-full p-2 border border-zinc-200 resize-none rounded-md" ref={notesRef} />
                     </div>
                     <div className="grid grid-cols-12 gap-4">

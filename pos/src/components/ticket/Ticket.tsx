@@ -88,7 +88,7 @@ const Ticket = () => {
                         {
                             checkoutCart.products.map(product => {
                                 return (
-                                    <Fragment key={product.id}>
+                                    <Fragment key={product.uid}>
                                         <tr>
                                             <td className="ticket-td qty-col" rowSpan={product.variations.length + 1}>
                                                 <p className="absolute top-3 text-sm">{product.qty}</p>

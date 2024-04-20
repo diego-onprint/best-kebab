@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, RefObject, useState } from 'react'
 import { useTicketContext } from '../../../context/TicketContext'
 import { printTicket } from '../../../utils/print/printTicket'
 
@@ -7,20 +7,20 @@ const PrintButton = ({
     loading = false,
     disabled = false,
     buttonStyle = "",
+    domRef,
 }: 
 { 
     children: ReactNode
     loading?: boolean
     disabled?: boolean
     buttonStyle: string
+    domRef: RefObject<HTMLElement>
 }) => {
 
     const [notification, setNotification] = useState(false)
-    const { ticketDomRef } = useTicketContext()
-
-
+    
     const handlePrint = () => {
-        printTicket(ticketDomRef.current)
+        printTicket(domRef.current)
         setNotification(true)
         setTimeout(() => setNotification(false), 2000)
     }
