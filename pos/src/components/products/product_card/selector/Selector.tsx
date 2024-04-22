@@ -7,6 +7,7 @@ import { addProduct } from "../../../../store/cart/cartSlice"
 import { addTableProduct } from "../../../../store/tables/tablesSlice"
 import { AppDispatch, RootState } from "../../../../store/store"
 import type { Product, Table } from "../../../../types"
+import { addOrderProduct } from "../../../../store/orders/ordersSlice"
 
 type PropsTypes = {
     product: Product
@@ -19,7 +20,6 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
     const dispatch = useDispatch<AppDispatch>()
     const notesRef = useRef()
     const [selectedVarations, setSelectedVarations] = useState([])
-    const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
     const [qty, setQty] = useState(1)
 
     const handleAdd = () => {
@@ -37,14 +37,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
             notes: notesRef.current.value,
         }
 
-        if (activeTable !== -1) {
-
-            dispatch(addTableProduct(productToAdd))
-
-        } else {
-
-            dispatch(addProduct(productToAdd))
-        }
+        dispatch(addOrderProduct(productToAdd))
 
         setOpenSelector(!openSelector)
 

@@ -1,4 +1,30 @@
-export const TablesEmptyState = [
+/*
+ * Takeaway orders schema:
+ * {
+ *      id: <orderId>
+ *      name: <orderId> // With this build the name on View "Takeaway order #10"
+ *      cart: {
+ *          products: [] 
+ *          total: string
+ *      }
+ *      customerData: {
+ *          name: string
+ *          surname: string
+ *          address: string
+ *          city: string
+ *          postcode: string
+ *          notes: string
+ *      }
+ * } 
+*/
+
+export const OrdersEmptyState = [
+    {
+        id: -1,
+        isNewOrder: true,
+        cart: { products: [], total: "0" },
+        name: "New Takeaway Order"
+    },
     {
         id: 911,
         isTable: true,

@@ -7,10 +7,9 @@ import { AppDispatch } from "./store/store"
 import { updateCartInitialState } from "./store/cart/cartSlice"
 import { updateTablesInitialState } from "./store/tables/tablesSlice"
 import PageLoader from "./components/common/page_loader/PageLoader"
-import Ticket from "./components/ticket/Ticket"
 import TicketContextProvider from "./context/TicketContext"
 import NewOrderNotificationContextProvider from "./context/NewOrderNotificationContext"
-import KitchenTicket from "./components/ticket/KitchenTicket"
+import Takeaway from "./pages/takeaway/Takeaway"
 
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
 const Categories = lazy(() => import("./pages/categories/Categories"))
@@ -30,13 +29,17 @@ function App() {
     const cartLocalStorage = getLocalStorageItem("cart")
     const tablesLocalStorage = getLocalStorageItem("tables")
 
+    const ordersLocalStorage = getLocalStorageItem("orders")
+
+    console.log("LOCAL STORAGR.....", ordersLocalStorage)
+
     if (cartLocalStorage) {
       dispatch(updateCartInitialState(cartLocalStorage))
     }
 
-    if (tablesLocalStorage) {
-      dispatch(updateTablesInitialState(tablesLocalStorage))
-    }
+    // if (tablesLocalStorage) {
+      // dispatch(updateTablesInitialState(tablesLocalStorage))
+    // }
   }, [dispatch])
 
 
@@ -44,8 +47,6 @@ function App() {
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
         <Layout>
-          <Ticket />
-          <KitchenTicket />
           <Routes>
             <Route
               path="/"
@@ -93,6 +94,14 @@ function App() {
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Orders />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/takeaway"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <Takeaway />
                 </Suspense>
               }
             />

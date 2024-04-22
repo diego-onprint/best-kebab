@@ -60,6 +60,18 @@ const SideBar = () => {
               Tables
             </Link>
           </li>
+          <li className="text-[10px]">
+            <Link
+              to="/takeaway"
+              onClick={() => setActive("/takeaway")}
+              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${active === "/takeaway" && "bg-zinc-100"}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m0-3-3-3m0 0-3 3m3-3v11.25m6-2.25h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" />
+              </svg>
+              Takeaway
+            </Link>
+          </li>
           <li className="relative text-[10px]">
             <Link
               to="/orders"

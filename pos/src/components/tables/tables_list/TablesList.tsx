@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../store/store'
-import { setActiveTable } from '../../../store/tables/tablesSlice'
-import type { Table } from '../../../types'
+import type { Order, Table } from '../../../types'
+import { setCurrentOrder } from '../../../store/orders/ordersSlice'
 
 const TablesList = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const tables = useSelector<RootState, Table[]>(state => state.tables.tables)
-    const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
+    const orders = useSelector<RootState, Order[]>(state => state.orders.orders)
+    const currentOrder = useSelector<RootState, Order["id"]>(state => state.orders.currentOrder)
+    const tables = orders.filter(order => order.isTable)
 
     const handleTable = (id: Table["id"]) => {
-        dispatch(setActiveTable(id))
+        dispatch(setCurrentOrder(id))
     }
     
     return (
@@ -23,7 +24,7 @@ const TablesList = () => {
                             role="button"
                             tabIndex={0}
                             key={table.id}
-                            className={`col-span-6 md:col-span-4 xl:col-span-4 ${activeTable === table.id && "outline outline-zinc-700"} ${table.cart.products.length > 0 ? "bg-green-200" : "bg-white"} flex flex-col justify-between h-24 border border-zinc-200 rounded-lg p-2`}
+                            className={`col-span-6 md:col-span-4 xl:col-span-4 ${currentOrder === table.id && "outline outline-zinc-700"} ${table.cart.products.length > 0 ? "bg-green-200" : "bg-white"} flex flex-col justify-between h-24 border border-zinc-200 rounded-lg p-2`}
                         >
                             <div className="flex justify-between">
                                 <h3>{table.name}</h3>

@@ -84,6 +84,10 @@ export type Table = {
 
 // ORDERS
 export type Order = {
+    id: number
+}
+
+export type WooOrder = {
     billing: {
         first_name: string
         last_name?: string

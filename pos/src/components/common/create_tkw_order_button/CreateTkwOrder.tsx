@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../store/store"
-import { increaseLocalOrderNumber } from "../../../store/local_order_slice/localOrderSlice"
+import { increaseLocalOrderNumber } from "../../../store/local_order/localOrderSlice"
 import type { CartProduct } from "../../../types"
 
 const CreateTkwOrder = () => {

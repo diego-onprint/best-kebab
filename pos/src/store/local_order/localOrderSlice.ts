@@ -1,3 +1,5 @@
+// Keep track of local orders numbers (not checked out)
+
 import { createSlice } from "@reduxjs/toolkit"
 
 export const localOrderSlice = createSlice({
