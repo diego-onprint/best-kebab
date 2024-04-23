@@ -22,16 +22,22 @@ const getTotal = (products) => {
         }
 
         // Add to accumulator the: (product price plus de subtotal from variations) by qty
-        return acc + (Number(curr.price) + variationsPrice) * curr.qty 
+        return acc + (Number(curr.price) + variationsPrice) * curr.qty
 
     }, 0)
 
     return total.toFixed(2)
 }
 
+const getOrder = (state) => {
+    const orderIndex = state.orders.findIndex((order) => order.id === state.currentOrder)
+    const order = state.orders[orderIndex]
+    return order
+}
+
 const updateOrdersLocalStorage = (state) => {
-    setLocalStorageItem("orders", { 
-        orders: [...state.orders], 
+    setLocalStorageItem("orders", {
+        orders: [...state.orders],
         orderNumber: state.orderNumber,
         currentOrder: -1,
     })
@@ -44,6 +50,12 @@ export const ordersSlice = createSlice({
         setCurrentOrder: (state, action: PayloadAction<Order["id"]>) => {
             state.currentOrder = action.payload
         },
+        addNewOrder: (state, action) => {
+            console.log(action.payload)
+            state.orders.push(action.payload)
+            state.orderNumber++
+            updateOrdersLocalStorage(state)
+        },
         addOrderProduct: (state, action: PayloadAction<CartProduct>) => {
             const orderIndex = state.orders.findIndex((order) => state.currentOrder === order.id)
             const order = state.orders[orderIndex]
@@ -51,8 +63,13 @@ export const ordersSlice = createSlice({
             order.cart.total = getTotal(order.cart.products)
             updateOrdersLocalStorage(state)
         },
+        removeOrder: (state, action) => {
+            const orderIndex = state.orders.findIndex(order => order.id === action.payload)
+            state.orders.splice(orderIndex, 1)
+            updateOrdersLocalStorage(state)
+        },
         removeOrderProduct: (state, action: PayloadAction<CartProduct["uid"]>) => {
-            const orderIndex = state.orders.findIndex((order) => state.currentOrder === order.id)
+            const orderIndex = state.orders.findIndex((order) => order.id === state.currentOrder)
             const order = state.orders[orderIndex]
             const productIndex = order.cart.products.findIndex(product => product.uid === action.payload)
             order.cart.products.splice(productIndex, 1)
@@ -67,15 +84,23 @@ export const ordersSlice = createSlice({
             updateOrdersLocalStorage(state)
         },
         updateOrdersInitialState: (state, action) => {
-            // state.orders = action.payload
+            state.orders = action.payload.orders
+            state.orderNumber = action.payload.orderNumber
+        },
+        updateOrderPaymentMethod: (state, action) => {
+            const order = getOrder(state)
+            order.customerData.paymentMethod = action.payload
         }
     }
 })
 
 export const {
     setCurrentOrder,
+    addNewOrder,
     addOrderProduct,
+    removeOrder,
     removeOrderProduct,
     clearOrderCart,
     updateOrdersInitialState,
+    updateOrderPaymentMethod,
 } = ordersSlice.actions

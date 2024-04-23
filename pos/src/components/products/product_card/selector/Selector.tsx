@@ -1,12 +1,10 @@
 import { useState, Dispatch, SetStateAction, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import Counter from "../counter/Counter"
 import VariationsMenu from "../options/VariationsMenu"
 import { createTimestamp } from "../../../../utils/create/createTimestamp"
-import { addProduct } from "../../../../store/cart/cartSlice"
-import { addTableProduct } from "../../../../store/tables/tablesSlice"
-import { AppDispatch, RootState } from "../../../../store/store"
-import type { Product, Table } from "../../../../types"
+import { AppDispatch  } from "../../../../store/store"
+import type { Product } from "../../../../types"
 import { addOrderProduct } from "../../../../store/orders/ordersSlice"
 
 type PropsTypes = {
@@ -40,7 +38,6 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
         dispatch(addOrderProduct(productToAdd))
 
         setOpenSelector(!openSelector)
-
     }
 
     return (

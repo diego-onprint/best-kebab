@@ -1,133 +1,131 @@
-/*
- * Takeaway orders schema:
- * {
- *      id: <orderId>
- *      name: <orderId> // With this build the name on View "Takeaway order #10"
- *      cart: {
- *          products: [] 
- *          total: string
- *      }
- *      customerData: {
- *          name: string
- *          surname: string
- *          address: string
- *          city: string
- *          postcode: string
- *          notes: string
- *      }
- * } 
-*/
+import { CustomerData } from "./customer_data.model";
 
 export const OrdersEmptyState = [
     {
         id: -1,
         isNewOrder: true,
+        name: "New Takeaway Order",
         cart: { products: [], total: "0" },
-        name: "New Takeaway Order"
+        customerData: CustomerData,
     },
     {
         id: 911,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
-        name: "Salon 1"
+        name: "Salon 1",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 912,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
-        name: "Salon 2"
+        name: "Salon 2",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 913,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
-        name: "Salon 3"
+        name: "Salon 3",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 914,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
-        name: "Salon 4"
+        name: "Salon 4",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 915,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
-        name: "Salon 5"
+        name: "Salon 5",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 916,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
-        name: "Salon 6"
+        name: "Salon 6",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 917,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
-        name: "Salon 7"
+        name: "Salon 7",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 918,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 4,
-        name: "Salon 8"
+        name: "Salon 8",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 951,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 4,
-        name: "Terrase 9"
+        name: "Terrase 9",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 952,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 5,
-        name: "Terrase 10"
+        name: "Terrase 10",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 953,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
         name: "Terrase 11",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 954,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
         name: "Terrase 12",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 955,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
         name: "Terrase 13",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 956,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
         name: "Terrase 14",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
     {
         id: 957,
         isTable: true,
-        cart: { products: [], total: "0" },
         capacity: 2,
         name: "Terrase 15",
+        cart: { products: [], total: "0" },
+        customerData: CustomerData,
     },
 ]

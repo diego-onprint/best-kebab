@@ -12,11 +12,14 @@ import { calculatePercentage } from "../../utils/calculate/calculatePercentage"
 import { formatPrice } from "../../utils/format/formatPrice"
 import type { TicketDataType } from "../../types"
 import { useTicketContext } from "../../context/TicketContext"
+import { useActiveOrder, useOrderNumber } from "../../hooks/useActiveOrder"
 
 const KitchenTicket = () => {
 
-    const { kitchenTicketDomRef, customerData, orderNumber } = useTicketContext()
-    const products = useSelector<RootState, TicketDataType>(state => state.kitchenTicket)
+    const { kitchenTicketDomRef } = useTicketContext()
+    // const products = useSelector<RootState, TicketDataType>(state => state.kitchenTicket)
+    const order = useActiveOrder()
+    const orderNumber = useOrderNumber()
     const [date, setDate] = useState(new Date())
 
     useEffect(() => {
@@ -27,19 +30,22 @@ const KitchenTicket = () => {
         return () => clearInterval(intervalId)
     }, [])
 
-    return (
-        <div className="absolute bg-white w-[600px] p-4 -top-[800px] -left-[800px]">
 
+    // console.log("KITCHEN TICKET", order, orderNumber)
+
+    return (
+        // <div className="absolute bg-white w-[600px] p-4 -top-[800px] -left-[800px]">
+        <div className="absolute bg-white w-[600px] p-4 bottom-[0px] -left-[0px]">
             <div className="max-w-[650px] px-6" ref={kitchenTicketDomRef}>
                 <div className="logo-container">
                     <img className="logo" src="/assets/lovely-burger-ticket-logo.png" alt="" />
                 </div>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <p className="text-xl text-center mb-sm">Seuzachstrasse 2,</p>
                     <p className="text-xl text-center mb-sm">8413 Neftenbach</p>
                     <p className="text-xl text-center mb-sm">www.lovely-burger.ch</p>
                     <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
-                </div>
+                </div> */}
                 <p className="text-2xl font-bold py-2 capitalize">Küche</p>
                 <table className="ticket-table">
                     <thead className="ticket-head">
@@ -49,7 +55,7 @@ const KitchenTicket = () => {
                             <th className="ticket-th text-xl align-left">CHF</th>
                         </tr>
                     </thead>
-                    <tbody className="ticket-body">
+                    {/* <tbody className="ticket-body">
                         {
                             products.map(product => {
                                 return (
@@ -79,7 +85,7 @@ const KitchenTicket = () => {
                                 )
                             })
                         }
-                    </tbody>
+                    </tbody> */}
                 </table>
             </div>
         </div>

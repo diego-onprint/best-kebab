@@ -1,8 +1,7 @@
-import { Cart } from "../../types"
 
-export const formatCart = (cart: Cart) => {
+export const formatCart = (products) => {
 
-    const formattedCart = cart.products.map(product => {
+    const formattedCart = products.map(product => {
 
         //IF VARIATIONS, CALCULATE THE TOTAL - WOOCOMMERCE DOESNT ADD AUTOMATICALLY THE VARIATION PRICE TO THE TOTAL
         if (product.variations.length > 0) {

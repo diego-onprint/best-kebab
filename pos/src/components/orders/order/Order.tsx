@@ -5,8 +5,6 @@ const Order = ({ order }) => {
 
     const [open, setOpen] = useState(false)
 
-    console.log(order)
-
     return (
         <tr>
             <td onClick={() => setOpen(!open)} className="col-span-1 grid grid-cols-12 gap-2 py-5 cursor-pointer">

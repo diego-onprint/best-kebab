@@ -4,12 +4,13 @@ import Layout from "./components/layout/Layout"
 import { getLocalStorageItem } from "./utils/local_storage/localStorage"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store/store"
-import { updateCartInitialState } from "./store/cart/cartSlice"
-import { updateTablesInitialState } from "./store/tables/tablesSlice"
 import PageLoader from "./components/common/page_loader/PageLoader"
 import TicketContextProvider from "./context/TicketContext"
 import NewOrderNotificationContextProvider from "./context/NewOrderNotificationContext"
 import Takeaway from "./pages/takeaway/Takeaway"
+import { updateOrdersInitialState } from "./store/orders/ordersSlice"
+import Ticket from "./components/ticket/Ticket"
+import KitchenTicket from "./components/ticket/KitchenTicket"
 
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
 const Categories = lazy(() => import("./pages/categories/Categories"))
@@ -24,28 +25,15 @@ function App() {
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-
-    // Update state on start depending on localStorage
-    const cartLocalStorage = getLocalStorageItem("cart")
-    const tablesLocalStorage = getLocalStorageItem("tables")
-
     const ordersLocalStorage = getLocalStorageItem("orders")
-
-    console.log("LOCAL STORAGR.....", ordersLocalStorage)
-
-    if (cartLocalStorage) {
-      dispatch(updateCartInitialState(cartLocalStorage))
-    }
-
-    // if (tablesLocalStorage) {
-      // dispatch(updateTablesInitialState(tablesLocalStorage))
-    // }
+    ordersLocalStorage && dispatch(updateOrdersInitialState(ordersLocalStorage))
   }, [dispatch])
-
 
   return (
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
+        {/* <Ticket /> */}
+        <KitchenTicket />
         <Layout>
           <Routes>
             <Route

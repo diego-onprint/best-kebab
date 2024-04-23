@@ -15,136 +15,138 @@ import { useTicketContext } from "../../context/TicketContext"
 
 const Ticket = () => {
 
-    const { ticketDomRef, customerData, orderNumber } = useTicketContext()
-    const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
-    const cart = useSelector<RootState, Cart>(state => state.cart)
-    const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
-    const currentTable = useSelector<RootState, Table>(state => {
-        const tables = state.tables.tables
-        const table = tables.find(table => table.id === activeTable)
-        return table
-    })
-    // const currentClient = currentTable ? currentTable.name : "Takeaway"
-    const checkoutCart = currentTable ? currentTable.cart : cart
-    const tax = ticket.orderType.value === "tisch" ? {
-        rate: 8.1,
-        total: calculatePercentage(checkoutCart.total, 8.1).toFixed(2)
-    } : {
-        rate: 2.5,
-        total: calculatePercentage(checkoutCart.total, 2.6).toFixed(2),
-    }
-    const [date, setDate] = useState(new Date())
+    // const { ticketDomRef, customerData, orderNumber } = useTicketContext()
+    // const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
+    // const cart = useSelector<RootState, Cart>(state => state.cart)
+    // const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
+    // const currentTable = useSelector<RootState, Table>(state => {
+    //     const tables = state.tables.tables
+    //     const table = tables.find(table => table.id === activeTable)
+    //     return table
+    // })
+    // // const currentClient = currentTable ? currentTable.name : "Takeaway"
+    // const checkoutCart = currentTable ? currentTable.cart : cart
+    // const tax = ticket.orderType.value === "tisch" ? {
+    //     rate: 8.1,
+    //     total: calculatePercentage(checkoutCart.total, 8.1).toFixed(2)
+    // } : {
+    //     rate: 2.5,
+    //     total: calculatePercentage(checkoutCart.total, 2.6).toFixed(2),
+    // }
+    // const [date, setDate] = useState(new Date())
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setDate(new Date())
-        }, 60000)
+    // useEffect(() => {
+    //     const intervalId = setInterval(() => {
+    //         setDate(new Date())
+    //     }, 60000)
 
-        return () => clearInterval(intervalId)
-    }, [])
+    //     return () => clearInterval(intervalId)
+    // }, [])
 
-    return (
-        <div className="absolute bg-white w-[600px] p-4 -top-[800px] -left-[800px]">
-            <div className="max-w-[650px] px-6" ref={ticketDomRef}>
-                <div className="logo-container">
-                    <img className="logo" src="/assets/lovely-burger-ticket-logo.png" alt="" />
-                </div>
-                <div className="mb-4">
-                    <p className="text-xl text-center mb-sm">Seuzachstrasse 2,</p>
-                    <p className="text-xl text-center mb-sm">8413 Neftenbach</p>
-                    <p className="text-xl text-center mb-sm">www.lovely-burger.ch</p>
-                    <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
-                </div>
-                <div className="mb-2">
-                    {/* HERE PRINT THE ORDER NUMBER FOR GENERATED TAKEAWAY ORDERS: TKW#0001 */}
-                    {
-                        orderNumber.length > 0 ?
-                            <p>
-                                <span className="text-xl font-bold">Bestellung: </span>
-                                <span className="text-xl">#{orderNumber}</span>
-                            </p> : null
-                    }
-                    <p>
-                        <span className="text-xl font-bold">Bestelldatum: </span>
-                        <span className="text-xl">{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
-                    </p>
-                    <p className="text-2xl font-bold py-2 capitalize">{ticket.orderType.name}</p>
-                    <p className="text-xl font-bold">Kundendaten:</p>
-                    {customerData.name.length > 0 ? <p>{customerData.name} {customerData.surname}</p> : null}
-                    {customerData.address.length > 0 ? <p>{customerData.address}, {customerData.city}, {customerData.postcode}</p> : null}
-                    {customerData.email.length > 0 ? <p>{customerData.email}</p> : null}
-                    {customerData.phone.length > 0 ? <p>{customerData.phone}</p> : null}
-                    {currentTable ? <p>{currentTable.name}</p> : null}
-                </div>
-                <table className="ticket-table">
-                    <thead className="ticket-head">
-                        <tr>
-                            <th className="ticket-th th qty text-xl align-left">Q</th>
-                            <th className="ticket-th th art text-xl align-left">Produkt</th>
-                            <th className="ticket-th text-xl align-left">CHF</th>
-                        </tr>
-                    </thead>
-                    <tbody className="ticket-body">
-                        {
-                            checkoutCart.products.map(product => {
-                                return (
-                                    <Fragment key={product.uid}>
-                                        <tr>
-                                            <td className="ticket-td qty-col" rowSpan={product.variations.length + 1}>
-                                                <p className="absolute top-3 text-sm">{product.qty}</p>
-                                            </td>
-                                            <td className="ticket-td text-2xl" style={{ "flex": 1 }}>
-                                                <p>{product.name}</p>
-                                                {product.notes.length > 0 ? <p className="text-sm">Notes: {product.notes}</p> : null}
-                                            </td>
-                                            <td className="ticket-td text-2xl" style={{ "width": "55px" }}>{formatPrice((product.price * product.qty).toString())}</td>
-                                        </tr>
-                                        {
-                                            product.variations.length > 0 ?
-                                                product.variations.map((variation) => {
-                                                    return (
-                                                        <tr key={variation.id}>
-                                                            <td className="ticket-td text-sm">{variation.name}</td>
-                                                            <td className="ticket-td text-sm">{formatPrice((variation.price).toString())}</td>
-                                                        </tr>
-                                                    )
-                                                }) : null
-                                        }
-                                    </Fragment>
-                                )
-                            })
-                        }
-                    </tbody>
-                </table>
-                {
-                    customerData.notes.length > 0 ?
-                        <p className="text-xl mt-2">
-                            <span className="font-semibold">Bemerkung: </span>
-                            <span>{customerData.notes}</span>
-                        </p> : null
-                }
-                <div className="flex flex-col gap-1 mt-2">
-                    {/* <div className="flex justify-between">
-                        <p className="text-xl">Rabatt</p>
-                        <p className="text-xl">CHF0</p>
-                    </div> */}
-                    <div className="flex justify-between">
-                        <p className="text-xl">Versand</p>
-                        <p className="text-xl">CHF0</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p className="text-2xl emph">Gesamt</p>
-                        <p className="text-2xl emph">CHF{checkoutCart.total}</p>
-                    </div>
-                    <p className="text-sm">MwSt. CHF. {tax.total} -{'>'} {tax.rate}% MwsT. inkl</p>
-                    <p className="text-2xl">
-                        <span className="text-xl font-bold">Zahlung: </span>
-                        <span className="capitalize">{ticket.paymentMethod.name}</span>
-                    </p>
-                </div>
-            </div >
-        </div>
-    )
+    return<>hola</>
+
+    // return (
+    //     <div className="absolute bg-white w-[600px] p-4 -top-[800px] -left-[800px]">
+    //         <div className="max-w-[650px] px-6" ref={ticketDomRef}>
+    //             <div className="logo-container">
+    //                 <img className="logo" src="/assets/lovely-burger-ticket-logo.png" alt="" />
+    //             </div>
+    //             <div className="mb-4">
+    //                 <p className="text-xl text-center mb-sm">Seuzachstrasse 2,</p>
+    //                 <p className="text-xl text-center mb-sm">8413 Neftenbach</p>
+    //                 <p className="text-xl text-center mb-sm">www.lovely-burger.ch</p>
+    //                 <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
+    //             </div>
+    //             <div className="mb-2">
+    //                 {/* HERE PRINT THE ORDER NUMBER FOR GENERATED TAKEAWAY ORDERS: TKW#0001 */}
+    //                 {
+    //                     orderNumber.length > 0 ?
+    //                         <p>
+    //                             <span className="text-xl font-bold">Bestellung: </span>
+    //                             <span className="text-xl">#{orderNumber}</span>
+    //                         </p> : null
+    //                 }
+    //                 <p>
+    //                     <span className="text-xl font-bold">Bestelldatum: </span>
+    //                     <span className="text-xl">{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
+    //                 </p>
+    //                 <p className="text-2xl font-bold py-2 capitalize">{ticket.orderType.name}</p>
+    //                 <p className="text-xl font-bold">Kundendaten:</p>
+    //                 {customerData.name.length > 0 ? <p>{customerData.name} {customerData.surname}</p> : null}
+    //                 {customerData.address.length > 0 ? <p>{customerData.address}, {customerData.city}, {customerData.postcode}</p> : null}
+    //                 {customerData.email.length > 0 ? <p>{customerData.email}</p> : null}
+    //                 {customerData.phone.length > 0 ? <p>{customerData.phone}</p> : null}
+    //                 {currentTable ? <p>{currentTable.name}</p> : null}
+    //             </div>
+    //             <table className="ticket-table">
+    //                 <thead className="ticket-head">
+    //                     <tr>
+    //                         <th className="ticket-th th qty text-xl align-left">Q</th>
+    //                         <th className="ticket-th th art text-xl align-left">Produkt</th>
+    //                         <th className="ticket-th text-xl align-left">CHF</th>
+    //                     </tr>
+    //                 </thead>
+    //                 <tbody className="ticket-body">
+    //                     {
+    //                         checkoutCart.products.map(product => {
+    //                             return (
+    //                                 <Fragment key={product.uid}>
+    //                                     <tr>
+    //                                         <td className="ticket-td qty-col" rowSpan={product.variations.length + 1}>
+    //                                             <p className="absolute top-3 text-sm">{product.qty}</p>
+    //                                         </td>
+    //                                         <td className="ticket-td text-2xl" style={{ "flex": 1 }}>
+    //                                             <p>{product.name}</p>
+    //                                             {product.notes.length > 0 ? <p className="text-sm">Notes: {product.notes}</p> : null}
+    //                                         </td>
+    //                                         <td className="ticket-td text-2xl" style={{ "width": "55px" }}>{formatPrice((product.price * product.qty).toString())}</td>
+    //                                     </tr>
+    //                                     {
+    //                                         product.variations.length > 0 ?
+    //                                             product.variations.map((variation) => {
+    //                                                 return (
+    //                                                     <tr key={variation.id}>
+    //                                                         <td className="ticket-td text-sm">{variation.name}</td>
+    //                                                         <td className="ticket-td text-sm">{formatPrice((variation.price).toString())}</td>
+    //                                                     </tr>
+    //                                                 )
+    //                                             }) : null
+    //                                     }
+    //                                 </Fragment>
+    //                             )
+    //                         })
+    //                     }
+    //                 </tbody>
+    //             </table>
+    //             {
+    //                 customerData.notes.length > 0 ?
+    //                     <p className="text-xl mt-2">
+    //                         <span className="font-semibold">Bemerkung: </span>
+    //                         <span>{customerData.notes}</span>
+    //                     </p> : null
+    //             }
+    //             <div className="flex flex-col gap-1 mt-2">
+    //                 {/* <div className="flex justify-between">
+    //                     <p className="text-xl">Rabatt</p>
+    //                     <p className="text-xl">CHF0</p>
+    //                 </div> */}
+    //                 <div className="flex justify-between">
+    //                     <p className="text-xl">Versand</p>
+    //                     <p className="text-xl">CHF0</p>
+    //                 </div>
+    //                 <div className="flex justify-between">
+    //                     <p className="text-2xl emph">Gesamt</p>
+    //                     <p className="text-2xl emph">CHF{checkoutCart.total}</p>
+    //                 </div>
+    //                 <p className="text-sm">MwSt. CHF. {tax.total} -{'>'} {tax.rate}% MwsT. inkl</p>
+    //                 <p className="text-2xl">
+    //                     <span className="text-xl font-bold">Zahlung: </span>
+    //                     <span className="capitalize">{ticket.paymentMethod.name}</span>
+    //                 </p>
+    //             </div>
+    //         </div >
+    //     </div>
+    // )
 }
 
 export default Ticket

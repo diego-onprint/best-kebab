@@ -163,20 +163,7 @@ app.post("/api/new-local-order", async (req, res) => {
 
     let result
 
-    const data = req.body
-
-    const order = {
-        payment_method: 'bacs',
-        payment_method_title: 'Direct Bank Transfer',
-        set_paid: true,
-        billing: {
-            first_name: data.customer,
-        },
-        shipping: {
-            first_name: "test - local order",
-        },
-        line_items: data.products,
-    }
+    const order = req.body
 
     try {
 
@@ -194,7 +181,6 @@ app.post("/api/new-local-order", async (req, res) => {
     } catch (err) {
 
         res.status(500).send({ ok: false, msg: err })
-
     }
 
     res.send({ ok: true, result: result }).status(200)

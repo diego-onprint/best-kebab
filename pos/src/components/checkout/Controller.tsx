@@ -9,7 +9,9 @@ import { useTicketContext } from "../../context/TicketContext"
 import { setOrderType, setPaymentMethod } from "../../store/ticket/ticketSlice"
 import View from "./View"
 import type { Cart, Table, TicketDataType } from "../../types"
-import { CustomerData } from "../../models/customer_data"
+import { CustomerData } from "../../models/customer_data.model"
+import { useActiveOrder } from "../../hooks/useActiveOrder"
+import { updateOrderPaymentMethod } from "../../store/orders/ordersSlice"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -20,43 +22,25 @@ type PropsTypes = {
 const Controller = ({ setOpenCheckout }: PropsTypes) => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const cart = useSelector<RootState, Cart>(state => state.cart)
-    const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
-    const activeTable = useSelector<RootState, Table["id"]>(state => state.tables.activeTable)
-    const { ticketDomRef, customerData, setCustomerData, setOrderNumber } = useTicketContext()
-    const currentTable = useSelector<RootState, Table>(state => {
-        const tables = state.tables.tables
-        const table = tables.find(table => table.id === activeTable)
-        return table
-    })
-    const currentClient = currentTable ? currentTable.name : "Takeaway"
-    const checkoutCart = currentTable ? currentTable.cart : cart
+    // const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
+    // const { ticketDomRef, customerData, setCustomerData, setOrderNumber } = useTicketContext()
+    const [printReceipt, setPrintReceipt] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
 
-    const handleForm = (e) => {
-        const { name, value } = e.target
-        setCustomerData({
-            ...customerData,
-            [name]: value
-        })
-    }
+    const order = useActiveOrder()
 
     const handleCancel = () => {
         setOpenCheckout(false)
-        setCustomerData(CustomerData)
-        dispatch(setOrderType({name: "Lieferung", value: "delivery"}))
     }
 
     const handlePaymentMethod = (method: TicketDataType["paymentMethod"]) => {
-        dispatch(setPaymentMethod(method))
-    }
-
-    const handleOrderType = (type: TicketDataType["orderType"]) => {
-        dispatch(setOrderType(type))
+        dispatch(updateOrderPaymentMethod(method))
     }
 
     const handleCheckout = async () => {
+
+        console.log(order)
 
         setLoading(true)
 
@@ -65,18 +49,31 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
 
             const newOrderUrl = import.meta.env.DEV ? "http://localhost:8080/api/new-local-order" : "https://lovely-burger-pos.diegoui.com.ar/api/new-local-order"
 
-            const formattedCart = formatCart(checkoutCart)
-
-            const orderData = {
-                customer: currentTable ? currentClient : "Takeaway",
-                payment_method: "Bank Transfer / Cash",
-                products: formattedCart,
+            const formattedCart = formatCart(order.cart.products)
+            
+            const formattedOrder = {
+                payment_method: order.customerData.paymentMethod.name,
+                payment_method_title: order.customerData.paymentMethod.name,
+                set_paid: true,
+                billing: {
+                    first_name: order.isTkw ? order.customerData.name : order.name,
+                    last_name: order.customerData.surname,
+                    address_1: order.customerData.address,
+                    city: order.customerData.city,
+                    postcode: order.customerData.postcode,
+                    email: order.isTkw ? order.customerData.email : "mandatory@someemail.com",
+                    phone: order.customerData.phone,
+                },
+                shipping: {
+                    first_name: order.name,
+                },
+                line_items: formattedCart,
             }
 
             const options = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
+                body: JSON.stringify(formattedOrder)
             }
 
             const response = await fetch(newOrderUrl, options)
@@ -89,13 +86,23 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
 
             console.log("JSON", json)
 
-            // currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
-            setOrderNumber(json.result.number)
-            setTimeout(() => {
-                printTicket(ticketDomRef.current)
-                setOrderNumber("")
-            }, 500)
-            setOpenCheckout(false)
+
+
+
+            // // currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
+            // setOrderNumber(json.result.number)
+
+            // SEND THE ORDER NUMBER TO THE TICKET TO PRINT
+
+            // DELETE ORDER FROM STORE AND LOCAL STORAGE
+
+            // SET CART TO -1
+
+            // setTimeout(() => {
+            //     printTicket(ticketDomRef.current)
+            //     setOrderNumber("")
+            // }, 500)
+            // setOpenCheckout(false)
 
         } catch (err) {
 
@@ -108,25 +115,16 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
         }
     }
 
-    // If it is a table set customer data automatically
-    useEffect(() => {
-        if (currentTable) {
-            dispatch(setOrderType({ name: "Tisch", value: "tisch" }))
-        }
-    }, [currentTable, dispatch])
-
     return (
         <View
             loading={loading}
-            error={error}
-            checkoutCart={checkoutCart}
-            paymentMethod={ticket.paymentMethod}
-            orderType={ticket.orderType}
-            handlePaymentMethod={handlePaymentMethod}
-            handleOrderType={handleOrderType}
-            handleForm={handleForm}
             handleCancel={handleCancel}
+            order={order}
+            printReceipt={printReceipt}
+            setPrintReceipt={setPrintReceipt}
+            handlePaymentMethod={handlePaymentMethod}
             handleCheckout={handleCheckout}
+            error={error}
         />
     )
 }
