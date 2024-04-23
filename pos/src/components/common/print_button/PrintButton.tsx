@@ -1,5 +1,4 @@
 import { ReactNode, RefObject, useState } from 'react'
-import { useTicketContext } from '../../../context/TicketContext'
 import { printTicket } from '../../../utils/print/printTicket'
 
 const PrintButton = ({ 

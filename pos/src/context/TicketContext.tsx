@@ -1,19 +1,22 @@
-import { ReactNode, createContext, useContext, useRef } from "react"
+import { ReactNode, createContext, useContext, useRef, useState } from "react"
 
 const TicketContext = createContext(null)
-// const ticketDomRef = createRef()
-// const kitchenTicketDomRef = createRef()
 
 export const useTicketContext = () => useContext(TicketContext)
 
 const TicketContextProvider = ({ children }: { children: ReactNode}) => {
 
-  const kitchenTicketDomRef = useRef()
   const ticketDomRef = useRef()
+  const kitchenTicketDomRef = useRef()
+  const specialKitchenTicketDomRef = useRef()
+  const [wooOrderNumber, setWooOrderNumber] = useState(0)
 
   const values = {
     ticketDomRef,
     kitchenTicketDomRef,
+    specialKitchenTicketDomRef,
+    wooOrderNumber,
+    setWooOrderNumber,
   }
 
   return (

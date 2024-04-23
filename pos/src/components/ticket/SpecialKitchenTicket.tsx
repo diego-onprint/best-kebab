@@ -10,36 +10,31 @@ make it just tailwind
 */
 
 import { Fragment, useEffect, useState } from "react"
-import { calculatePercentage } from "../../utils/calculate/calculatePercentage"
 import { formatPrice } from "../../utils/format/formatPrice"
 import { useTicketContext } from "../../context/TicketContext"
+import { useSelector } from "react-redux"
+import { RootState } from "../../store/store"
 import { useActiveOrder } from "../../hooks/useActiveOrder"
 
-const Ticket = () => {
-
-    const { ticketDomRef, wooOrderNumber } = useTicketContext()
+const SpecialKitchenTicket = () => {
+    const { specialKitchenTicketDomRef } = useTicketContext()
     const order = useActiveOrder()
+    const kitchenTicket = useSelector<RootState, []>(state => state.kitchenTicket)
     const [date, setDate] = useState(new Date())
-    const tax = order.isTable ? {
-        rate: 8.1,
-        total: calculatePercentage(parseInt(order.cart.total), 8.1).toFixed(2)
-    } : {
-        rate: 2.6,
-        total: calculatePercentage(parseInt(order.cart.total), 2.6).toFixed(2),
-    }
 
     useEffect(() => {
         const intervalId = setInterval(() => {
             setDate(new Date())
-        }, 60000)
+        }, 30000)
 
         return () => clearInterval(intervalId)
     }, [])
 
     return (
-        // <div className="absolute bg-white w-[600px] p-4 bottom-[0px] -left-[0px]">
-         <div className="absolute bg-white w-[600px] p-4 -top-[800px] -left-[800px]">
-            <div className="max-w-[650px] px-6 py-4" ref={ticketDomRef}>
+        // FOR DEBUGGING DIV
+        <div className="absolute bg-white w-[600px] p-4 bottom-[0px] -left-[0px]">
+        {/* <div className="absolute bg-white w-[600px] p-4 -top-[800px] -left-[800px]"> */}
+            <div className="max-w-[650px] px-6 py-4" ref={specialKitchenTicketDomRef}>
                 <div className="logo-container">
                     <img className="logo" src="/assets/lovely-burger-ticket-logo.png" alt="" />
                 </div>
@@ -49,29 +44,12 @@ const Ticket = () => {
                     <p className="text-xl text-center mb-sm">www.lovely-burger.ch</p>
                     <p className="text-xl text-center mb-sm">MWST CHE-166.937.519</p>
                 </div>
-                <p>
-                    <span className="text-xl font-bold">Bestellung: </span>
-                    {
-                        wooOrderNumber !== 0 ?
-                        <span className="text-xl">#{wooOrderNumber}</span> :
-                        <span className="text-xl">{order.name}</span>
-                    }
-                </p>
-                <p>
+                <p className="text-2xl font-bold mb-1 capitalize">Küche (Partial Ticket)</p>
+                <p className="text-2xl font-bold mb-1 capitalize">{order.name}</p>
+                <p className="mb-4">
                     <span className="text-xl font-bold">Bestelldatum: </span>
                     <span className="text-xl">{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
                 </p>
-                {
-                    order.isTkw ?
-                        <div className="mb-2">
-                            <p className="text-xl font-bold">Kundendaten:</p>
-                            {order.customerData.name.length > 0 ? <p className="text-xl">{order.customerData.name} {order.customerData.surname}</p> : null}
-                            {order.customerData.address.length > 0 ? <p className="text-xl">{order.customerData.address}</p> : null}
-                            {order.customerData.city.length > 0 ? <p className="text-xl">{order.customerData.city}, {order.customerData.postcode}</p> : null}
-                            {order.customerData.phone.length > 0 ? <p className="text-xl">{order.customerData.phone}</p> : null}
-                            {order.customerData.email.length > 0 ? <p className="text-xl">{order.customerData.email}</p> : null}
-                        </div> : null
-                }
                 <table className="ticket-table">
                     <thead className="ticket-head">
                         <tr>
@@ -82,7 +60,7 @@ const Ticket = () => {
                     </thead>
                     <tbody className="ticket-body">
                         {
-                            order.cart.products.map(product => {
+                            kitchenTicket.products.map(product => {
                                 return (
                                     <Fragment key={product.uid}>
                                         <tr>
@@ -114,26 +92,11 @@ const Ticket = () => {
                 </table>
                 <p className="text-xl mt-2">
                     <span className="font-semibold">Bemerkung: </span>
-                    <span>{order.customerData.notes}</span>
+                    <span>{kitchenTicket.notes}</span>
                 </p>
-                <div className="flex flex-col gap-1 mt-2">
-                    <div className="flex justify-between">
-                        <p className="text-xl">Versand</p>
-                        <p className="text-xl">CHF0</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p className="text-2xl emph">Gesamt</p>
-                        <p className="text-2xl emph">CHF{order.cart.total}</p>
-                    </div>
-                    <p className="text-sm">MwSt. CHF. {tax.total} -{'>'} {tax.rate}% MwsT. inkl</p>
-                    <p className="text-xl mt-2">
-                        <span className="font-semibold">Zahlung: </span>
-                        <span>{order.customerData.paymentMethod?.name}</span>
-                    </p>
-                </div>
-            </div >
+            </div>
         </div>
     )
 }
 
-export default Ticket
+export default SpecialKitchenTicket

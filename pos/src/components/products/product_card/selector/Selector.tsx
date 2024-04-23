@@ -31,6 +31,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
             price: product.price,
             qty: qty,
             variations: selectedVarations,
+            parent: product.parent,
             timestamp: timestamp,
             notes: notesRef.current.value,
         }

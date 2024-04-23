@@ -17,17 +17,15 @@ const Controller = () => {
     const kitchenTicket = useSelector<RootState, []>(state => state.kitchenTicket)
     const order = useActiveOrder()
     const orderNumber = useOrderNumber()
-    const hasSelectedItemsToPrint = kitchenTicket.length > 0
+    const hasSelectedItemsToPrint = kitchenTicket.products.length > 0
     const disabled = order.cart.products.length === 0
     const [loading, setLoading] = useState(false)
-
-    console.log("Cart Current Order", order)
 
     const getCartTitle = () => {
 
         if (order?.isTable) return order.name
 
-        if (order.isNewOrder) return `New Takeaway Order #${orderNumber}`
+        if (order.isNewOrder) return `New Order #${orderNumber}`
 
         return `Abholung/Lieferung #${order.id}`
     }

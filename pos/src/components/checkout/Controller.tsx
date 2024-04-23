@@ -10,8 +10,8 @@ import { setOrderType, setPaymentMethod } from "../../store/ticket/ticketSlice"
 import View from "./View"
 import type { Cart, Table, TicketDataType } from "../../types"
 import { CustomerData } from "../../models/customer_data.model"
-import { useActiveOrder } from "../../hooks/useActiveOrder"
-import { updateOrderPaymentMethod } from "../../store/orders/ordersSlice"
+import { useActiveOrder, useWooOrderNumber } from "../../hooks/useActiveOrder"
+import { removeOrder, setCurrentOrder, updateOrderPaymentMethod, updateWooOrderNumber } from "../../store/orders/ordersSlice"
 
 type PropsTypes = {
     setOpenCheckout: Dispatch<SetStateAction<boolean>>
@@ -22,13 +22,11 @@ type PropsTypes = {
 const Controller = ({ setOpenCheckout }: PropsTypes) => {
 
     const dispatch = useDispatch<AppDispatch>()
-    // const ticket = useSelector<RootState, TicketDataType>(state => state.ticket)
-    // const { ticketDomRef, customerData, setCustomerData, setOrderNumber } = useTicketContext()
+    const order = useActiveOrder()
+    const { ticketDomRef, setWooOrderNumber, wooOrderNumber } = useTicketContext()
     const [printReceipt, setPrintReceipt] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
-
-    const order = useActiveOrder()
 
     const handleCancel = () => {
         setOpenCheckout(false)
@@ -39,8 +37,6 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
     }
 
     const handleCheckout = async () => {
-
-        console.log(order)
 
         setLoading(true)
 
@@ -86,23 +82,23 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
 
             console.log("JSON", json)
 
+            if (printReceipt) {
 
+                setWooOrderNumber(json.result.id)
 
+                setTimeout(async () => {
+                    await printTicket(ticketDomRef.current)
+                    setWooOrderNumber(0)
+                }, 1000)
+            }
+            
+            // Remove current order - set current order to -1
+            dispatch(setCurrentOrder(-1))
 
-            // // currentTable ? dispatch(clearTableCart()) : dispatch(clearCart())
-            // setOrderNumber(json.result.number)
+            // Delete order from store and local storage 
+            dispatch(removeOrder(order.id))
 
-            // SEND THE ORDER NUMBER TO THE TICKET TO PRINT
-
-            // DELETE ORDER FROM STORE AND LOCAL STORAGE
-
-            // SET CART TO -1
-
-            // setTimeout(() => {
-            //     printTicket(ticketDomRef.current)
-            //     setOrderNumber("")
-            // }, 500)
-            // setOpenCheckout(false)
+            setOpenCheckout(false)
 
         } catch (err) {
 

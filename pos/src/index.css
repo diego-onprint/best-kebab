@@ -114,10 +114,6 @@
   display: flex; 
 }
 
-.text-sm {
-  font-size: 20px;
-}
-
 .text-center {
   text-align: center;
 }

@@ -11,6 +11,7 @@ import Takeaway from "./pages/takeaway/Takeaway"
 import { updateOrdersInitialState } from "./store/orders/ordersSlice"
 import Ticket from "./components/ticket/Ticket"
 import KitchenTicket from "./components/ticket/KitchenTicket"
+import SpecialKitchenTicket from "./components/ticket/SpecialKitchenTicket"
 
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
 const Categories = lazy(() => import("./pages/categories/Categories"))
@@ -32,8 +33,9 @@ function App() {
   return (
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
-        {/* <Ticket /> */}
+        <Ticket />
         <KitchenTicket />
+        <SpecialKitchenTicket />
         <Layout>
           <Routes>
             <Route

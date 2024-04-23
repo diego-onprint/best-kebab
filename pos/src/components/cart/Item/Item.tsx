@@ -3,17 +3,21 @@ import { formatPrice } from "../../../utils/format/formatPrice"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../../store/store"
 import { addKitchenTicketProduct, removeKitchenTicketProduct } from "../../../store/ticket_kitchen/kitchenTicketSlice"
+import { useActiveOrder } from "../../../hooks/useActiveOrder"
 
 const Item = ({ product, handleDelete }) => {
 
     const dispatch = useDispatch<AppDispatch>()
     const [selected, setSelected] = useState(false)
+    const order = useActiveOrder()
 
     const handleClick = () => {
-        setSelected(!selected)
+        if (!order.isNewOrder) {
 
-        !selected ? dispatch(addKitchenTicketProduct(product)) : dispatch(removeKitchenTicketProduct(product))
-        
+            setSelected(!selected)
+    
+            !selected ? dispatch(addKitchenTicketProduct(product)) : dispatch(removeKitchenTicketProduct(product))
+        }
     }
     
     return (
