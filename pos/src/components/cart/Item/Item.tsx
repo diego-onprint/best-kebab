@@ -1,27 +1,9 @@
-import { useState } from "react"
 import { formatPrice } from "../../../utils/format/formatPrice"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "../../../store/store"
-import { addKitchenTicketProduct, removeKitchenTicketProduct } from "../../../store/ticket_kitchen/kitchenTicketSlice"
-import { useActiveOrder } from "../../../hooks/useActiveOrder"
 
 const Item = ({ product, handleDelete }) => {
-
-    const dispatch = useDispatch<AppDispatch>()
-    const [selected, setSelected] = useState(false)
-    const order = useActiveOrder()
-
-    const handleClick = () => {
-        if (!order.isNewOrder) {
-
-            setSelected(!selected)
-    
-            !selected ? dispatch(addKitchenTicketProduct(product)) : dispatch(removeKitchenTicketProduct(product))
-        }
-    }
     
     return (
-        <li onClick={handleClick} className={`${selected && "bg-slate-100"} flex gap-6 p-4 justify-between items-start`}>
+        <li className="flex gap-6 p-4 justify-between items-start">
             <div className="flex-1">
                 <div className="flex justify-between">
                     <div className="flex gap-2">

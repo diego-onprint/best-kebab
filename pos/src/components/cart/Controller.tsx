@@ -4,7 +4,6 @@ import View from './View'
 import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
 import ErrorFallback from "../common/error_fallback/ErrorFallback"
 import { clearOrderCart, removeOrderProduct, setCurrentOrder } from "../../store/orders/ordersSlice"
-import type { RootState } from "../../store/store"
 import type { AppDispatch } from "../../store/store"
 import type { CartProduct } from "../../types"
 import { useActiveOrder, useOrderNumber } from "../../hooks/useActiveOrder"
@@ -14,10 +13,8 @@ const Controller = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-    const kitchenTicket = useSelector<RootState, []>(state => state.kitchenTicket)
     const order = useActiveOrder()
     const orderNumber = useOrderNumber()
-    const hasSelectedItemsToPrint = kitchenTicket.products.length > 0
     const disabled = order.cart.products.length === 0
     const [loading, setLoading] = useState(false)
 
@@ -51,7 +48,6 @@ const Controller = () => {
                 handleDelete={handleDelete}
                 handleClearCart={handleClearCart}
                 clearCurrentOrder={clearCurrentOrder}
-                hasSelectedItemsToPrint={hasSelectedItemsToPrint}
                 getCartTitle={getCartTitle}
             />
         </ErrorBoundary>
