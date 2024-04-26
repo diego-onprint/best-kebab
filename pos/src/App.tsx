@@ -38,7 +38,8 @@ function App() {
               path="/"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  <Dashboard />
+                  {/* <Dashboard /> */}
+                  <p>Dashboard</p>
                 </Suspense>
               }
             />
@@ -50,14 +51,14 @@ function App() {
                 </Suspense>
               }
             />
-            <Route
+            {/* <Route
               path="/subcategories/:id"
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Subcategories />
                 </Suspense>
               }
-            />
+            /> */}
             <Route
               path="/products/:id"
               element={
@@ -70,7 +71,8 @@ function App() {
               path="/tables"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  <Tables />
+                  {/* <Tables /> */}
+                  <p>Tables</p>
                 </Suspense>
               }
             />
@@ -79,7 +81,8 @@ function App() {
               path="/orders"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  <Orders />
+                  {/* <Orders /> */}
+                  <p>Orders</p>
                 </Suspense>
               }
             />
@@ -87,7 +90,8 @@ function App() {
               path="/takeaway"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  <Takeaway />
+                  {/* <Takeaway /> */}
+                  <p>Takeaway</p>
                 </Suspense>
               }
             />

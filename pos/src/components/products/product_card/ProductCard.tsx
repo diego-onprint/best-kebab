@@ -17,12 +17,11 @@ const ProductCard = ({ product }: PropsTypes) => {
         onClick={() => setOpenSelector(!openSelector)}
         role="button"
         tabIndex={0}
-        key={product.id}
         className="col-span-6 xl:col-span-4 h-24 border border-zinc-200 bg-white rounded-lg"
       >
         <div className="p-2">
-          <h3>{product.name}</h3>
-          <p>CHF. <span className="font-bold">{formatPrice(product.price)}</span></p>
+          <h3>{product.product_name}</h3>
+          <p>CHF. <span className="font-bold">{formatPrice(product.product_price)}</span></p>
         </div>
       </article>
       {openSelector ? <Selector product={product} openSelector={openSelector} setOpenSelector={setOpenSelector} /> : null}

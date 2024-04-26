@@ -1,22 +1,31 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { Category, Product, ProductVariationResponse } from "../../types"
 
-const baseUrl = import.meta.env.DEV ? "http://localhost:5173/api/" : "https://lovely-burger-pos.diegoui.com.ar/api/"
+const baseUrl = import.meta.env.DEV ? 
+"http://localhost:5173/api/" : 
+"https://lovely-burger-pos.diegoui.com.ar/api/"
 
 export const api = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl}),
     endpoints: (builder) => ({
-        getCategories: builder.query<{ categories: Category[]}, string | undefined>({
+        getAllProducts: builder.query<Product[], void>({
+            query: () => "/products",
+            keepUnusedDataFor: 21600,
+        }),
+        getCategories: builder.query<Category[], void>({
             query: () => `categories/`,
             keepUnusedDataFor: 21600,
         }),
-        getSubCategories: builder.query<{ categories: Category[]}, string | undefined>({
-            query: (id) => `subcategories/${id}`,
+        getProductsByCategory: builder.query<Product[], string | undefined>({
+            query: (id) => `products/${id}`,
             keepUnusedDataFor: 21600,
         }),
-        getProductsByCategory: builder.query<{products: Product[]}, string | undefined>({
-            query: (id) => `products/${id}`,
+
+/////////////////////////////////////////////////////
+
+        getSubCategories: builder.query<{ categories: Category[]}, string | undefined>({
+            query: (id) => `subcategories/${id}`,
             keepUnusedDataFor: 21600,
         }),
         getProductsVariations: builder.query<ProductVariationResponse, Product["id"] | undefined>({
@@ -32,8 +41,9 @@ export const api = createApi({
     })
 })
 
-export const { 
-    useGetCategoriesQuery, 
+export const {
+    useGetCategoriesQuery,
+    useGetAllProductsQuery,
     useGetSubCategoriesQuery,
     useGetProductsByCategoryQuery,
     useGetProductsVariationsQuery,

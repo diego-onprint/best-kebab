@@ -1,19 +1,49 @@
-export type Product = {
-    id: number
-    name: string
-    price: string
-    images: ProductImage[]
-    variations: number[]
-    timestamp: string
+export type Category = {
+    category_uid: number
+    category_id: string
+    category_name: string
+    parent_category: string
+    subcategories: boolean
 }
 
-export type Category = {
-    id: number
-    name: string
-    slug: string
-    image: ProductImage
-    description: string
+export type Product = {
+    product_id: number
+	product_name: string
+	product_price: number 
+	product_stock: number
+	product_parent_category: string
+	product_description: string
 }
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////
+////////////////////////////////// CLEANUP
+//////////////////////////////////////////
+
+
+// export type Product = {
+//     id: number
+//     name: string
+//     price: string
+//     images: ProductImage[]
+//     variations: number[]
+//     timestamp: string
+// }
+
+// export type Category = {
+//     id: number
+//     name: string
+//     slug: string
+//     image: ProductImage
+//     description: string
+// }
 
 type ProductImage = {
     id: number
@@ -27,9 +57,9 @@ export type Cart = {
     total: string
 }
 
-export type CartProduct = Product & { 
+export type CartProduct = Product & {
     uid: string
-    qty: number 
+    qty: number
     variation: CartProductVariation
     notes: string
 }
