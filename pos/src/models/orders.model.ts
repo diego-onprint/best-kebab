@@ -4,7 +4,7 @@ export const OrdersEmptyState = [
     {
         id: -1,
         isNewOrder: true,
-        name: "New Takeaway Order",
+        name: "",
         cart: { products: [], total: "0" },
         customerData: CustomerData,
     },

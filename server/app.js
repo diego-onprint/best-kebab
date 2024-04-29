@@ -2,6 +2,7 @@ import "dotenv/config"
 import express from "express"
 import productsRoute from "./routes/products.route.js"
 import categoriesRoute from "./routes/categories.route.js"
+import tablesRoute from "./routes/tables.route.js"
 import { Server } from "socket.io"
 import { createServer } from "http"
 import cors from "cors"
@@ -20,6 +21,7 @@ app.use(express.static('dist'))
 
 app.use("/api/products", productsRoute)
 app.use("/api/categories", categoriesRoute)
+app.use("/api/tables", tablesRoute)
 
 io.on("connection", socket => {
     console.log("User connected - Server")

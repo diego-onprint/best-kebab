@@ -24,8 +24,9 @@ function App() {
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    const ordersLocalStorage = getLocalStorageItem("orders")
-    ordersLocalStorage && dispatch(updateOrdersInitialState(ordersLocalStorage))
+    // const ordersLocalStorage = getLocalStorageItem("orders")
+    // ordersLocalStorage && dispatch(updateOrdersInitialState(ordersLocalStorage))
+
   }, [dispatch])
 
   return (
@@ -71,8 +72,7 @@ function App() {
               path="/tables"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  {/* <Tables /> */}
-                  <p>Tables</p>
+                  <Tables />
                 </Suspense>
               }
             />
