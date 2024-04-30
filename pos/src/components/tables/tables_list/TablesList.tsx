@@ -1,30 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../store/store'
-import type { Order, Table } from '../../../types'
-import { setCurrentOrder } from '../../../store/orders/ordersSlice'
-import { useEffect } from 'react'
+import { setCurrentOrderId } from '../../../store/current_order/currentOrderSlice'
 import { useGetTablesDataQuery } from '../../../store/api/apiSlice'
 
 const TablesList = () => {
 
-    // const dispatch = useDispatch<AppDispatch>()
-    // const orders = useSelector<RootState, Order[]>(state => state.orders.orders)
-    // const currentOrder = useSelector<RootState, Order["id"]>(state => state.orders.currentOrder)
-    // const tables = orders.filter(order => order.isTable)
-
-    // const handleTable = (id: Table["id"]) => {
-    //     dispatch(setCurrentOrder(id))
-    // }
-
+    const dispatch = useDispatch<AppDispatch>()
+    const currentOrder = useSelector<RootState, void>(state => state.currentOrder)
+ 
     const { data: tables, error, isFetching } = useGetTablesDataQuery()
 
-    useEffect(() => {
-        // UPDATE TABLES ORDERS STATE FROM DB DATA        
-        // EVERY 30 SECONDS SO IF ONE TABLE IS IN THIS SECTION
-        // AND OTHER TABLET ADD PRODUCTS IT WILL BE SYNCED OR
-        // USE SOCKETS, EMIT EVENT WHEN TABLES ARE UPDATED
-    }, [])
-    
+    const selectTable = (id) => {
+        dispatch(setCurrentOrderId(id))
+    }
+
     console.log(tables)
 
     return (
@@ -35,12 +24,11 @@ const TablesList = () => {
                 tables.map(table => {
                     return (
                         <article
-                            // onClick={() => handleTable(table.id)}
+                            onClick={() => selectTable(table.id)}
                             role="button"
                             tabIndex={0}
-                            key={table.id}
-                            // className={`col-span-6 md:col-span-4 xl:col-span-4 ${currentOrder === table.id && "outline outline-zinc-700"} ${table.cart.products.length > 0 ? "bg-green-200" : "bg-white"} flex flex-col justify-between h-24 border border-zinc-200 rounded-lg p-2`}
-                            className={`${table.data.cart.products.length > 0 ? "bg-green-200" : "bg-white"} col-span-6 md:col-span-4 xl:col-span-4 flex flex-col justify-between h-24 border border-zinc-200 rounded-lg p-2`}
+                            key={table.uid}
+                            className={`${currentOrder.id === table.id && "outline outline-zinc-700"} ${table.data.cart.products.length > 0 ? "bg-green-200" : "bg-white"} col-span-6 md:col-span-4 xl:col-span-4 flex flex-col justify-between h-24 border border-zinc-200 rounded-lg p-2`}
                         >
                             <div className="flex justify-between">
                                 <h3>{table.data.name}</h3>

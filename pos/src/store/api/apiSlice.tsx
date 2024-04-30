@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { Category, Product, ProductVariationResponse } from "../../types"
 
-const baseUrl = import.meta.env.DEV ? 
-"http://localhost:5173/api/" : 
-"https://lovely-burger-pos.diegoui.com.ar/api/"
+const baseUrl = import.meta.env.DEV ?
+    "http://localhost:5173/api/" :
+    "https://lovely-burger-pos.diegoui.com.ar/api/"
 
 export const api = createApi({
     reducerPath: "api",
-    baseQuery: fetchBaseQuery({ baseUrl: baseUrl}),
+    baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
     endpoints: (builder) => ({
         getAllProducts: builder.query<Product[], void>({
             query: () => "/products",
@@ -22,13 +22,28 @@ export const api = createApi({
             keepUnusedDataFor: 21600,
         }),
         getTablesData: builder.query({
-            query: () => "tables/"
+            query: () => "tables/",
+            keepUnusedDataFor: 0,
+        }),
+        getOrderDataById: builder.query({
+            query: (id) => `order/${id}`,
+            keepUnusedDataFor: 10,
         }),
         getCompletedOrders: builder.query({
-            query: () => "orders/"
-        })
+            query: () => "completed-orders/"
+        }),
+        updateOrderData: builder.mutation({
+            query(data) {
+                const { id, ...body } = data
+                return {
+                    url: `order/${id}`,
+                    method: "PUT",
+                    body,
+                }
+            }
+        }),
 
-/////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////
 
         // getSubCategories: builder.query<{ categories: Category[]}, string | undefined>({
         //     query: (id) => `subcategories/${id}`,
@@ -52,6 +67,8 @@ export const {
     useGetAllProductsQuery,
     useGetProductsByCategoryQuery,
     useGetTablesDataQuery,
+    useGetOrderDataByIdQuery,
+    useUpdateOrderDataMutation,
     // useGetSubCategoriesQuery,
     // useGetProductsVariationsQuery,
     // useGetOrdersQuery, 

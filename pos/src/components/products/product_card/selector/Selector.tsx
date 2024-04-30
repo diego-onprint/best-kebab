@@ -1,43 +1,53 @@
 import { useState, Dispatch, SetStateAction, useRef } from "react"
-import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import Counter from "../counter/Counter"
 import VariationsMenu from "../options/VariationsMenu"
 import { createTimestamp } from "../../../../utils/create/createTimestamp"
-import { AppDispatch  } from "../../../../store/store"
-import type { Product } from "../../../../types"
-import { addOrderProduct } from "../../../../store/orders/ordersSlice"
+import { RootState  } from "../../../../store/store"
+import { useUpdateOrderInDbAndStore } from "../../../../hooks/useUpdateOrderInDbAndStore"
+import type { ProductVariation, CartProduct, Product, Order } from "../../../../types"
 
 type PropsTypes = {
     product: Product
-    openSelector: boolean
+    openSelector: booleans
     setOpenSelector: Dispatch<SetStateAction<boolean>>
 }
 
 const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
 
-    const dispatch = useDispatch<AppDispatch>()
-    const notesRef = useRef()
-    const [selectedVarations, setSelectedVarations] = useState([])
+    const { updateOrder } = useUpdateOrderInDbAndStore()
+    const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
+    const [selectedVariations, setSelectedVarations] = useState<ProductVariation[]>([])
     const [qty, setQty] = useState(1)
+    const notesRef = useRef()
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
 
         const timestamp = createTimestamp()
 
-        const productToAdd = {
-            id: product.id,
-            uid: product.id + timestamp,
-            name: product.name,
-            price: product.price,
-            qty: qty,
-            variations: selectedVarations,
-            parent: product.parent,
-            timestamp: timestamp,
-            notes: notesRef.current.value,
+        const productToAdd: CartProduct = {
+            product_id: product.product_id,
+            product_uid: product.product_id + timestamp,
+            product_name: product.product_name,
+            product_price: product.product_price,
+            product_qty: qty,
+            product_variations: selectedVariations,
+            product_parent_category: product.product_parent_category,
+            product_notes: notesRef.current.value,
         }
 
-        dispatch(addOrderProduct(productToAdd))
+        const updatedOrder = {
+            ...currentOrder,
+            data: {
+                ...currentOrder.data,
+                cart: {
+                    ...currentOrder.data.cart,
+                    products: [...currentOrder.data.cart.products, productToAdd]
+                }
+            }
+        }
 
+        updateOrder(updatedOrder)
         setOpenSelector(!openSelector)
     }
 
@@ -47,7 +57,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                 <div className="flex flex-col gap-2">
                     <div className="flex justify-between">
                         <div className="flex items-center">
-                            <h3 className="font-semibold text-xl">{product.name}</h3>
+                            <h3 className="font-semibold text-xl">{product.product_name}</h3>
                         </div>
                         <div className="flex items-center justify-end gap-4 flex-1">
                             <h4 className="font-semibold">Qty</h4>
@@ -55,10 +65,10 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                         </div>
                     </div>
                     {
-                        product.variations?.length > 0 ?
+                        product.product_variations?.length > 0 ?
                             <VariationsMenu
-                                variations={product.variations}
-                                selectedVariations={selectedVarations}
+                                variations={product.product_variations}
+                                selectedVariations={selectedVariations}
                                 setSelectedVariations={setSelectedVarations}
                             /> : null
                     }

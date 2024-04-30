@@ -1,27 +1,40 @@
 import { pool } from "../db/connection.js"
 
-let ORDER_ID = 0 // Make an array in the DB and push the orders id as to get a list of all ids and use the ones that arent there, else, the last one plus 1
-
-const createOrder = async ({ status }) => {
-    const query = "INSERT INTO orders (order_id, status) VALUES ($1, $2) RETURNING *"
-    const { rows } = await pool.query(query, [ ORDER_ID, status ])
+const findOrderById = async (id) => {
+    const query = "SELECT * FROM orders WHERE id = $1"
+    const { rows } = await pool.query(query, [id])
+    return rows[0]
 }
 
-const updateOrder = async = () => {
+const updateOrder = async (id, body) => {
 
-}
+    const client = await pool.connect()
 
-const deleteOrder = async () => {
+    try {
 
-}
+        const updateQuery = 'UPDATE orders SET data = $1 WHERE id = $2'
+        const { data } = body
+        await pool.query(updateQuery, [data, id])
 
-const findAllOrders = async () => {
+        const getQuery = "SELECT * FROM orders WHERE id = $1"
+        const { rows } = await pool.query(getQuery, [id])
+        await client.query('COMMIT')
+        
+        return rows[0]
 
+    } catch (err) {
+
+        console.log(err)
+        await client.query('ROLLBACK')
+        throw err
+
+    } finally {
+        
+        client.release()
+    }
 }
 
 export const orderModel = {
-    createOrder,
+    findOrderById,
     updateOrder,
-    deleteOrder,
-    findAllOrders,
 }

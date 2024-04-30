@@ -1,57 +1,70 @@
-import { useState } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { setCurrentOrderId } from "../../store/current_order/currentOrderSlice"
+import { RootState, type AppDispatch } from "../../store/store"
+import { useNavigate } from "react-router-dom"
+import { useUpdateOrderInDbAndStore } from "../../hooks/useUpdateOrderInDbAndStore"
+import { useGetOrderDataByIdQuery } from "../../store/api/apiSlice"
+import { updateCurrentOrderData } from "../../store/current_order/currentOrderSlice"
 import View from './View'
 import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
 import ErrorFallback from "../common/error_fallback/ErrorFallback"
-import { clearOrderCart, removeOrderProduct, setCurrentOrder } from "../../store/orders/ordersSlice"
-import type { AppDispatch } from "../../store/store"
-import type { CartProduct } from "../../types"
-import { useActiveOrder, useOrderNumber } from "../../hooks/useActiveOrder"
-import { useNavigate } from "react-router-dom"
 
 const Controller = () => {
 
-    const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-    const order = useActiveOrder()
-    const orderNumber = useOrderNumber()
-    const disabled = order.cart.products.length === 0
-    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch<AppDispatch>()
+    const currentOrder = useSelector<RootState, object>(state => state.currentOrder)
+    const { updateOrder, isUpdating } = useUpdateOrderInDbAndStore()
+    const { data: order } = useGetOrderDataByIdQuery(currentOrder.id, {
+        pollingInterval: 10000
+    })
 
-    const getCartTitle = () => {
+    useEffect(() => {
+        dispatch(updateCurrentOrderData(order?.data))
+    }, [dispatch, order])
 
-        if (order?.isTable) return order.name
+    // Keep current order updated while selected.
 
-        if (order.isNewOrder) return `New Order #${orderNumber}`
+    const handleClearCart = () => {
 
-        return `Abholung/Lieferung #${order.id}`
-    }
+        const updatedOrder = {
+            ...currentOrder,
+            data: {
+                ...currentOrder.data,
+                cart: {
+                    ...currentOrder.data.cart,
+                    products: []
+                }
+            }
+        }
 
-    const handleClearCart = () => dispatch(clearOrderCart(order.id))
-
-    const handleDelete = (e, id: CartProduct["uid"]) => {
-        e.stopPropagation()
-        dispatch(removeOrderProduct(id))
+        updateOrder(updatedOrder)
     }
 
     const clearCurrentOrder = () => {
-        dispatch(setCurrentOrder(-1))
-        navigate("/categories")
+        dispatch(setCurrentOrderId(""))
+        navigate("/tables")
     }
 
     return (
-        <ErrorBoundary fallback={<ErrorFallback>Cart Error</ErrorFallback>}>
+        <ErrorBoundary fallback={<ErrorFallback><ErrorView /></ErrorFallback>}>
             <View
-                order={order}
-                disabled={disabled}
-                loading={loading}
-                handleDelete={handleDelete}
+                order={currentOrder}
+                isUpdating={isUpdating}
                 handleClearCart={handleClearCart}
                 clearCurrentOrder={clearCurrentOrder}
-                getCartTitle={getCartTitle}
             />
         </ErrorBoundary>
     )
 }
 
 export default Controller
+
+const ErrorView = () => {
+    return(
+        <div className="bg-white flex flex-col w-[475px] justify-center items-center">
+            An error ocurred. Refresh the page.
+        </div>
+    )
+}

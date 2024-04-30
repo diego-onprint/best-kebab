@@ -10,9 +10,51 @@ export type Product = {
     product_id: number
 	product_name: string
 	product_price: number 
-	product_stock: number
 	product_parent_category: string
-	product_description: string
+	product_description?: string
+	product_stock?: number
+    product_variations?: ProductVariation[]
+}
+
+export type ProductVariation = {
+    variation_id: string
+    variation_value: string
+    variation_price: number
+    variation_parent: string
+}
+
+export type CartProduct = Product & {
+    product_uid: string
+    product_qty: number
+    product_notes?: string | undefined
+}
+
+export type Order = {
+    id: string
+    data: {
+        name: string
+        cart: {
+            products: CartProduct[]
+            total: number
+        }
+        customerData?: CustomerDataType 
+        isTable?: boolean
+        isTkw?: boolean
+        capacity?: number
+    }
+}
+
+export type CustomerData = {
+    name: string
+    surname: string
+    address: string
+    city: string
+    postcode: string
+    phone: string
+    email: string
+    orderType: object
+    paymentMethod: object
+    notes: string
 }
 
 
@@ -57,12 +99,12 @@ export type Cart = {
     total: string
 }
 
-export type CartProduct = Product & {
-    uid: string
-    qty: number
-    variation: CartProductVariation
-    notes: string
-}
+// export type CartProduct = Product & {
+//     uid: string
+//     qty: number
+//     variation: CartProductVariation
+//     notes: string
+// }
 
 export type CartProductId = CartProduct["id"]
 export type CartTotal = Cart["total"]

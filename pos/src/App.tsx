@@ -21,29 +21,12 @@ const Tables = lazy(() => import("./pages/tables/Tables"))
 
 function App() {
 
-  const dispatch = useDispatch<AppDispatch>()
-
-  useEffect(() => {
-    // const ordersLocalStorage = getLocalStorageItem("orders")
-    // ordersLocalStorage && dispatch(updateOrdersInitialState(ordersLocalStorage))
-
-  }, [dispatch])
-
   return (
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
         <Ticket />
         <Layout>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  {/* <Dashboard /> */}
-                  <p>Dashboard</p>
-                </Suspense>
-              }
-            />
             <Route
               path="/categories"
               element={
@@ -76,22 +59,12 @@ function App() {
                 </Suspense>
               }
             />
-            {/* <Route path="/reports" element={<Reports />} /> */}
             <Route
               path="/orders"
               element={
                 <Suspense fallback={<PageLoader />}>
                   {/* <Orders /> */}
                   <p>Orders</p>
-                </Suspense>
-              }
-            />
-            <Route
-              path="/takeaway"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  {/* <Takeaway /> */}
-                  <p>Takeaway</p>
                 </Suspense>
               }
             />
@@ -103,6 +76,23 @@ function App() {
                 </Suspense>
               }
             />
+            {/* <Route
+              path="/"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <Dashboard />
+                </Suspense>
+              }
+            />*/}
+            {/* <Route
+              path="/takeaway"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <Takeaway />
+                </Suspense>
+              }
+            /> */}
+            {/* <Route path="/reports" element={<Reports />} /> */}
           </Routes>
         </Layout>
       </NewOrderNotificationContextProvider>
