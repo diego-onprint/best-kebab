@@ -10,6 +10,7 @@ import NewOrderNotificationContextProvider from "./context/NewOrderNotificationC
 import Takeaway from "./pages/takeaway/Takeaway"
 import { updateOrdersInitialState } from "./store/orders/ordersSlice"
 import Ticket from "./components/ticket/Ticket"
+import KithcenTicket from "./components/ticket/KitchenTicket"
 
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
 const Categories = lazy(() => import("./pages/categories/Categories"))
@@ -20,13 +21,21 @@ const Tables = lazy(() => import("./pages/tables/Tables"))
 // const Reports = lazy(() => import("./pages/reports/Reports"))
 
 function App() {
-
   return (
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
         <Ticket />
+        <KithcenTicket />
         <Layout>
           <Routes>
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <Tables />
+                </Suspense>
+              }
+            />
             <Route
               path="/categories"
               element={
@@ -35,14 +44,6 @@ function App() {
                 </Suspense>
               }
             />
-            {/* <Route
-              path="/subcategories/:id"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Subcategories />
-                </Suspense>
-              }
-            /> */}
             <Route
               path="/products/:id"
               element={
@@ -76,6 +77,15 @@ function App() {
                 </Suspense>
               }
             />
+
+            {/* <Route
+              path="/subcategories/:id"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <Subcategories />
+                </Suspense>
+              }
+            /> */}
             {/* <Route
               path="/"
               element={

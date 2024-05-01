@@ -125,3 +125,16 @@
 .emph {
   font-weight: bold;
 }
+
+@media print {
+  .kitchen-ticket {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  /* AT LAYOUT.tsx */
+  .dont-print {
+    display: none;
+  }
+}

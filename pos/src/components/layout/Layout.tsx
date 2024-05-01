@@ -8,7 +8,7 @@ type PropsTypes = {
 
 const Layout = ({ children }: PropsTypes) => {
   return (
-    <div className="relative flex w-full h-screen overflow-hidden">
+    <div className="dont-print relative flex w-full h-screen overflow-hidden bg-white z-50">
       <SideBar />
       <main className="@container/main flex-1 py-6 px-4 bg-indigo-50/50 overflow-y-auto">
         {children}

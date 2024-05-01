@@ -11,28 +11,22 @@ import { Fragment, useEffect, useState } from "react"
 import { calculatePercentage } from "../../utils/calculate/calculatePercentage"
 import { formatPrice } from "../../utils/format/formatPrice"
 import { useTicketContext } from "../../context/TicketContext"
-import { useActiveOrder } from "../../hooks/useActiveOrder"
+// import { useActiveOrder } from "../../hooks/useActiveOrder"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store/store"
 import type { Order } from "../../types"
 
-const Ticket = () => {
+const KithcenTicket = () => {
 
     const { ticket } = useTicketContext()
     const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
 
     return (
-        <div className={`absolute bg-white w-[600px] p-4 top-0 left-0 -z-50 ${ticket === "client" ? "block" : "hidden"}`}>
-            <div className="to-print max-w-[650px] px-6 py-4">
+        <div className={`absolute bg-white w-[600px] p-4 top-0 left-0 -z-50 ${ticket === "kitchen" ? "block" : "hidden"}`}>
+            <div className="max-w-[650px] px-6 py-4">
                 <div className="logo-container">
                     {/* <img className="logo" src="/assets/lovely-burger-ticket-logo.png" alt="" /> */}
-                    Ceviche
-                </div>
-                <div className="mb-4">
-                    <p className="to-print text-xl text-center mb-sm">Seuzachstrasse 2,</p>
-                    <p className="to-print text-xl text-center mb-sm">8413 Neftenbach</p>
-                    <p className="to-print text-xl text-center mb-sm">www.lovely-burger.ch</p>
-                    <p className="to-print text-xl text-center mb-sm">MWST CHE-166.937.519</p>
+                    Kuche
                 </div>
             </div>
         </div>
@@ -157,4 +151,4 @@ const Ticket = () => {
     // )
 }
 
-export default Ticket
+export default KithcenTicket

@@ -27,10 +27,7 @@ export const api = createApi({
         }),
         getOrderDataById: builder.query({
             query: (id) => `order/${id}`,
-            keepUnusedDataFor: 10,
-        }),
-        getCompletedOrders: builder.query({
-            query: () => "completed-orders/"
+            keepUnusedDataFor: 0,
         }),
         updateOrderData: builder.mutation({
             query(data) {
@@ -42,23 +39,9 @@ export const api = createApi({
                 }
             }
         }),
-
-        /////////////////////////////////////////////////////
-
-        // getSubCategories: builder.query<{ categories: Category[]}, string | undefined>({
-        //     query: (id) => `subcategories/${id}`,
-        //     keepUnusedDataFor: 21600,
-        // }),
-        // getProductsVariations: builder.query<ProductVariationResponse, Product["id"] | undefined>({
-        //     query: (id) => `product-variation/${id}`,
-        //     keepUnusedDataFor: 21600,
-        // }),
-        // getOrders: builder.query({
-        //     query: (data) => `orders?page=${data.page}`
-        // }),
-        // getSalesReport: builder.query({
-        //     query: (query) => `sales-reports?${query}`
-        // })
+        getCompletedOrders: builder.query({
+            query: () => "completed-orders/"
+        }),
     })
 })
 

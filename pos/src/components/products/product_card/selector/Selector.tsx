@@ -6,6 +6,7 @@ import { createTimestamp } from "../../../../utils/create/createTimestamp"
 import { RootState  } from "../../../../store/store"
 import { useUpdateOrderInDbAndStore } from "../../../../hooks/useUpdateOrderInDbAndStore"
 import type { ProductVariation, CartProduct, Product, Order } from "../../../../types"
+import { getCartTotal } from "../../../../utils/get/getCartTotal"
 
 type PropsTypes = {
     product: Product
@@ -36,13 +37,16 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
             product_notes: notesRef.current.value,
         }
 
+        const updatedOrderProducts = [...currentOrder.data.cart.products, productToAdd]
+
         const updatedOrder = {
             ...currentOrder,
             data: {
                 ...currentOrder.data,
                 cart: {
                     ...currentOrder.data.cart,
-                    products: [...currentOrder.data.cart.products, productToAdd]
+                    products: updatedOrderProducts,
+                    total: getCartTotal(updatedOrderProducts)
                 }
             }
         }

@@ -4,6 +4,7 @@ import { formatPrice } from "../../../utils/format/formatPrice"
 import { RootState } from "../../../store/store"
 import { Order } from "../../../types"
 import { useUpdateOrderInDbAndStore } from "../../../hooks/useUpdateOrderInDbAndStore"
+import { getCartTotal } from "../../../utils/get/getCartTotal"
 
 const Item = ({ product }) => {
 
@@ -22,7 +23,8 @@ const Item = ({ product }) => {
                 ...currentOrder.data,
                 cart: {
                     ...currentOrder.data.cart,
-                    products: updatedOrderProducts
+                    products: updatedOrderProducts,
+                    total: getCartTotal(updatedOrderProducts)
                 }
             }
         }

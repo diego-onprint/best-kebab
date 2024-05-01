@@ -1,10 +1,11 @@
-import { Suspense, lazy, useState } from "react"
+import { Suspense, lazy, useEffect, useState } from "react"
 import Spinner from "../common/spinner/Spinner"
 import type { CartProduct } from "../../types"
 import PrintButton from "../common/print_button/PrintButton"
 import Item from "./Item/Item"
 import CreateTkwForm from "../create_tkw_form/CreateTkwForm"
 import { useTicketContext } from "../../context/TicketContext"
+import { Link } from "react-router-dom"
 
 const Checkout = lazy(() => import("../checkout/Checkout"))
 
@@ -22,10 +23,26 @@ const View = ({
     clearCurrentOrder,
 }: PropsTypes) => {
 
-    // const { ticketDomRef } = useTicketContext()
+    const { ticket, setTicket } = useTicketContext()
     const [openCheckout, setOpenCheckout] = useState(false)
 
     // console.log("VIEW....", order)
+
+    const handleClientPrint = () => {
+        setTicket("client")
+    }
+
+    const handleKitchenPrint = () => {
+        setTicket("kitchen")
+    }
+
+    useEffect(() => {
+
+        ticket === "client" && window.print()
+        ticket === "kitchen" && window.print()
+        setTicket("")
+
+    }, [ticket, setTicket])
 
     return (
         <>
@@ -43,17 +60,23 @@ const View = ({
                                         </button>
                                         <h3>{order.data.name}</h3>
                                     </div>
-                                    {/* {
-                                !order.isNewOrder ?
-                                <div className="flex gap-4 pr-2">
-                                    <PrintButton domRef={ticketDomRef} buttonStyle={`flex gap-1 ${disabled && "opacity-40"}`} disabled={disabled}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
-                                        </svg>
-                                        <span>Shop</span>
-                                    </PrintButton>
-                                </div> : null
-                            } */}
+                                    {
+                                        order.data.cart.products.length >= 0 ?
+                                            <div className="flex gap-6">
+                                                <button onClick={handleClientPrint} className="flex gap-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+                                                    </svg>
+                                                    <span>Client</span>
+                                                </button>
+                                                <button onClick={handleKitchenPrint} className="flex gap-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+                                                    </svg>
+                                                    <span>Kuche</span>
+                                                </button>
+                                            </div> : null
+                                    }
                                 </div>
                                 <dl className="divide-y flex flex-col flex-1 overflow-auto flex-grow">
                                     {order.data.cart.products.map(product => <Item product={product} key={product.product_uid} />)}
@@ -68,14 +91,14 @@ const View = ({
                                     <button
                                         onClick={handleClearCart}
                                         className="ghost-button col-span-4 disabled:opacity-50 disabled:hover:bg-zinc-300"
-                                        disabled={!!order}
+                                        disabled={order.data.cart.products.length <= 0}
                                     >
                                         Clear
                                     </button>
                                     <button
                                         onClick={() => setOpenCheckout(true)}
                                         className={`primary-button col-span-8 disabled:opacity-50`}
-                                        disabled={!!order}
+                                        disabled={order.data.cart.products.length <= 0}
                                     >
                                         Checkout
                                     </button>
@@ -97,12 +120,12 @@ export default View
 const PlaceHolder = () => {
     return (
         <div className="flex-1 flex justify-center items-center">
-            <div className="flex flex-col items-center">
+            <Link to="/tables" className="flex flex-col items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
                 <p>Select a Table</p>
-            </div>
+            </Link>
         </div>
     )
 }

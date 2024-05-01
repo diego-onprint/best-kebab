@@ -9,22 +9,22 @@ import { updateCurrentOrderData } from "../../store/current_order/currentOrderSl
 import View from './View'
 import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
 import ErrorFallback from "../common/error_fallback/ErrorFallback"
+import type { Order } from "../../types"
 
 const Controller = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const currentOrder = useSelector<RootState, object>(state => state.currentOrder)
+    const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
     const { updateOrder, isUpdating } = useUpdateOrderInDbAndStore()
     const { data: order } = useGetOrderDataByIdQuery(currentOrder.id, {
         pollingInterval: 10000
     })
 
+    // Keep current order (redux) updated/synced with DB while selected.
     useEffect(() => {
         dispatch(updateCurrentOrderData(order?.data))
     }, [dispatch, order])
-
-    // Keep current order updated while selected.
 
     const handleClearCart = () => {
 
@@ -34,7 +34,8 @@ const Controller = () => {
                 ...currentOrder.data,
                 cart: {
                     ...currentOrder.data.cart,
-                    products: []
+                    products: [],
+                    total: 0
                 }
             }
         }
