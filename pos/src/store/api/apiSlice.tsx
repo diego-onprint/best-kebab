@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { Category, Product, ProductVariationResponse } from "../../types"
+import type { Category, Product, Order } from "../../types"
 
 const baseUrl = import.meta.env.DEV ?
     "http://localhost:5173/api/" :
@@ -29,7 +29,7 @@ export const api = createApi({
             query: (id) => `order/${id}`,
             keepUnusedDataFor: 0,
         }),
-        updateOrderData: builder.mutation({
+        updateOrderData: builder.mutation<Order, Order>({
             query(data) {
                 const { id, ...body } = data
                 return {

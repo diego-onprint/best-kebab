@@ -6,7 +6,9 @@ export const CustomerData = {
     postcode: "",
     phone: "",
     email: "",
-    orderType: {},
-    paymentMethod: {},
+    paymentMethod: {
+        name: "",
+        value: "",
+    },
     notes: "",
 }

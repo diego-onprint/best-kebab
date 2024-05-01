@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentOrderId } from "../../store/current_order/currentOrderSlice"
-import { RootState, type AppDispatch } from "../../store/store"
 import { useNavigate } from "react-router-dom"
 import { useUpdateOrderInDbAndStore } from "../../hooks/useUpdateOrderInDbAndStore"
 import { useGetOrderDataByIdQuery } from "../../store/api/apiSlice"
@@ -9,6 +8,7 @@ import { updateCurrentOrderData } from "../../store/current_order/currentOrderSl
 import View from './View'
 import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
 import ErrorFallback from "../common/error_fallback/ErrorFallback"
+import type { RootState, AppDispatch } from "../../store/store"
 import type { Order } from "../../types"
 
 const Controller = () => {

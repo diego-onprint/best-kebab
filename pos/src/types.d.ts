@@ -8,11 +8,11 @@ export type Category = {
 
 export type Product = {
     product_id: number
-	product_name: string
-	product_price: number 
-	product_parent_category: string
-	product_description?: string
-	product_stock?: number
+    product_name: string
+    product_price: number
+    product_parent_category: string
+    product_description?: string
+    product_stock?: number
     product_variations?: ProductVariation[]
 }
 
@@ -37,7 +37,7 @@ export type Order = {
             products: CartProduct[]
             total: number
         }
-        customerData?: CustomerDataType 
+        customerData?: CustomerDataType
         isTable?: boolean
         isTkw?: boolean
         capacity?: number
@@ -52,11 +52,14 @@ export type CustomerData = {
     postcode: string
     phone: string
     email: string
-    orderType: object
-    paymentMethod: object
+    paymentMethod: PaymentMethod
     notes: string
 }
 
+export type PaymentMethod = {
+    name: string
+    value: string
+}
 
 
 

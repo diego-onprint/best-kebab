@@ -1,5 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react"
 
+// TODO Migrate to Redux
+
 const TicketContext = createContext(null)
 
 export const useTicketContext = () => useContext(TicketContext)

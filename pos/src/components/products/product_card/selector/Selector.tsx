@@ -5,8 +5,8 @@ import VariationsMenu from "../options/VariationsMenu"
 import { createTimestamp } from "../../../../utils/create/createTimestamp"
 import { RootState  } from "../../../../store/store"
 import { useUpdateOrderInDbAndStore } from "../../../../hooks/useUpdateOrderInDbAndStore"
-import type { ProductVariation, CartProduct, Product, Order } from "../../../../types"
 import { getCartTotal } from "../../../../utils/get/getCartTotal"
+import type { ProductVariation, CartProduct, Product, Order } from "../../../../types"
 
 type PropsTypes = {
     product: Product

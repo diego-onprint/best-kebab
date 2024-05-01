@@ -1,4 +1,5 @@
 import type { Order } from "../types";
+import { CustomerData } from "./customer_data.model";
 
 export const CurrentOrderModel: Order = {
     id: "",
@@ -7,6 +8,7 @@ export const CurrentOrderModel: Order = {
         cart: {
             products: [],
             total: 0,
-        }
+        },
+        customerData: CustomerData,
     },
 }
