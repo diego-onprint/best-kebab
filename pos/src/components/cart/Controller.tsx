@@ -10,6 +10,8 @@ import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
 import ErrorFallback from "../common/error_fallback/ErrorFallback"
 import type { RootState, AppDispatch } from "../../store/store"
 import type { Order } from "../../types"
+import { setCheckoutMenu } from "../../store/menus/menusSlice"
+import usePrintTickets from "../../hooks/usePrintTickets"
 
 const Controller = () => {
 
@@ -20,6 +22,7 @@ const Controller = () => {
     const { data: order } = useGetOrderDataByIdQuery(currentOrder.id, {
         pollingInterval: 10000
     })
+    const { printShopTicket, printKitchenTicket } = usePrintTickets()
 
     // Keep current order (redux) updated/synced with DB while selected.
     useEffect(() => {
@@ -43,6 +46,18 @@ const Controller = () => {
         updateOrder(updatedOrder)
     }
 
+    const handleCheckout = () => {
+        dispatch(setCheckoutMenu(true))
+    }
+
+    const handleShopPrint = () => {
+        printShopTicket()
+    }
+
+    const handleKitchenPrint = () => {
+        printKitchenTicket()
+    }
+
     const clearCurrentOrder = () => {
         dispatch(setCurrentOrderId(""))
         navigate("/tables")
@@ -54,6 +69,9 @@ const Controller = () => {
                 order={currentOrder}
                 isUpdating={isUpdating}
                 handleClearCart={handleClearCart}
+                handleCheckout={handleCheckout}
+                handleShopPrint={handleShopPrint}
+                handleKitchenPrint={handleKitchenPrint}
                 clearCurrentOrder={clearCurrentOrder}
             />
         </ErrorBoundary>

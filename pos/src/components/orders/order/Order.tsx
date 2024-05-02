@@ -1,18 +1,21 @@
 import { useState } from "react"
 import { formatDate } from "../../../utils/format/formatDate"
+import { formatOrderNumber } from "../../../utils/format/formatOrderNumber"
 
 const Order = ({ order }) => {
 
     const [open, setOpen] = useState(false)
 
+    console.log(order)
+
     return (
         <tr>
             <td onClick={() => setOpen(!open)} className="col-span-1 grid grid-cols-12 gap-2 py-5 cursor-pointer">
-                <div className="font-semibold">{order.number}</div>
-                <div className="col-span-4 overflow-hidden whitespace-nowrap text-ellipsis w-[85%]">{order.billing.first_name} {order.billing.last_name}</div>
-                <div className="col-span-2">{formatDate(order.date_created)}</div>
-                <div className="col-span-2">{order.status}</div>
-                <div className="col-span-2">CHF. {order.total}</div>
+                <div className="font-semibold">#{formatOrderNumber(order.order_id)}</div>
+                <div className="col-span-4 overflow-hidden whitespace-nowrap text-ellipsis w-[85%]">{order.order_data.order_name}</div>
+                <div className="col-span-2">{formatDate(order.order_data.date_created)}</div>
+                <div className="col-span-2">{order.order_data.status.name}</div>
+                <div className="col-span-2">CHF. {order.order_data.cart.total}</div>
                 <div>
                     <button>
                         <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -26,35 +29,9 @@ const Order = ({ order }) => {
                     <td className="grid grid-cols-12 pb-4">
                         <dl className="col-start-2 col-span-10 flex flex-col gap-1 bg-zinc-50 p-4 rounded-lg">
                             <div className="flex gap-3">
-                                <dt className="font-semibold">Address:</dt>
-                                <dd>{order.billing.address_1} {order.billing.address_2}, {order.billing.city}</dd>
-                            </div>
-                            <div className="flex gap-3">
-                                <dt className="font-semibold">Phone:</dt>
-                                <dd>{order.billing.phone}</dd>
-                            </div>
-                            <div className="flex gap-3">
-                                <dt className="font-semibold">Email:</dt>
-                                <dd>{order.billing.email}</dd>
-                            </div>
-                            <div className="flex gap-3">
                                 <dt className="font-semibold">Payment Method:</dt>
-                                <dd>{order.payment_method_title}</dd>
+                                <dd>{order.order_data.customer.paymentMethod?.name}</dd>
                             </div>
-                            {
-                                order.meta_data.length > 0 ?
-                                <div className="flex gap-3">
-                                    <dt className="font-semibold">Delivery time:</dt>
-                                    <dd>{order.meta_data.find(data => data.key === "billing_deliverytime").value}</dd>
-                                </div> : null
-                            }
-                            {
-                                order.meta_data.find(data => data.key === "billing_deliverytimeoption") ?
-                                <div className="flex gap-3">
-                                    <dt className="font-semibold">Delivery mode:</dt>
-                                    <dd>{order.meta_data.find(data => data.key === "billing_deliverytimeoption").value}</dd>
-                                </div> : null
-                            }
                             <div className="bg-white p-5 rounded-md mt-2">
                                 <table className="w-full">
                                     <thead>
@@ -64,23 +41,20 @@ const Order = ({ order }) => {
                                             <th className="border border-zinc-300 p-3 text-left">CHF</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="ticket-body">
+                                    <tbody>
                                         {
-                                            order.line_items.map(product => {
-
-                                                const variation = product.meta_data.find(item => item.key === "_tmcartepo_data")
-
+                                            order.order_data.cart.products.map(product => {
                                                 return (
                                                     <>
-                                                        <tr key={product.id}>
-                                                            <td className="border border-zinc-300 p-3">{product.quantity}</td>
+                                                        <tr key={product.product_uid}>
+                                                            <td className="border border-zinc-300 p-3">{product.product_qty}</td>
                                                             <td className="border border-zinc-300 p-3" style={{ "flex": 1 }}>
-                                                                {product.name}
+                                                                {product.product_name}
                                                             </td>
-                                                            <td className="border border-zinc-300 p-3" style={{ "width": "55px" }}>{product.price * product.quantity}</td>
+                                                            <td className="border border-zinc-300 p-3" style={{ "width": "55px" }}>{product.product_price * product.product_qty}</td>
                                                         </tr>
-                                                        {
-                                                            variation ?
+                                                        {/* {
+                                                            product.product_variations.length > 0 ?
                                                                 variation.value.map((variation) => {
                                                                     return (
                                                                         <tr key={variation.id}>
@@ -90,7 +64,7 @@ const Order = ({ order }) => {
                                                                         </tr>
                                                                     )
                                                                 }) : null
-                                                        }
+                                                        } */}
                                                     </>
                                                 )
                                             })

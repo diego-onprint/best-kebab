@@ -1,37 +1,29 @@
-import { Dispatch, SetStateAction, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import usePrintTickets from "../../hooks/usePrintTickets"
 import View from "./View"
+import Notification from "../notification/Notification"
 import type { Order, PaymentMethod } from "../../types"
 import type { RootState } from "../../store/store"
 import { useUpdateOrderInDbAndStore } from "../../hooks/useUpdateOrderInDbAndStore"
-// import { clearCart } from "../../store/cart/cartSlice"
-// import { clearTableCart } from "../../store/tables/tablesSlice"
-// import { RootState, AppDispatch } from "../../store/store"
-// import { formatCart } from "../../utils/format/formatCart"
-// import { printTicket } from "../../utils/print/printTicket"
-// import { useTicketContext } from "../../context/TicketContext"
-// import { setOrderType, setPaymentMethod } from "../../store/ticket/ticketSlice"
-// import type { Cart, Table, TicketDataType } from "../../types"
-// import { CustomerData } from "../../models/customer_data.model"
-// import { removeOrder, setCurrentOrder, updateOrderPaymentMethod, updateWooOrderNumber } from "../../store/orders/ordersSlice"
+import { setCheckoutMenu } from "../../store/menus/menusSlice"
+import { useCreateNewCompletedOrderMutation } from "../../store/api/apiSlice"
+import { useNotification } from "../../hooks/useNotification"
+import { formatOrderNumber } from "../../utils/format/formatOrderNumber"
+import { useNavigate } from "react-router-dom"
+import { setCurrentOrderId } from "../../store/current_order/currentOrderSlice"
 
-type PropsTypes = {
-    setOpenCheckout: Dispatch<SetStateAction<boolean>>
-}
+const Controller = () => {
 
-// TODO handle openchekout with parameters in url instead?
-
-const Controller = ({ setOpenCheckout }: PropsTypes) => {
-
+    const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
     const { updateOrder, isUpdating } = useUpdateOrderInDbAndStore()
+    const [createNewOrder, { isLoading }] = useCreateNewCompletedOrderMutation()
     const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
     const { printClientTicket } = usePrintTickets()
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState("")
+    const { notification, showNotification } = useNotification()
 
     const handleCancel = () => {
-        setOpenCheckout(false)
+        dispatch(setCheckoutMenu(false))
     }
 
     const handlePaymentMethod = (method: PaymentMethod) => {
@@ -49,67 +41,72 @@ const Controller = ({ setOpenCheckout }: PropsTypes) => {
         updateOrder(updatedOrder)
     }
 
-    const handleCheckout = () => {
-        console.log("checkout")
+    const handleCheckout = async () => {
+
+        const formattedData = {
+            created_by: "admin",
+            status: { name: "Completed", value: "completed" },
+            date_created: new Date().toISOString().slice(0, -5),
+            order_name: currentOrder.data.name,
+            cart: currentOrder.data.cart,
+            customer: currentOrder.data.customerData,
+        }
+
+        try {
+
+            const response = await createNewOrder(formattedData)
+            const orderId = response.data.rows[0].order_id
+
+            if (response?.error) {
+                return showNotification("Error creating the order", 3000)
+            }
+
+            showNotification(`Order #${formatOrderNumber(orderId)} was created`, 3000)
+
+            // RESET FROM LOCAL AND DB THE TABLE/ORDER
+            const updatedOrder = {
+                ...currentOrder,
+                data: {
+                    ...currentOrder.data,
+                    cart: {
+                        ...currentOrder.data.cart,
+                        products: [],
+                        total: 0
+                    }
+                }
+            }
+
+            updateOrder(updatedOrder)
+
+            // Delay to sync with notification
+            // Else make Context for notification
+            setTimeout(() => {
+                dispatch(setCheckoutMenu(false))
+                dispatch(setCurrentOrderId(""))
+                navigate("/tables")
+            }, 3000)
+
+        } catch (err) {
+
+            console.log("Error creating order: ", err)
+        }
+
     }
 
     return (
-        <View
-            order={currentOrder}
-            printClientTicket={printClientTicket}
-            handleCancel={handleCancel}
-            handlePaymentMethod={handlePaymentMethod}
-            handleCheckout={handleCheckout}
-            isUpdating={isUpdating}
-            loading={loading}
-            error={error}
-        />
+        <>
+            <View
+                order={currentOrder}
+                handlePrint={printClientTicket}
+                handleCancel={handleCancel}
+                handlePaymentMethod={handlePaymentMethod}
+                handleCheckout={handleCheckout}
+                isUpdating={isUpdating}
+                isLoading={isLoading}
+            />
+            {notification ? <Notification message={notification} /> : null}
+        </>
     )
-
-    // const handlePaymentMethod = (method: TicketDataType["paymentMethod"]) => {
-    //     dispatch(updateOrderPaymentMethod(method))
-    // }
-
-    // const handleCheckout = async () => {
-
-    //     setLoading(true)
-
-    //     // PLACE ORDER IN WOOCOMMERCE
-
-    //     try {
-
-    //         const newOrderUrl = import.meta.env.DEV ? "http://localhost:8080/api/new-local-order" : "https://lovely-burger-pos.diegoui.com.ar/api/new-local-order"
-
-    //         console.log("JSON", json)
-
-    //         if (printReceipt) {
-
-    //             setWooOrderNumber(json.result.id)
-
-    //             setTimeout(async () => {
-    //                 await printTicket(ticketDomRef.current)
-    //                 setWooOrderNumber(0)
-    //             }, 1000)
-    //         }
-
-    //         // Remove current order - set current order to -1
-    //         dispatch(setCurrentOrder(-1))
-
-    //         // Delete order from store and local storage 
-    //         dispatch(removeOrder(order.id))
-
-    //         setOpenCheckout(false)
-
-    //     } catch (err) {
-
-    //         console.error(err)
-    //         setError("An error ocurred placing order in Woocommerce")
-
-    //     } finally {
-
-    //         setLoading(false)
-    //     }
-    // }
 }
 
 export default Controller

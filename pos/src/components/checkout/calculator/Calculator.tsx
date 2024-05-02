@@ -1,8 +1,7 @@
 import { useState } from "react"
-import type { CartTotal } from "../../../types"
 
 type PropsTypes = {
-    total: CartTotal
+    total: number
 }
 
 const Calculator = ({ total }: PropsTypes) => {

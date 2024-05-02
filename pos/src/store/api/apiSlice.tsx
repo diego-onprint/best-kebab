@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { Category, Product, Order } from "../../types"
+import type { Category, Product, Order, CompletedOrder } from "../../types"
 
 const baseUrl = import.meta.env.DEV ?
     "http://localhost:5173/api/" :
@@ -39,8 +39,18 @@ export const api = createApi({
                 }
             }
         }),
+        createNewCompletedOrder: builder.mutation<CompletedOrder, { data: object }>({
+            query(data) {
+                return {
+                    url: `checkout/`,
+                    method: "POST",
+                    body: data,
+                }
+            }
+        }),
         getCompletedOrders: builder.query({
-            query: () => "completed-orders/"
+            query: () => "completed-orders/",
+            keepUnusedDataFor: 0,
         }),
     })
 })
@@ -52,8 +62,6 @@ export const {
     useGetTablesDataQuery,
     useGetOrderDataByIdQuery,
     useUpdateOrderDataMutation,
-    // useGetSubCategoriesQuery,
-    // useGetProductsVariationsQuery,
-    // useGetOrdersQuery, 
-    // useGetSalesReportQuery,
+    useCreateNewCompletedOrderMutation,
+    useGetCompletedOrdersQuery,
 } = api

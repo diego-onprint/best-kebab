@@ -5,9 +5,11 @@ const usePrintTickets = () => {
 
     const { ticket, setTicket } = useTicketContext()
 
-    const printClientTicket = () => setTicket("client")
+    const printShopTicket = () => setTicket("shop")
 
     const printKitchenTicket = () => setTicket("kitchen")
+
+    const printClientTicket = () => setTicket("client")
 
     useEffect(() => {
 
@@ -17,8 +19,9 @@ const usePrintTickets = () => {
     }, [ticket, setTicket])
 
     return {
+        printShopTicket,
+        printKitchenTicket,
         printClientTicket,
-        printKitchenTicket
     }
 }
 

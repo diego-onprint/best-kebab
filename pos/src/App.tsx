@@ -1,26 +1,25 @@
-import { useEffect, lazy, Suspense } from "react"
+import { lazy, Suspense } from "react"
 import { Route, Routes } from "react-router-dom"
 import Layout from "./components/layout/Layout"
-import { getLocalStorageItem } from "./utils/local_storage/localStorage"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "./store/store"
+import { useSelector } from "react-redux"
 import PageLoader from "./components/common/page_loader/PageLoader"
 import TicketContextProvider from "./context/TicketContext"
 import NewOrderNotificationContextProvider from "./context/NewOrderNotificationContext"
-import Takeaway from "./pages/takeaway/Takeaway"
-import { updateOrdersInitialState } from "./store/orders/ordersSlice"
 import Ticket from "./components/ticket/Ticket"
 import KithcenTicket from "./components/ticket/KitchenTicket"
+import { RootState } from "./store/store"
 
-const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"))
 const Categories = lazy(() => import("./pages/categories/Categories"))
-const Subcategories = lazy(() => import("./pages/subcategories/Subcategories"))
 const Products = lazy(() => import("./pages/products/Products"))
 const Orders = lazy(() => import("./pages/orders/Orders"))
 const Tables = lazy(() => import("./pages/tables/Tables"))
+const Checkout = lazy(() => import("./components/checkout/Checkout"))
 // const Reports = lazy(() => import("./pages/reports/Reports"))
 
 function App() {
+
+  const menus = useSelector<RootState, { checkoutMenu: boolean }>(state => state.menus)
+
   return (
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
@@ -64,8 +63,7 @@ function App() {
               path="/orders"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  {/* <Orders /> */}
-                  <p>Orders</p>
+                  <Orders />
                 </Suspense>
               }
             />
@@ -77,34 +75,10 @@ function App() {
                 </Suspense>
               }
             />
-
-            {/* <Route
-              path="/subcategories/:id"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Subcategories />
-                </Suspense>
-              }
-            /> */}
-            {/* <Route
-              path="/"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Dashboard />
-                </Suspense>
-              }
-            />*/}
-            {/* <Route
-              path="/takeaway"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Takeaway />
-                </Suspense>
-              }
-            /> */}
             {/* <Route path="/reports" element={<Reports />} /> */}
           </Routes>
         </Layout>
+        {menus.checkoutMenu ? <Suspense fallback={<></>}><Checkout /></Suspense> : null}
       </NewOrderNotificationContextProvider>
     </TicketContextProvider>
   )

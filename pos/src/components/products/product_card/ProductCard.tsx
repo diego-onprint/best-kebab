@@ -1,9 +1,9 @@
 import { useState } from "react"
 import Selector from "./selector/Selector"
 import { formatPrice } from "../../../utils/format/formatPrice"
-import type { Product } from "../../../types"
 import { useSelector } from "react-redux"
 import { RootState } from "../../../store/store"
+import type { Product, Order } from "../../../types"
 
 type PropsTypes = {
   product: Product
@@ -13,9 +13,6 @@ const ProductCard = ({ product }: PropsTypes) => {
 
   const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
   const [openSelector, setOpenSelector] = useState(false)
-
-  console.log("Product card...", currentOrder)
-
   return (
     <>
       <article

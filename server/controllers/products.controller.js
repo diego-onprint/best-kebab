@@ -6,7 +6,7 @@ const getAllProducts = async (req, res) => {
         res.status(200).json(response)
     } catch (err) {
         console.log(err)
-        res.status(500)
+        res.status(500).json(err)
     }
 }
 
@@ -16,7 +16,7 @@ const getProductsByCategory = async (req, res) => {
         res.status(200).json(response)
     } catch (err) {
         console.log(err)
-        res.status(500)
+        res.status(500).json(err)
     }
 }
 

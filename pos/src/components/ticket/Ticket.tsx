@@ -29,7 +29,7 @@ const Ticket = () => {
 
     if (currentOrder.data) {
         return (
-            <div className={`absolute bg-white w-[600px] p-4 top-0 left-0 -z-50 ${ticket === "client" ? "block" : "hidden"}`}>
+            <div className={`absolute bg-white w-[600px] p-4 top-0 left-0 -z-50 ${ticket === "client" || ticket === "shop" ? "block" : "hidden"}`}>
                 <div className="flex flex-col gap-4 max-w-[650px] px-6 py-4">
                     <div className="w-full flex items-center justify-center">
                         {/* <img className="w-[250px] h-[130px] object-contain" src="/assets/lovely-burger-ticket-logo.png" alt="" /> */}

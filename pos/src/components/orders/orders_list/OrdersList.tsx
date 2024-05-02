@@ -1,46 +1,46 @@
-import { useGetOrdersQuery } from "../../../store/api/apiSlice"
+// import { useGetOrdersQuery } from "../../../store/api/apiSlice"
 import Order from "../order/Order"
 import Spinner from "../../common/spinner/Spinner"
+import { useGetCompletedOrdersQuery } from "../../../store/api/apiSlice"
 
 const OrdersList = ({ page, setHasNextPage, setLoading }) => {
 
-    const { data, error, isFetching, isLoading } = useGetOrdersQuery({ page: page })
+    // const { data, error, isFetching, isLoading } = useGetOrdersQuery({ page: page })
+    const { data, error, isFetching } = useGetCompletedOrdersQuery()
     
-    //case not found -404- or sorts
-    if (error) throw Error
+    // //case not found -404- or sorts
+    // if (error) throw Error
 
-    if (data?.hasNextPage) {
-        setHasNextPage(true)
-    } else {
-        setHasNextPage(false)
-    }
+    // if (data?.hasNextPage) {
+    //     setHasNextPage(true)
+    // } else {
+    //     setHasNextPage(false)
+    // }
 
-    if (isFetching) {
-        setLoading(true)
-    }
-    else {
-        setLoading(false)
-    }
-
-    console.log(data)
+    // if (isFetching) {
+    //     setLoading(true)
+    // }
+    // else {
+    //     setLoading(false)
+    // }
 
     return (
         <div>
             {
-                !isLoading ?
+                !isFetching ?
                     <table className="w-full">
                         <thead className="sticky -top-6 grid grid-cols-12 gap-2 bg-white p-4 shadow-md shadow-slate-100">
-                            <tr className="col-span-1 ">Order</tr>
-                            <tr className="col-span-4">Customer</tr>
-                            <tr className="col-span-2">Date</tr>
-                            <tr className="col-span-2">Status</tr>
-                            <tr className="col-span-2">Total</tr>
+                            <tr className="col-span-1 "><td>Order</td></tr>
+                            <tr className="col-span-4"><td>Customer</td></tr>
+                            <tr className="col-span-2"><td>Date</td></tr>
+                            <tr className="col-span-2"><td>Status</td></tr>
+                            <tr className="col-span-2"><td>Total</td></tr>
                         </thead>
                         <tbody className={`flex flex-col divide-y divide-slate-200 px-4 first-line:selection:${isFetching && "opacity-45"}`}>
                             {
-                                data?.orders.map(order => {
+                                data?.map(order => {
                                     return (
-                                        <Order order={order} key={order.id} />
+                                        <Order order={order} key={order.order_id} />
                                     )
                                 })
                             }

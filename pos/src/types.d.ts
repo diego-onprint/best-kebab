@@ -29,31 +29,45 @@ export type CartProduct = Product & {
     product_notes?: string | undefined
 }
 
+export type Cart = {
+    products: CartProduct[]
+    total: number
+}
+
 export type Order = {
     id: string
     data: {
         name: string
-        cart: {
-            products: CartProduct[]
-            total: number
-        }
-        customerData?: CustomerDataType
+        cart: Cart
+        customerData?: CustomerData
         isTable?: boolean
         isTkw?: boolean
         capacity?: number
     }
 }
 
+export type CompletedOrder = {
+    created_by: string
+    status: { 
+        name: string
+        value: string
+    }
+    date_created: string
+    order_name: string
+    cart: Cart
+    customer: CustomerData
+}
+
 export type CustomerData = {
-    name: string
-    surname: string
-    address: string
-    city: string
-    postcode: string
-    phone: string
-    email: string
-    paymentMethod: PaymentMethod
-    notes: string
+    name?: string
+    surname?: string
+    address?: string
+    city?: string
+    postcode?: string
+    phone?: string
+    email?: string
+    paymentMethod?: PaymentMethod
+    notes?: string
 }
 
 export type PaymentMethod = {
@@ -97,10 +111,10 @@ type ProductImage = {
 }
 
 //CART
-export type Cart = {
-    products: CartProduct[]
-    total: string
-}
+// export type Cart = {
+//     products: CartProduct[]
+//     total: string
+// }
 
 // export type CartProduct = Product & {
 //     uid: string
@@ -109,8 +123,8 @@ export type Cart = {
 //     notes: string
 // }
 
-export type CartProductId = CartProduct["id"]
-export type CartTotal = Cart["total"]
+// export type CartProductId = CartProduct["id"]
+// export type CartTotal = Cart["total"]
 
 export type CartProductVariation = {
     id: string
