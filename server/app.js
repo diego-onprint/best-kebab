@@ -34,6 +34,6 @@ io.on("connection", socket => {
     io.emit("on-connect", { success: true })
 })
 
-httpServer.listen(8080, () => {
-    console.log("server started at 8080")
+httpServer.listen(8082, () => {
+    console.log("server started at 8082")
 })

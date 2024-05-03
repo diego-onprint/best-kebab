@@ -1,0 +1,17 @@
+# Build stage
+FROM node:20.9.0 as build
+
+WORKDIR /app
+
+COPY pos/package.json ./
+
+RUN npm install --legacy-peer-deps
+COPY ./pos .
+
+RUN ls
+
+RUN npm run build
+
+EXPOSE 5175
+
+CMD ["npm", "run", "dev"]
