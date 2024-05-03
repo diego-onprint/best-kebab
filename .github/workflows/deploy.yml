@@ -20,7 +20,7 @@ jobs:
       - run: |
           docker push onprintceviche/frontceviche:1.0.1
           docker push onprintceviche/backendceviche:1.0.1
-      - run: echo "🍏 Build & Publish docker image job status is ${{ job.status }}."
+      - run: echo "🍏 Build & Publish docker image job status  is ${{ job.status }}."
 
   deploy:
     needs: build
