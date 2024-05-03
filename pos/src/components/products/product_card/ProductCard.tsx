@@ -1,9 +1,8 @@
-import { useState } from "react"
-import Selector from "./selector/Selector"
 import { formatPrice } from "../../../utils/format/formatPrice"
-import { useSelector } from "react-redux"
-import { RootState } from "../../../store/store"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../../../store/store"
 import type { Product, Order } from "../../../types"
+import { setCurrentSelectedProduct } from "../../../store/product_options/productOptionsSlice"
 
 type PropsTypes = {
   product: Product
@@ -11,13 +10,14 @@ type PropsTypes = {
 
 const ProductCard = ({ product }: PropsTypes) => {
 
+  const dispatch = useDispatch<AppDispatch>()
   const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
-  const [openSelector, setOpenSelector] = useState(false)
+
   return (
     <>
       <article
         // Disable action if no table selected
-        onClick={() => currentOrder.data && setOpenSelector(!openSelector)}
+        onClick={() => currentOrder.data && dispatch(setCurrentSelectedProduct(product))}
         role="button"
         tabIndex={0}
         className={`${!currentOrder.data && "opacity-30 cursor-default"} col-span-6 xl:col-span-4 h-24 border border-zinc-200 bg-white rounded-lg`}
@@ -27,7 +27,6 @@ const ProductCard = ({ product }: PropsTypes) => {
           <p>CHF. <span className="font-bold">{formatPrice(product.product_price)}</span></p>
         </div>
       </article>
-      {openSelector ? <Selector product={product} openSelector={openSelector} setOpenSelector={setOpenSelector} /> : null}
     </>
   )
 }

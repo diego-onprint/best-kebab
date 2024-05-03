@@ -6,7 +6,7 @@ const getAllCompletedOrders = async (req, res) => {
         res.status(200).json(response)
     } catch (err) {
         console.log(err)
-        resizeBy.status(500).json(err)
+        res.status(500).json(err)
     }
 }
 

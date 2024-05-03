@@ -1,31 +1,28 @@
-import { useState, Dispatch, SetStateAction, useRef } from "react"
-import { useSelector } from "react-redux"
-import Counter from "../counter/Counter"
-import VariationsMenu from "../options/VariationsMenu"
-import { createTimestamp } from "../../../../utils/create/createTimestamp"
-import { RootState  } from "../../../../store/store"
-import { useUpdateOrderInDbAndStore } from "../../../../hooks/useUpdateOrderInDbAndStore"
-import { getCartTotal } from "../../../../utils/get/getCartTotal"
-import type { ProductVariation, CartProduct, Product, Order } from "../../../../types"
+import { useState, useRef, Dispatch, SetStateAction } from "react"
+import Counter from '../../common/counter/Counter'
+import { useDispatch, useSelector } from "react-redux"
+import { useUpdateOrderInDbAndStore } from "../../../hooks/useUpdateOrderInDbAndStore"
+import { AppDispatch, RootState } from "../../../store/store"
+import { setCurrentSelectedProduct } from "../../../store/product_options/productOptionsSlice"
+import { createTimestamp } from "../../../utils/create/createTimestamp"
+import { getCartTotal } from "../../../utils/get/getCartTotal"
+import type { Product, Order } from '../../../types'
 
-type PropsTypes = {
-    product: Product
-    openSelector: booleans
-    setOpenSelector: Dispatch<SetStateAction<boolean>>
-}
+const ProductOptions = () => {
 
-const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
-
-    console.log(product)
-
-    const { updateOrder } = useUpdateOrderInDbAndStore()
+    const dispatch = useDispatch<AppDispatch>()
     const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
-    const [selectedVariations, setSelectedVarations] = useState<ProductVariation[]>([])
+    const { currentSelectedProduct: product } = useSelector<RootState, { currentSelectedProduct: Product }>(state => state.productOptions)
+    const { updateOrder } = useUpdateOrderInDbAndStore()
     const [qty, setQty] = useState(1)
+    const [selectedVariations, setSelectedVarations] = useState<ProductVariation[]>([])
     const notesRef = useRef()
 
-    const handleAdd = async () => {
+    const handleClose = () => {
+        dispatch(setCurrentSelectedProduct(null))
+    }
 
+    const handleAdd = () => {
         const timestamp = createTimestamp()
 
         const productToAdd: CartProduct = {
@@ -54,7 +51,7 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
         }
 
         updateOrder(updatedOrder)
-        setOpenSelector(!openSelector)
+        handleClose()
     }
 
     return (
@@ -70,20 +67,20 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
                             <Counter qty={qty} setQty={setQty} />
                         </div>
                     </div>
-                    {
+                    {/* {
                         product.product_variations?.length > 0 ?
                             <VariationsMenu
                                 variations={product.product_variations}
                                 selectedVariations={selectedVariations}
                                 setSelectedVariations={setSelectedVarations}
                             /> : null
-                    }
+                    } */}
                     <div>
                         <label className="mb-2 font-semibold">Bemerkung</label>
                         <textarea rows={2} className="w-full p-2 border border-zinc-200 resize-none rounded-md" ref={notesRef} />
                     </div>
                     <div className="grid grid-cols-12 gap-4">
-                        <button onClick={() => setOpenSelector(!openSelector)} className="ghost-button col-span-4">Cancel</button>
+                        <button onClick={handleClose} className="ghost-button col-span-4">Cancel</button>
                         <button onClick={handleAdd} className="primary-button col-span-8"
                         >
                             Add
@@ -95,4 +92,4 @@ const Selector = ({ product, openSelector, setOpenSelector }: PropsTypes) => {
     )
 }
 
-export default Selector
+export default ProductOptions

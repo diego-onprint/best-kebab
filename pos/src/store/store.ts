@@ -1,10 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { statusSlice } from "./status/statusSlice"
 import { api } from "./api/apiSlice"
-import { ordersSlice } from "./orders/ordersSlice"
 import { currentOrderSlice } from "./current_order/currentOrderSlice"
 import { tablesSlice } from "./tables/tablesSlice"
 import { menusSlice } from "./menus/menusSlice"
+import { productOptionsSlice } from "./product_options/productOptionsSlice"
 
 
 export const store = configureStore({
@@ -13,9 +12,7 @@ export const store = configureStore({
         currentOrder: currentOrderSlice.reducer,
         tables: tablesSlice.reducer,
         menus: menusSlice.reducer,
-
-        orders: ordersSlice.reducer,
-        status: statusSlice.reducer,
+        productOptions: productOptionsSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
 })

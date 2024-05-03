@@ -10,9 +10,9 @@ const Order = ({ order }) => {
 
     return (
         <tr>
-            <td onClick={() => setOpen(!open)} className="col-span-1 grid grid-cols-12 gap-2 py-5 cursor-pointer">
-                <div className="font-semibold">#{formatOrderNumber(order.order_id)}</div>
-                <div className="col-span-4 overflow-hidden whitespace-nowrap text-ellipsis w-[85%]">{order.order_data.order_name}</div>
+            <td onClick={() => setOpen(!open)} className="col-span-1 grid grid-cols-12 gap-4 py-5 cursor-pointer">
+                <div className="font-semibold col-span-2">#{formatOrderNumber(order.order_id)}</div>
+                <div className="col-span-3 overflow-hidden whitespace-nowrap text-ellipsis w-[85%]">{order.order_data.order_name}</div>
                 <div className="col-span-2">{formatDate(order.order_data.date_created)}</div>
                 <div className="col-span-2">{order.order_data.status.name}</div>
                 <div className="col-span-2">CHF. {order.order_data.cart.total}</div>
@@ -27,7 +27,7 @@ const Order = ({ order }) => {
             {
                 open ?
                     <td className="grid grid-cols-12 pb-4">
-                        <dl className="col-start-2 col-span-10 flex flex-col gap-1 bg-zinc-50 p-4 rounded-lg">
+                        <dl className="col-start-2 col-span-11 flex flex-col gap-1 bg-zinc-50 p-4 rounded-lg">
                             <div className="flex gap-3">
                                 <dt className="font-semibold">Payment Method:</dt>
                                 <dd>{order.order_data.customer.paymentMethod?.name}</dd>

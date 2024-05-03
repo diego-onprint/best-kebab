@@ -3,6 +3,7 @@ import express from "express"
 import productsRoute from "./routes/products.route.js"
 import categoriesRoute from "./routes/categories.route.js"
 import tablesRoute from "./routes/tables.route.js"
+import personsRoute from "./routes/persons.route.js"
 import orderRoute from "./routes/order.route.js"
 import checkoutRoute from "./routes/checkout.route.js"
 import completedOrdersRoute from "./routes/completed_orders.route.js"
@@ -25,6 +26,7 @@ app.use(express.static('dist'))
 app.use("/api/products", productsRoute)
 app.use("/api/categories", categoriesRoute)
 app.use("/api/tables", tablesRoute)
+app.use("/api/persons", personsRoute)
 app.use("/api/order", orderRoute)
 app.use("/api/checkout", checkoutRoute)
 app.use("/api/completed-orders", completedOrdersRoute)

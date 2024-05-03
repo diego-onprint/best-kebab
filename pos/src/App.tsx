@@ -1,25 +1,20 @@
 import { lazy, Suspense } from "react"
 import { Route, Routes } from "react-router-dom"
 import Layout from "./components/layout/Layout"
-import { useSelector } from "react-redux"
 import PageLoader from "./components/common/page_loader/PageLoader"
 import TicketContextProvider from "./context/TicketContext"
 import NewOrderNotificationContextProvider from "./context/NewOrderNotificationContext"
 import Ticket from "./components/ticket/Ticket"
 import KithcenTicket from "./components/ticket/KitchenTicket"
-import { RootState } from "./store/store"
+import Persons from "./pages/persons/Persons"
 
 const Categories = lazy(() => import("./pages/categories/Categories"))
 const Products = lazy(() => import("./pages/products/Products"))
 const Orders = lazy(() => import("./pages/orders/Orders"))
 const Tables = lazy(() => import("./pages/tables/Tables"))
-const Checkout = lazy(() => import("./components/checkout/Checkout"))
 // const Reports = lazy(() => import("./pages/reports/Reports"))
 
 function App() {
-
-  const menus = useSelector<RootState, { checkoutMenu: boolean }>(state => state.menus)
-
   return (
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
@@ -60,6 +55,14 @@ function App() {
               }
             />
             <Route
+              path="/persons"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <Persons />
+                </Suspense>
+              }
+            />
+            <Route
               path="/orders"
               element={
                 <Suspense fallback={<PageLoader />}>
@@ -78,7 +81,6 @@ function App() {
             {/* <Route path="/reports" element={<Reports />} /> */}
           </Routes>
         </Layout>
-        {menus.checkoutMenu ? <Suspense fallback={<></>}><Checkout /></Suspense> : null}
       </NewOrderNotificationContextProvider>
     </TicketContextProvider>
   )

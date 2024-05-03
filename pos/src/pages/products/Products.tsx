@@ -4,6 +4,7 @@ import ErrorBoundary from "../../components/common/error_boundary/ErrorBoundary"
 import ProductsList from "../../components/products/products_list/ProductsList"
 import ReturnButton from "../../components/common/return_button/ReturnButton"
 
+
 const Products = () => {
 
     const { id } = useParams()

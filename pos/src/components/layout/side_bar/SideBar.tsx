@@ -1,24 +1,26 @@
-import { useState } from "react"
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import useSocketConnectionStatus from "../../../hooks/useSocketConnectionStatus"
 import { useNewOrderNotificationContext } from "../../../context/NewOrderNotificationContext"
 
 const SideBar = () => {
 
 
+  const{ pathname } = useLocation()
   const { socketConnected } = useSocketConnectionStatus()
   const { newOrderNotification } = useNewOrderNotificationContext()
-  const [active, setActive] = useState("/")
 
   return (
     <header className="flex flex-col gap-8 px-1 py-2 shadow-lg">
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
           <span className={`absolute -right-1 top-1 w-2 h-2 ring-2 ring-white rounded-full ${socketConnected ? "bg-green-400" : "bg-red-500"}`}></span>
-          <picture className="w-8 h-8 grid place-items-center">
+          {/* <picture className="w-8 h-8 grid place-items-center">
             <source srcSet="/assets/lovely-small.webp" type="image/webp" />
             <img src="/assets/lovely-small.png" />
-          </picture>
+          </picture> */}
+          C
         </div>
         <div className="relative font-bold">POS</div>
       </div>
@@ -27,8 +29,7 @@ const SideBar = () => {
           <li className="text-[10px]">
             <Link
               to="/categories"
-              onClick={() => setActive("/categories")}
-              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${active === "/categories" && "bg-zinc-100"}`}
+              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/categories" && "bg-zinc-100"}`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
@@ -39,20 +40,29 @@ const SideBar = () => {
           <li className="text-[10px]">
             <Link
               to="/tables"
-              onClick={() => setActive("/tables")}
-              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${active === "/tables" && "bg-zinc-100"}`}
+              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/tables" && "bg-zinc-100"}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z" />
+              </svg>
+              Tables
+            </Link>
+          </li>
+          <li className="text-[10px]">
+            <Link
+              to="/persons"
+              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/persons" && "bg-zinc-100"}`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
               </svg>
-              Tables
+              Persons
             </Link>
           </li>
           <li className="relative text-[10px]">
             <Link
               to="/orders"
-              onClick={() => setActive("/orders")}
-              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${active === "/orders" && "bg-zinc-100"}`}
+              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/orders" && "bg-zinc-100"}`}
             >
               {newOrderNotification ? <span className="absolute right-3 top-1 w-2 h-2 ring-2 ring-white rounded-full bg-green-400"></span> : null}
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -61,6 +71,7 @@ const SideBar = () => {
               Orders
             </Link>
           </li>
+
 
 
           {/* <li className="text-[10px]">

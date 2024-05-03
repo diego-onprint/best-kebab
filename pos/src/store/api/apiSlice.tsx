@@ -25,6 +25,10 @@ export const api = createApi({
             query: () => "tables/",
             keepUnusedDataFor: 0,
         }),
+        getPersonsData: builder.query({
+            query: () => "persons/",
+            keepUnusedDataFor: 0,
+        }),
         getOrderDataById: builder.query({
             query: (id) => `order/${id}`,
             keepUnusedDataFor: 0,
@@ -60,6 +64,7 @@ export const {
     useGetAllProductsQuery,
     useGetProductsByCategoryQuery,
     useGetTablesDataQuery,
+    useGetPersonsDataQuery,
     useGetOrderDataByIdQuery,
     useUpdateOrderDataMutation,
     useCreateNewCompletedOrderMutation,
