@@ -28,6 +28,9 @@ app.use("/api/tables", tablesRoute)
 app.use("/api/order", orderRoute)
 app.use("/api/checkout", checkoutRoute)
 app.use("/api/completed-orders", completedOrdersRoute)
+app.use("/", (req, res) => {
+    res.json({ message: "API is running...", success: true })
+})
 
 io.on("connection", socket => {
     console.log("User connected - Server")
