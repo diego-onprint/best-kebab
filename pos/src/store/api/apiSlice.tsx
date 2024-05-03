@@ -1,9 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { Category, Product, Order, CompletedOrder } from "../../types"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { Category, Product, Order, CompletedOrder } from "../../types";
 
-const baseUrl = import.meta.env.DEV ?
-    "http://localhost:5173/api/" :
-    "https://lovely-burger-pos.diegoui.com.ar/api/"
+const baseUrl = import.meta.env.DEV
+  ? "https://ceviche-back.qrbestellung.ch/api/"
+  : "https://ceviche-back.qrbestellung.ch/api/";
 
 export const api = createApi({
     reducerPath: "api",

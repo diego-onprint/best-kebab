@@ -15,7 +15,7 @@ const app = express()
 const httpServer = createServer(app)
 export const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:5173"
+        origin: "*"
     }
 })
 
@@ -30,12 +30,15 @@ app.use("/api/persons", personsRoute)
 app.use("/api/order", orderRoute)
 app.use("/api/checkout", checkoutRoute)
 app.use("/api/completed-orders", completedOrdersRoute)
+app.use("/", (req, res) => {
+    res.json({ message: "API is running...", success: true })
+})
 
 io.on("connection", socket => {
     console.log("User connected - Server")
     io.emit("on-connect", { success: true })
 })
 
-httpServer.listen(8080, () => {
-    console.log("server started at 8080")
+httpServer.listen(8082, () => {
+    console.log("server started at 8082")
 })

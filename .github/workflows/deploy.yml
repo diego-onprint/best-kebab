@@ -1,0 +1,67 @@
+name: Ceviche site
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Building & publishing docker container
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo "VARIABLES ${{vars.DOCKERHUB__USER}} y ${{vars.DOCKERHUB__PASS}}."
+      - uses: actions/checkout@v2
+      - run: |
+          docker build -t onprintceviche/frontceviche:1.0.1 -f pos/DockerFile.docker  .
+          docker build -t onprintceviche/backendceviche:1.0.1 -f server/Dockerfile.docker  .
+      - uses: docker/login-action@v3
+        with:
+          username: "onprintceviche"
+          password: "Ceviche@2024"
+      - run: |
+          docker push onprintceviche/frontceviche:1.0.1
+          docker push onprintceviche/backendceviche:1.0.1
+      - run: echo "🍏 Build & Publish docker image job status  is ${{ job.status }}."
+
+  deploy:
+    needs: build
+    name: Deploy Image
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Pull code
+        uses: actions/checkout@v2
+      - name: Create Docker network
+        run: docker network create apps-ceviche
+      - name: Deploy React frontend
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH__HOST }}
+          username: ${{ secrets.SSH__USER }}
+          key: ${{ secrets.SSH__PRIVATE }}
+          port: 5069
+          script: |
+            docker stop cevicheFront
+            docker container ls -a --format {{.Names}} | grep cevicheFront | xargs --no-run-if-empty docker rm -f cevicheFront
+            echo 'Ceviche@2024' | docker login -u onprintceviche --password-stdin
+            docker pull onprintceviche/frontceviche:1.0.1
+            docker run --rm -i -t -d -p 5175:5175 \
+              --name cevicheFront \
+              --network apps-ceviche \
+              onprintceviche/frontceviche:1.0.1
+            docker ps
+      - name: Deploy Express backend
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH__HOST }}
+          username: ${{ secrets.SSH__USER }}
+          key: ${{ secrets.SSH__PRIVATE }}
+          port: 5069
+          script: |
+            docker stop cevicheBack
+            docker container ls -a --format {{.Names}} | grep cevicheBack | xargs --no-run-if-empty docker rm -f cevicheBack
+            echo 'Ceviche@2024' | docker login -u onprintceviche --password-stdin
+            docker pull onprintceviche/backendceviche:1.0.1
+            docker run --rm -i -t -d -p 8082:8082 \
+              --name cevicheBack \
+              --network apps-ceviche \
+              onprintceviche/backendceviche:1.0.1
+            docker ps
