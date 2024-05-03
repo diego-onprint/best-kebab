@@ -11,7 +11,7 @@ jobs:
       - run: echo "VARIABLES ${{vars.DOCKERHUB__USER}} y ${{vars.DOCKERHUB__PASS}}."
       - uses: actions/checkout@v2
       - run: |
-          docker build -t onprintceviche/frontceviche:1.0.1 -f client/DockerFile.docker  .
+          docker build -t onprintceviche/frontceviche:1.0.1 -f pos/DockerFile.docker  .
           docker build -t onprintceviche/backendceviche:1.0.1 -f server/Dockerfile.docker  .
       - uses: docker/login-action@v3
         with:
