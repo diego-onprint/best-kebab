@@ -7,8 +7,6 @@ const Products = () => {
     const [searchParams] = useSearchParams()
     const category = searchParams.get("category")
 
-    console.log(category)
-
     return (
         <div className={`${!category && "translate-x-full"} absolute top-0 right-0 w-screen h-screen transition-transform z-20 flex flex-col flex-1`}>
             <div className="section-header grid place-items-center relative">

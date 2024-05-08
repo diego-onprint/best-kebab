@@ -7,7 +7,7 @@ import Product from "./views/product/Product"
 
 function App() {
   return (
-    <main className="relative flex h-screen overflow-hidden">
+    <main className="relative flex h-screen overflow-x-hidden">
         <Categories />
         <Products />
         <Cart />
