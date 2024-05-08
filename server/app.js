@@ -1,6 +1,7 @@
 import "dotenv/config"
 import express from "express"
 import productsRoute from "./routes/products.route.js"
+import productRoute from "./routes/product.router.js"
 import categoriesRoute from "./routes/categories.route.js"
 import tablesRoute from "./routes/tables.route.js"
 import personsRoute from "./routes/persons.route.js"
@@ -24,6 +25,7 @@ app.use(express.json())
 app.use(express.static('dist'))
 
 app.use("/api/products", productsRoute)
+app.use("/api/product", productRoute)
 app.use("/api/categories", categoriesRoute)
 app.use("/api/tables", tablesRoute)
 app.use("/api/persons", personsRoute)

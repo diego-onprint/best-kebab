@@ -20,8 +20,6 @@ const getProductsByCategory = async (req, res) => {
     }
 }
 
-
-
 export const productsController = {
     getAllProducts,
     getProductsByCategory,

@@ -2,7 +2,7 @@ import { useState, Dispatch, SetStateAction } from 'react'
 import { useSelector } from "react-redux"
 import type { RootState } from "../../store/store"
 import type { CartProduct, CartTotal } from '../../types'
-import Spinner from '../spinner/Spinner'
+import Spinner from '../common/spinner/Spinner'
 import Modal from '../modal/Modal'
 
 type PropsTypes = {

@@ -1,4 +1,5 @@
-import { burgerVariations } from "./variations/burger-variations"
+import { beilagenVariations } from "./variations/beilagen-variations.js"
+import { burgerVariations } from "./variations/burger-variations.js"
 
 export const products = [
     {
@@ -115,7 +116,7 @@ export const products = [
     },
     {
         id: "chili-cheese-habanero-veggie",
-        name: "Chili-Cheese Habanero Rösti Veggie",
+        name: "Chili-Cheese Habanero Veggie",
         description: "Hamburgerbrot mit Sesam, Rösti- Patties, Salat, Guacamole, Cheddar-Käse, Chili-Cheese Habanerossauce, Jalapeños",
         price: 25.9,
         variations: burgerVariations,
@@ -123,15 +124,15 @@ export const products = [
     },
     {
         id: "handwerker-veggie",
-        name: "Handwerker Rösti Veggie",
-        description: "Hamburgerbrot mit Sesam, Rösti- Patties, Zwiebelwürfel, 2x Cheddar-Käse, Salat und Cocktailsauce",
+        name: "Handwerker Veggie",
+        description: "Hamburgerbrot mit Sesam, Rösti-Patties, Zwiebelwürfel, 2x Cheddar-Käse, Salat und Cocktailsauce",
         price: 23.9,
         variations: burgerVariations,
         parent: "veggie"
     },
     {
         id: "krautergarten-veggie",
-        name: "Kräutergarten Rösti Veggie",
+        name: "Kräutergarten Veggie",
         description: "Brot mit Sesam, Rösti- Patties, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
         price: 27.9,
         variations: burgerVariations,
@@ -139,7 +140,7 @@ export const products = [
     },
     {
         id: "bodenstandiger-veggie",
-        name: "Bodenständiger (zum selber belegen) Rösti Veggie",
+        name: "Bodenständiger (zum selber belegen) Veggie",
         description: "Brot mit Sesam, Rösti- Patties, Rucola, Tomate, Walnüsse, karamellisierte Zwiebeln, Hirtenkäse, Honig-Senfsauce",
         price: 18.9,
         variations: burgerVariations,
@@ -149,7 +150,7 @@ export const products = [
         id: "chili-cheese-habanero-xl",
         name: "Chili-Cheese Habanero XL",
         description: "Hamburgerbrot mit Sesam, Schweizer Rindfleisch (140 g), Salat, Guacamole, Cheddar-Käse, Chili-Cheese Habanerossauce, Jalapeños",
-        price: 25.9,
+        price: 33.4,
         variations: burgerVariations,
         parent: "xl"
     },
@@ -226,110 +227,6 @@ export const products = [
         parent: "xl"
     },
     {
-        id: "classic-menu",
-        name: "Classic Menu",
-        description: "Bodenständiger und kleine Supper Dipperfrites",
-        price: 20,
-        variations: burgerVariations,
-        parent: "burger-menu"
-    },
-    {
-        id: "handwerker-menu",
-        name: "Handwerker Menu",
-        description: "Handwerker und kleine Supper Dipperfrites",
-        price: 25,
-        variations: burgerVariations,
-        parent: "burger-menu"
-    },
-    {
-        id: "truffelol",
-        name: "Truffelöl",
-        description: "",
-        price: 2,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "supper-dipperfrites",
-        name: "Supper Dipperfrites",
-        description: "",
-        price: 8.9,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "kleine-supper-dipperfrites",
-        name: "Kleine Supper Dipperfrites",
-        description: "",
-        price: 5.5,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "susskartoffelpommes",
-        name: "Süsskartoffelpommes",
-        description: "",
-        price: 9.9,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "kleine-portion-susskartoffelpommes",
-        name: "Kleine Portion Süsskartoffelpommes",
-        description: "",
-        price: 6.5,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "gemischter-gruner-salat",
-        name: "gemischter Grüner Salat",
-        description: "",
-        price: 8.5,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "rostipommes",
-        name: "Röstipommes",
-        description: "",
-        price: 10.9,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "kleine-portion-rostipommes",
-        name: "Kleine Portion Röstipommes",
-        description: "",
-        price: 7.5,
-        variations: [],
-        parent: "beilagen"
-    },
-    {
-        id: "honig-senf",
-        name: "Honig-Senf",
-        description: "",
-        price: 3.5,
-        variations: [],
-        parent: "saucen"
-    },
-    {
-        id: "knoblauch",
-        name: "Knoblauch",
-        description: "",
-        price: 3.5,
-        variations: [],
-        parent: "saucen"
-    },
-    {
-        id: "leicht-scharfe-barbecue",
-        name: "leicht scharfe Barbecue",
-        description: "",
-        price: 3.5,
-        variations: [],
-        parent: "saucen"
-    },
-    {
         id: "Cocktail",
         name: "Cocktail",
         description: "",
@@ -344,14 +241,6 @@ export const products = [
         price: 3.5,
         variations: [],
         parent: "saucen"
-    },
-    {
-        id: "dessert",
-        name: "Dessert",
-        description: "",
-        variations: [],
-        price: 0,
-        parent: "dessert"
     },
     {
         id: "quesadillas-veggie",
@@ -412,7 +301,7 @@ export const products = [
         name: "Crispy Chicken (CH) mit Currysauce",
         description: "Hamburgerbrot mit Sesam, Hähnchenbrust im knusprigem Cornflakesmantel, Salat, Zwiebelringe und Tomate",
         price: 26.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "hahnchen"
     },
     {
@@ -420,7 +309,7 @@ export const products = [
         name: "Crispy Chicken (CH) mit scharfer Devil-Sauce",
         description: "Hamburgerbrot mit Sesam, Hähnchenbrust im knusprigem Cornflakesmantel, Salat, Zwiebelringe und Tomate",
         price: 27.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "hahnchen"
     },
     {
@@ -600,7 +489,7 @@ export const products = [
         name: "Fischburger",
         description: "Hamburgerbrot, Seelachs paniert, Zwiebel, Tomate und Salat hausgemachte Tartarsauce",
         price: 24.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "fisch"
     },
     {
@@ -608,7 +497,7 @@ export const products = [
         name: "Fischersfritz",
         description: "Kibberlinge paniert, glasierte Kartoffeln und Karotten, Salat hausgemachte Tartar-Sauce",
         price: 26.9,
-        variations: [],
+        variations: burgerVariations,
         parent: "fisch"
     },
     {
@@ -916,14 +805,6 @@ export const products = [
         parent: "spritziges-alkoholisch"
     },
     {
-        id: "whysky-sauer-2.5dl",
-        name: "whysky Sauer 2.5DL",
-        description: "",
-        price: 13.9,
-        variations: [],
-        parent: "spritziges-alkoholisch"
-    },
-    {
         id: "aufmunterung-2.5dl",
         name: "AUFMUNTERUNG 2.5DL",
         description: "Vermouth, Cava, Mineral und Berry Schweppes mit Beeren",
@@ -1111,7 +992,7 @@ export const products = [
         id: "panache-sweet-3dl",
         name: "Panache Sweet 3DL",
         description: "",
-        price: 6.9,
+        price: 4.5,
         variations: [],
         parent: "bier"
     },
@@ -1119,7 +1000,7 @@ export const products = [
         id: "panache-sour-3dl",
         name: "Panache Sour 3DL",
         description: "",
-        price: 6.9,
+        price: 4.5,
         variations: [],
         parent: "bier"
     },
@@ -1140,10 +1021,119 @@ export const products = [
         parent: "bier"
     },
     {
-        id: "kaffe-product",
-        name: "Kaffe",
+        id: "brownie-vanilleeis",
+        name: "Brownie + Vanilleis",
         description: "",
-        price: 0,
+        price: 12.5,
+        parent: "dessert"
+    },
+    {
+        id: "lava-vanilleeis",
+        name: "Lava + Vanilleis",
+        description: "",
+        price: 12.5,
+        parent: "dessert"
+    },
+    {
+        id: "kleine-kuchen",
+        name: "kleine Kuchen",
+        description: "",
+        price: 6.5,
+        parent: "dessert"
+    },
+    {
+        id: "grosse-kuchen",
+        name: "grosse Kuchen",
+        description: "",
+        price: 9.5,
+        parent: "dessert"
+    },
+    {
+        id: "eiscream",
+        name: "Eiscream",
+        description: "",
+        price: 3.50,
+        variations: [
+            {
+                id: "taste",
+                name: "Taste",
+                options: [
+                    {
+                        id: "erdbeere",
+                        name: "Erdbeere",
+                        price: 0,
+                        parent: "taste"
+                    },
+                    {
+                        id: "vanille",
+                        name: "Vanille",
+                        price: 0,
+                        parent: "taste"
+                    },
+                    {
+                        id: "schokolade",
+                        name: "Schokolade",
+                        price: 0,
+                        parent: "taste"
+                    },
+                    {
+                        id: "sonstiges",
+                        name: "Sonstiges",
+                        price: 0,
+                        parent: "taste"
+                    },
+                ]
+            }
+        ],
+        parent: "dessert"
+    },
+    {
+        id: "espresso",
+        name: "Espresso",
+        description: "",
+        price: 4,
+        parent: "kaffe"
+    },
+    {
+        id: "dopio",
+        name: "Dopio",
+        description: "",
+        price: 5.5,
+        parent: "kaffe"
+    },
+    {
+        id: "kaffeecreme",
+        name: "Kaffeecreme",
+        description: "",
+        price: 4.5,
+        parent: "kaffe"
+    },
+    {
+        id: "capuccino",
+        name: "Capuccino",
+        description: "",
+        price: 5.5,
+        parent: "kaffe"
+    },
+    {
+        id: "special",
+        name: "Special",
+        description: "",
+        price: 6.5,
+        parent: "kaffe"
+    },
+    {
+        id: "tee",
+        name: "Tee",
+        description: "",
+        price: 4.5,
+        parent: "kaffe"
+    },
+    {
+        id: "schoko",
+        name: "Schoko",
+        description: "",
+        price: 5.5,
         parent: "kaffe"
     },
 ]

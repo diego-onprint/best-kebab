@@ -11,6 +11,10 @@
     @apply bg-zinc-300 hover:bg-zinc-400 py-4 rounded-lg transition-colors;
   }
 
+  .section-header {
+    @apply fixed top-0 bg-white w-full h-16 border-b border-zinc-200;
+  }
+
   .section-title {
     @apply text-xl font-semibold;
   }

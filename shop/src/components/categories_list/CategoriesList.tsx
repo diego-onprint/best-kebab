@@ -1,48 +1,40 @@
-import { Dispatch, SetStateAction } from "react"
-import { Category } from "../../types"
-import useQuery from "../../hooks/useQuery"
+import { useGetCategoriesQuery } from "../../store/api/apiSlice"
 import { useSearchParams } from "react-router-dom"
+import Spinner from "../common/spinner/Spinner"
 
-type PropsTypes = {
-    categories: Category[]
-}
+const CategoriesList = () => {
 
-const CategoriesList = ({ categories }: PropsTypes) => {
+    const { data: categories, error, isFetching } = useGetCategoriesQuery()
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    // console.log(categories)
-
-    const query = useQuery()
-    const [_, setSearchParams] = useSearchParams()
-
-    // const category = query.get("category")
-
-    const handleClick = (id: Category["id"]) => {
-        setSearchParams({"category": id})
+    const handleClick = (id) => {
+        setSearchParams({ ...searchParams, category: id })
     }
 
-    // console.log(category)
+    if (isFetching) {
+        return (
+            <div className="w-full h-full grid place-items-center bg-neutral-100">
+                <Spinner color="text-zinc-300" />
+            </div>
+        )
+    }
 
     return (
-        <div className="w-full flex flex-col h-s[80vh]">
-            <div className="relative p-3 border-b border-zinc-200">
-                <h3 className="text-center font-semibold">Select category</h3>
-            </div>
-            <div className="grid grid-cols-12 gap-2 flex-1 h-80 overflow-y-auto py-3 px-2 bg-neutral-100">
-                {
-                    categories.map(category => {
-                        return (
-                            <article onClick={() => handleClick(category.id)} key={category.id} className="col-span-6 sm:col-span-4 lg:col-span-3 border border-zinc-100 bg-white rounded-lg p-2 flex flex-col shadow-sm">
-                                {/* <img src={product.images[0].src} className="w-full h-24 object-cover rounded-md" /> */}
-                                <div className="p-1 flex flex-col flex-1 justify-between">
-                                    <div>
-                                        <h3>{category.name}</h3>
-                                    </div>
-                                </div>
-                            </article>
-                        )
-                    })
-                }
-            </div>
+        <div className="grid grid-cols-12 gap-2 flex-1 overflow-y-auto pt-20 pb-24 px-2 bg-neutral-100">
+            {
+                categories.map(category => {
+                    return (
+                        <article
+                            key={category.id}
+                            onClick={() => handleClick(category.id)}
+                            className="h-40 overflow-hidden col-span-6 sm:col-span-4 lg:col-span-3 border border-zinc-100 bg-white rounded-lg flex flex-col shadow-sm"
+                        >
+                            <img src={category.img} alt="" className="object-cover h-28" />
+                            <h3 className="font-semibold text-center p-2">{category.name}</h3>
+                        </article>
+                    )
+                })
+            }
         </div>
     )
 }

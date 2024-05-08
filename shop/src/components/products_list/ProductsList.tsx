@@ -1,58 +1,51 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import type { CartTotal, Product } from "../../types"
-import { useSelector } from "react-redux"
-import { RootState } from "../../store/store"
-import useQuery from "../../hooks/useQuery"
-import { products } from "../../../data/products"
+import { useGetProductsByCategoryQuery } from "../../store/api/apiSlice"
+import { useSearchParams } from "react-router-dom"
+import { urlSearchParamsToObject } from "../../utils/urlSearchParamsToObject"
+import Spinner from "../common/spinner/Spinner"
 
 const ProductsList = () => {
 
-    // const [products, setProducts] = useState<Product[]>([])
-    const totalProducts = useSelector<RootState, number>(state => state.cart.totalProducts)
-    const total = useSelector<RootState, CartTotal>(state => state.cart.total)
+    const [searchParams, setSearchParams] = useSearchParams()
+    const category = searchParams.get("category")
+    const { data: products, error, isFetching } = useGetProductsByCategoryQuery(category)
 
-    const query = useQuery()
-    const category = query.get("category")
-    const filteredProducts = products.filter((product: Product) => product.parent === category)
+    const handleClick = (id) => {
+        const paramsObject = urlSearchParamsToObject(searchParams)
+        setSearchParams({ ...paramsObject, product: id })
+    }
 
-
-    console.log("IN PRODUCTS", category, filteredProducts)
+    if (isFetching) {
+        return (
+            <div className="w-full h-full grid place-items-center bg-neutral-100">
+                <Spinner color="text-zinc-300" />
+            </div>
+        )
+    }
 
     return (
-        <div className={`${filteredProducts.length > 0 && "-translate-x-full"} transition-transform z-20 bg-white fixed top-0 -right-[100vw] w-[100vw] h-[100vh]`}>
-            <div className="relative p-3 border-b border-zinc-200">
-                <h3 className="text-center font-semibold">Select products</h3>
-            </div>
-            <div className="flex flex-nowrap gap-4 p-4 bg-white shadow-md overflow-x-scroll">
-                <p>Select a product</p>
-            </div>
-            <div className="grid grid-cols-12 gap-2 flex-1 h-80 overflow-y-auto overflow-x-hidden py-3 px-2 bg-neutral-100">
-                {
-                    filteredProducts.length > 0 ?
-                        filteredProducts.map(product => (
-                            <article key={product.id} className="col-span-6 sm:col-span-4 lg:col-span-3 border border-zinc-100 bg-white rounded-lg p-2 flex flex-col shadow-sm">
-                                {/* <img src={product.images[0].src} className="w-full h-24 object-cover rounded-md" /> */}
-                                <div className="p-1 flex flex-col flex-1 justify-between">
-                                    <div>
-                                        <h3>{product.name}</h3>
-                                        <p>CHF.{product.price}</p>
-                                    </div>
-                                    <button onClick={() => setProductDetails(product)} className="primary-button bg-zinc-100 text-black border border-zinc-300" type="button">Add</button>
+        <div className="flex-1 overflow-y-auto bg-neutral-100 pt-3 pb-24 px-2">
+            {
+                products.map(product => {
+                    return (
+                        <article
+                            onClick={() => handleClick(product.id)}
+                            className="grid grid-cols-12 gap-2 bg-white rounded-md p-1 h-24 mb-2"
+                            key={product.id}
+                        >
+                            <div className="col-span-4 p-1">
+                                <img className="w-full h-full object-cover rounded-md" src="/product-placeholder.jpg" alt="" />
+                            </div>
+                            <div className="col-span-8 flex flex-col justify-between">
+                                <div>
+                                    <h3 className="font-semibold truncate">{product.name}</h3>
+                                    <p className="text-sm text-zinc-500 truncate">{product.description.length > 0 ? product.description : product.name}</p>
                                 </div>
-                            </article>
-                        )) : null
-                }
-            </div>
-            {/* {
-                totalProducts > 0 ?
-                    <div className="z-10 flex gap-6 items-end h-24 w-full p-5 bg-white border-t border-slate-100 shadow-lg">
-                        <div>
-                            <p><span>{totalProducts}</span> producto{totalProducts > 1 && <span>s</span>}</p>
-                            <p className="text-xl font-semibold"><span className="text-sm">CHF.</span> {total}</p>
-                        </div>
-                        <button onClick={() => setShowOrder(true)} className="primary-button flex-1">Check Order</button>
-                    </div> : null
-            } */}
+                                <p className="font-semibold">CHF. {product.price}</p>
+                            </div>
+                        </article>
+                    )
+                })
+            }
         </div>
     )
 }
