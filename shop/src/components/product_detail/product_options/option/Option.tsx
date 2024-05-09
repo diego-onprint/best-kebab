@@ -1,15 +1,15 @@
-import React from 'react'
+import { formatPrice } from "../../../../utils/formatPrice"
 
-const Option = ({ option, selectedOptions, setSelectedOptions }) => {
+const Option = ({ option, selectedVariations, setSelectedVariations }) => {
 
-  const isSelected = selectedOptions.find(opt => opt.id === option.id)
+  const isSelected = selectedVariations.find(opt => opt.id === option.id)
 
   const handleClick = () => {
     if (!isSelected) {
-      setSelectedOptions([...selectedOptions, option])
+      setSelectedVariations([...selectedVariations, option])
     } else {
-      const filtered = selectedOptions.filter(opt => opt.id !== option.id)
-      setSelectedOptions(filtered)
+      const filtered = selectedVariations.filter(opt => opt.id !== option.id)
+      setSelectedVariations(filtered)
     }
   }
 
@@ -17,7 +17,7 @@ const Option = ({ option, selectedOptions, setSelectedOptions }) => {
     <div className="flex justify-between items-center">
       <div className={`flex gap-2 ${isSelected && "font-bold"}`}>
         <p className="truncate max-w-52">{option.name}</p>
-        <p>CHF. {option.price}</p>
+        <p>CHF. {formatPrice(option.price)}</p>
       </div>
       <div
         onClick={handleClick}

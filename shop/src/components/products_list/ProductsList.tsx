@@ -2,6 +2,7 @@ import { useGetProductsByCategoryQuery } from "../../store/api/apiSlice"
 import { useSearchParams } from "react-router-dom"
 import { urlSearchParamsToObject } from "../../utils/urlSearchParamsToObject"
 import Spinner from "../common/spinner/Spinner"
+import { formatPrice } from "../../utils/formatPrice"
 
 const ProductsList = () => {
 
@@ -40,7 +41,7 @@ const ProductsList = () => {
                                     <h3 className="font-semibold truncate">{product.name}</h3>
                                     <p className="text-sm text-zinc-500 truncate">{product.description.length > 0 ? product.description : product.name}</p>
                                 </div>
-                                <p className="font-semibold">CHF. {product.price}</p>
+                                <p className="font-semibold">CHF. {formatPrice(product.price)}</p>
                             </div>
                         </article>
                     )

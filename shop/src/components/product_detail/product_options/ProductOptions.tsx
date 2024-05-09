@@ -2,8 +2,8 @@ import Option from "./option/Option"
 
 const ProductOptions = ({
     variations,
-    selectedOptions,
-    setSelectedOptions,
+    selectedVariations,
+    setSelectedVariations,
 }) => {
     return (
         <div className="flex flex-col divide-y divide-zinc-200 gap-1 bg-white rounded-md p-4">
@@ -21,8 +21,8 @@ const ProductOptions = ({
                                                 <Option
                                                     key={option.id}
                                                     option={option}
-                                                    selectedOptions={selectedOptions}
-                                                    setSelectedOptions={setSelectedOptions}
+                                                    selectedVariations={selectedVariations}
+                                                    setSelectedVariations={setSelectedVariations}
                                                 />
                                             )
                                         })

@@ -1,32 +1,20 @@
 export type ProductType = {
-    id: string
+    id: number
     name: string
     price: number
-    images: ProductImage[]
-    description: string
-    parent: string
+    description?: string
+    parent?: string
     variations: []
 }
 
-type ProductImage = {
-    id: number
-    src: string
-    alt: string
+export type CartProductType = ProductType & { 
+    uid: string
+    qty: number
+    notes: string
 }
 
-export type Category = {
-    id: string
-    name: string
-    parent: string
-}
-
-export type CartProduct = Product & { qty: number, localId: string }
-
-export type Cart = { 
-    products: CartProduct[] 
+export type CartType = { 
+    products: CartProductType[] 
     total: string
     totalProducts: number
 }
-
-export type CartProductId = CartProduct["id"]
-export type CartTotal = Cart["total"]

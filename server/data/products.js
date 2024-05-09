@@ -1025,28 +1025,32 @@ export const products = [
         name: "Brownie + Vanilleis",
         description: "",
         price: 12.5,
-        parent: "dessert"
+        parent: "dessert",
+        variations: []
     },
     {
         id: "lava-vanilleeis",
         name: "Lava + Vanilleis",
         description: "",
         price: 12.5,
-        parent: "dessert"
+        parent: "dessert",
+        variations: []
     },
     {
         id: "kleine-kuchen",
         name: "kleine Kuchen",
         description: "",
         price: 6.5,
-        parent: "dessert"
+        parent: "dessert",
+        variations: []
     },
     {
         id: "grosse-kuchen",
         name: "grosse Kuchen",
         description: "",
         price: 9.5,
-        parent: "dessert"
+        parent: "dessert",
+        variations: []
     },
     {
         id: "eiscream",
@@ -1092,48 +1096,55 @@ export const products = [
         name: "Espresso",
         description: "",
         price: 4,
-        parent: "kaffe"
+        parent: "kaffe",
+        variations: []
     },
     {
         id: "dopio",
         name: "Dopio",
         description: "",
         price: 5.5,
-        parent: "kaffe"
+        parent: "kaffe",
+        variations: []
     },
     {
         id: "kaffeecreme",
         name: "Kaffeecreme",
         description: "",
         price: 4.5,
-        parent: "kaffe"
+        parent: "kaffe",
+        variations: []
     },
     {
         id: "capuccino",
         name: "Capuccino",
         description: "",
         price: 5.5,
-        parent: "kaffe"
+        parent: "kaffe",
+        variations: []
     },
     {
         id: "special",
         name: "Special",
         description: "",
         price: 6.5,
-        parent: "kaffe"
+        parent: "kaffe",
+        variations: []
     },
     {
         id: "tee",
         name: "Tee",
         description: "",
         price: 4.5,
-        parent: "kaffe"
+        parent: "kaffe",
+        variations: []
     },
     {
         id: "schoko",
         name: "Schoko",
         description: "",
         price: 5.5,
-        parent: "kaffe"
+        parent: "kaffe",
+        variations: []
     },
 ]
