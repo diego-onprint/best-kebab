@@ -12,6 +12,7 @@ jobs:
       - run: |
           docker build -t smartposch/demoposfront:1.0.1 -f pos/DockerFile.docker  .
           docker build -t smartposch/demoposbackend:1.0.1 -f server/Dockerfile.docker  .
+          docker build -t smartposch/demoshopsmart:1.0.1 -f shop/DockerFile.docker  .
       - uses: docker/login-action@v3
         with:
           username: "smartposch"
