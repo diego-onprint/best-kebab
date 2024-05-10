@@ -1,4 +1,4 @@
-name: Ceviche site
+name: Onprint demo deploy
 on:
   push:
     branches:
@@ -31,7 +31,7 @@ jobs:
       - name: Pull code
         uses: actions/checkout@v2
       - name: Create Docker network
-        run: docker network create apps-ceviche
+        run: docker network create apps-demo
       - name: Deploy React frontend
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -40,13 +40,13 @@ jobs:
           key: ${{ secrets.SSH__PRIVATE }}
           port: 5069
           script: |
-            docker stop cevicheFront
-            docker container ls -a --format {{.Names}} | grep cevicheFront | xargs --no-run-if-empty docker rm -f cevicheFront
+            docker stop onprintFront
+            docker container ls -a --format {{.Names}} | grep onprintFront | xargs --no-run-if-empty docker rm -f onprintFront
             echo 'SmartPos2' | docker login -u smartposch --password-stdin
             docker pull smartposch/demoposfront:1.0.1
             docker run --rm -i -t -d -p 5176:5176 \
-              --name cevicheFront \
-              --network apps-ceviche \
+              --name onprintFront \
+              --network apps-demo \
               smartposch/demoposfront:1.0.1
             docker ps
       - name: Deploy Express backend
@@ -57,13 +57,13 @@ jobs:
           key: ${{ secrets.SSH__PRIVATE }}
           port: 5069
           script: |
-            docker stop cevicheBack
-            docker container ls -a --format {{.Names}} | grep cevicheBack | xargs --no-run-if-empty docker rm -f cevicheBack
+            docker stop onprintBack
+            docker container ls -a --format {{.Names}} | grep onprintBack | xargs --no-run-if-empty docker rm -f onprintBack
             echo 'SmartPos2' | docker login -u smartposch --password-stdin
             docker pull smartposch/demoposbackend:1.0.1
             docker run --rm -i -t -d -p 8083:8083 \
-              --name cevicheBack \
-              --network apps-ceviche \
+              --name onprintBack \
+              --network apps-demo \
               smartposch/demoposbackend:1.0.1
             docker ps
       - name: Deploy shop demo
@@ -80,6 +80,6 @@ jobs:
             docker pull smartposch/demoshopsmart:1.0.1
             docker run --rm -i -t -d -p  4175:4175 \
               --name demoShop \
-              --network apps-ceviche \
+              --network apps-demo \
               smartposch/demoshopsmart:1.0.1
             docker ps
