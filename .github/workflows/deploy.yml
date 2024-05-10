@@ -11,15 +11,17 @@ jobs:
       - run: echo "VARIABLES ${{vars.DOCKERHUB__USER}} y ${{vars.DOCKERHUB__PASS}}."
       - uses: actions/checkout@v2
       - run: |
-          docker build -t onprintceviche/frontceviche:1.0.1 -f pos/DockerFile.docker  .
-          docker build -t onprintceviche/backendceviche:1.0.1 -f server/Dockerfile.docker  .
+          docker build -t smartposch/demoposfront:1.0.1 -f pos/DockerFile.docker  .
+          docker build -t smartposch/demoposbackend:1.0.1 -f server/Dockerfile.docker  .
+          docker build -t smartposch/demoshopsmart:1.0.1 -f shop/Dockerfile.docker  .
       - uses: docker/login-action@v3
         with:
-          username: "onprintceviche"
-          password: "Ceviche@2024"
+          username: "smartposch"
+          password: "SmartPos2"
       - run: |
-          docker push onprintceviche/frontceviche:1.0.1
-          docker push onprintceviche/backendceviche:1.0.1
+          docker push smartposch/demoposfront:1.0.1
+          docker push smartposch/demoposbackend:1.0.1
+          docker push smartposch/demoshopsmart:1.0.1
       - run: echo "🍏 Build & Publish docker image job status  is ${{ job.status }}."
 
   deploy:
@@ -41,12 +43,12 @@ jobs:
           script: |
             docker stop cevicheFront
             docker container ls -a --format {{.Names}} | grep cevicheFront | xargs --no-run-if-empty docker rm -f cevicheFront
-            echo 'Ceviche@2024' | docker login -u onprintceviche --password-stdin
-            docker pull onprintceviche/frontceviche:1.0.1
-            docker run --rm -i -t -d -p 5175:5175 \
+            echo 'SmartPos2' | docker login -u smartposch --password-stdin
+            docker pull smartposch/demoposfront:1.0.1
+            docker run --rm -i -t -d -p 5176:5176 \
               --name cevicheFront \
               --network apps-ceviche \
-              onprintceviche/frontceviche:1.0.1
+              smartposch/demoposfront:1.0.1
             docker ps
       - name: Deploy Express backend
         uses: appleboy/ssh-action@v0.1.5
@@ -58,10 +60,27 @@ jobs:
           script: |
             docker stop cevicheBack
             docker container ls -a --format {{.Names}} | grep cevicheBack | xargs --no-run-if-empty docker rm -f cevicheBack
-            echo 'Ceviche@2024' | docker login -u onprintceviche --password-stdin
-            docker pull onprintceviche/backendceviche:1.0.1
-            docker run --rm -i -t -d -p 8082:8082 \
+            echo 'SmartPos2' | docker login -u smartposch --password-stdin
+            docker pull smartposch/demoposbackend:1.0.1
+            docker run --rm -i -t -d -p 8083:8083 \
               --name cevicheBack \
               --network apps-ceviche \
-              onprintceviche/backendceviche:1.0.1
+              smartposch/demoposbackend:1.0.1
+            docker ps
+      - name: Deploy shop demo
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH__HOST }}
+          username: ${{ secrets.SSH__USER }}
+          key: ${{ secrets.SSH__PRIVATE }}
+          port: 5069
+          script: |
+            docker stop demoShop
+            docker container ls -a --format {{.Names}} | grep demoShop | xargs --no-run-if-empty docker rm -f demoShop
+            echo 'SmartPos2' | docker login -u smartposch --password-stdin
+            docker pull smartposch/demoshopsmart:1.0.1
+            docker run --rm -i -t -d -p  4175:4175 \
+              --name demoShop \
+              --network apps-ceviche \
+              smartposch/demoshopsmart:1.0.1
             docker ps

@@ -3,15 +3,15 @@ FROM node:20.9.0 as build
 
 WORKDIR /app
 
-COPY pos/package.json ./
+COPY shop/package.json ./
 
 RUN npm install --legacy-peer-deps
-COPY ./pos .
+COPY ./shop .
 
 RUN ls
 
 RUN npm run build
 
-EXPOSE 5176
+EXPOSE 4175
 
 CMD ["npm", "run", "dev"]
