@@ -31,7 +31,7 @@ jobs:
       - name: Pull code
         uses: actions/checkout@v2
       - name: Create Docker network
-        run: docker network create apps-demo
+        run: docker network create app-backend
       - name: Deploy React frontend
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -46,7 +46,7 @@ jobs:
             docker pull smartposch/demoposfront:1.0.1
             docker run --rm -i -t -d -p 5176:5176 \
               --name onprintFront \
-              --network apps-demo \
+              --network app-backend \
               smartposch/demoposfront:1.0.1
             docker ps
       - name: Deploy Express backend
@@ -63,7 +63,7 @@ jobs:
             docker pull smartposch/demoposbackend:1.0.1
             docker run --rm -i -t -d -p 8083:8083 \
               --name onprintBack \
-              --network apps-demo \
+              --network app-backend \
               smartposch/demoposbackend:1.0.1
             docker ps
       - name: Deploy shop demo
@@ -80,6 +80,6 @@ jobs:
             docker pull smartposch/demoshopsmart:1.0.1
             docker run --rm -i -t -d -p  4175:4175 \
               --name demoShop \
-              --network apps-demo \
+              --network app-backend \
               smartposch/demoshopsmart:1.0.1
             docker ps
