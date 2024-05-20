@@ -9,11 +9,10 @@ import ProductNotes from "../../components/product_detail/product_notes/ProductN
 import ProductOptions from "../../components/product_detail/product_options/ProductOptions"
 import Spinner from "../../components/common/spinner/Spinner"
 import { createTimestamp } from "../../utils/createTimestamp"
-import type { CartProduct } from "../../types"
-import Notification from "../../components/common/notification/Notification"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store/store"
 import { addProduct } from "../../store/cart/cartSlice"
+import type { CartProduct } from "../../types"
 
 const DURATION = 1000
 
@@ -67,7 +66,7 @@ const Product = () => {
   }
 
   return (
-    <div className={`${!productParam ? "translate-x-full" : ""} flex flex-col absolute top-0 right-0 w-screen min-h-screen pb-4 transition-transform z-[60] flex-1`}>
+    <div className={`${!productParam ? "translate-x-full" : ""} flex flex-col absolute top-0 right-0 w-screen min-h-screen pb-4 transition-transform z-[60] flex-1 overflow-y-auto`}>
       <div className="section-header grid place-items-center">
         <div className="absolute left-4 top-1/2 -translate-y-1/2 grid place-items-center">
           <ReturnButton style={`w-5 h-5 ${disabled ? "opacity-50" : ""}`} disabled={disabled} />

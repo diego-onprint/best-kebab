@@ -6,6 +6,26 @@ const useNavigation = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()
 
+    const toHomeView = () => {
+        const id = searchParams.get("id")
+        id && setSearchParams({ id })
+    }
+
+    const toOrdersView = () => {
+        const paramsObject = urlSearchParamsToObject(searchParams)
+        setSearchParams({ ...paramsObject, orders: "ok" })
+    }
+    
+    const toProductView = (id: string) => {
+        const paramsObject = urlSearchParamsToObject(searchParams)
+        setSearchParams({ ...paramsObject, product: id })
+    }
+
+    const toCategoriesView = () => {
+        const paramsObject = urlSearchParamsToObject(searchParams)
+        setSearchParams({ ...paramsObject, categories: "cat", cart: "opened" })
+    }
+
     const toCheckoutView = () => {
         const paramObject = urlSearchParamsToObject(searchParams)
         setSearchParams({ ...paramObject, checkout: "ok" })
@@ -16,27 +36,13 @@ const useNavigation = () => {
         setSearchParams({ ...paramsObject, success: bool ? "true" : "false" })
     }
 
-    const toHomeView = () => {
-        const id = searchParams.get("id")
-        id && setSearchParams({ id })
-    }
-
-    const toOrdersView = () => {
-        const id = searchParams.get("id")
-        setSearchParams({ id, orders: "ok" })
-    }
-    
-    const toProductView = (id: string) => {
-        const paramsObject = urlSearchParamsToObject(searchParams)
-        setSearchParams({ ...paramsObject, product: id })
-    }
-
     return {
-        toCheckoutView,
-        toConfirmationView,
         toHomeView,
         toOrdersView,
         toProductView,
+        toCategoriesView,
+        toCheckoutView,
+        toConfirmationView,
     }
 }
 

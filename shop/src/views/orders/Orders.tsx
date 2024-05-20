@@ -1,29 +1,23 @@
 import useParam from "../../hooks/useParam"
 import { getLocalStorageItem } from "../../utils/localStorage"
-import useNavigation from "../../hooks/useNavigation"
+import ReturnButton from "../../components/common/return_button/ReturnButton"
 
 const Orders = () => {
 
     const showOrders = useParam("orders")
     const localOrders = getLocalStorageItem("orders")
-    const { toHomeView } = useNavigation()
 
     if (showOrders) {
         return (
             <div className="bg-neutral-100 absolute top-0 right-0 w-screen h-screen pb-2 transition-transform z-[999] flex flex-col flex-1">
                 <div className="section-header grid place-items-center relative min-h-16">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 grid place-items-center">
-                        <button onClick={toHomeView}>
-                            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                            </svg>
-                        </button>
+                        <ReturnButton style="w-5 h-5" />
                     </div>
                     <h3 className="text-center font-semibold">My Orders</h3>
                 </div>
                 {
                     localOrders ?
-
                         <ul className="flex flex-col gap-2 p-2">
                             {
                                 localOrders.orders.map((order, index) => {

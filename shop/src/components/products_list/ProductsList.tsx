@@ -19,7 +19,7 @@ const ProductsList = () => {
     }
 
     return (
-        <div className="flex-1 overflow-y-auto bg-neutral-100 pt-3 pb-24 px-2">
+        <div className="flex-1 bg-neutral-100 pt-3 pb-24 px-2">
             {
                 products.map(product => {
                     return (
