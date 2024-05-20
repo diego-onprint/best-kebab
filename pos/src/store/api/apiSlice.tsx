@@ -3,8 +3,8 @@ import type { Category, Product, Order, CompletedOrder } from "../../types";
 
 // PROD
 const baseUrl = import.meta.env.DEV
-  ? "https://demo-pos-back.smart-pos.ch"
-  : "https://demo-pos-back.smart-pos.ch";
+  ? "https://demo-pos-back.smart-pos.ch/api/"
+  : "https://demo-pos-back.smart-pos.ch/api/";
 
 // DEV
 // const baseUrl = import.meta.env.DEV ? 

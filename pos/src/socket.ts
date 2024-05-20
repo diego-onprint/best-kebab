@@ -5,8 +5,8 @@ import { io } from "socket.io-client";
 
 // Prod
 const URL = import.meta.env.DEV
-  ? "https://demo-pos-back.smart-pos.ch"
-  : "https://demo-pos-back.smart-pos.ch";
+  ? "https://demo-pos-back.smart-pos.ch/api/"
+  : "https://demo-pos-back.smart-pos.ch/api/";
 
 // const URL = import.meta.env.DEV
 //   ? "http://localhost:8082/"
