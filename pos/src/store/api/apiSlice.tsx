@@ -1,9 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Category, Product, Order, CompletedOrder } from "../../types";
 
+// PROD
 const baseUrl = import.meta.env.DEV
-  ? "https://ceviche-back.qrbestellung.ch/api/"
-  : "https://ceviche-back.qrbestellung.ch/api/";
+  ? "https://demo-pos-back.smart-pos.ch"
+  : "https://demo-pos-back.smart-pos.ch";
+
+// DEV
+// const baseUrl = import.meta.env.DEV ? 
+//     "http://localhost:8082/api/" : 
+//     "https://ceviche-back.qrbestellung.ch/api/"
 
 export const api = createApi({
     reducerPath: "api",
@@ -23,10 +29,6 @@ export const api = createApi({
         }),
         getTablesData: builder.query({
             query: () => "tables/",
-            keepUnusedDataFor: 0,
-        }),
-        getPersonsData: builder.query({
-            query: () => "persons/",
             keepUnusedDataFor: 0,
         }),
         getOrderDataById: builder.query({

@@ -7,7 +7,9 @@ const useSocketConnectionStatus = () => {
     
     useEffect(() => {
         
-        const handleStatus = () => setSocketConnected(true)
+        const handleStatus = (args) => {
+          if (args.success) setSocketConnected(true)
+        }
         
         socket.on("on-connect", handleStatus)
     

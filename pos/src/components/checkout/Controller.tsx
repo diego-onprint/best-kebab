@@ -3,7 +3,7 @@ import usePrintTickets from "../../hooks/usePrintTickets"
 import View from "./View"
 import Notification from "../notification/Notification"
 import type { Order, PaymentMethod } from "../../types"
-import type { RootState } from "../../store/store"
+import type { RootState, AppDispatch } from "../../store/store"
 import { useUpdateOrderInDbAndStore } from "../../hooks/useUpdateOrderInDbAndStore"
 import { setCheckoutMenu } from "../../store/menus/menusSlice"
 import { useCreateNewCompletedOrderMutation } from "../../store/api/apiSlice"
@@ -92,12 +92,16 @@ const Controller = () => {
         }
 
     }
+    
+    const handlePrint = () => {
+        printClientTicket()
+    }
 
     return (
         <>
             <View
                 order={currentOrder}
-                handlePrint={printClientTicket}
+                handlePrint={handlePrint}
                 handleCancel={handleCancel}
                 handlePaymentMethod={handlePaymentMethod}
                 handleCheckout={handleCheckout}

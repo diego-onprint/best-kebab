@@ -1,7 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { Category, Product, ProductVariationResponse } from "../../types"
 
-const baseUrl = import.meta.env.DEV ? "http://localhost:8082/api/" : "https://lovely-burger-pos.diegoui.com.ar/api/"
+// Prod
+const baseUrl = import.meta.env.DEV
+  ? "https://demo-pos-back.smart-pos.ch"
+  : "https://demo-pos-back.smart-pos.ch";
+
+// DEV
+// const baseUrl = import.meta.env.DEV ? 
+//     "http://localhost:8082/api/" : 
+//     "https://ceviche-back.qrbestellung.ch/api/"
 
 export const api = createApi({
     reducerPath: "api",
@@ -19,16 +27,20 @@ export const api = createApi({
             query: (id) => `product/${id}`,
             keepUnusedDataFor: 21600,
         }),
-        // getSubCategories: builder.query<{ categories: Category[]}, string | undefined>({
-        //     query: (id) => `subcategories/${id}`,
-        //     keepUnusedDataFor: 21600,
-        // }),
-        // getOrders: builder.query({
-        //     query: (data) => `orders?page=${data.page}`
-        // }),
-        // getSalesReport: builder.query({
-        //     query: (query) => `sales-reports?${query}`
-        // })
+        getOrderDataById: builder.query({
+            query: (id) => `order/${id}`,
+            keepUnusedDataFor: 0,
+        }),
+        updateOrderData: builder.mutation<Order, Order>({
+            query(data) {
+                const { id, ...body } = data
+                return {
+                    url: `order/${id}`,
+                    method: "PUT",
+                    body,
+                }
+            }
+        }),
     })
 })
 
@@ -36,7 +48,6 @@ export const {
     useGetCategoriesQuery, 
     useGetProductsByCategoryQuery,
     useGetProductByIdQuery,
-    // useGetSubCategoriesQuery,
-    // useGetOrdersQuery, 
-    // useGetSalesReportQuery,
+    useUpdateOrderDataMutation,
+    useGetOrderDataByIdQuery,
 } = api

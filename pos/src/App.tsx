@@ -7,6 +7,8 @@ import NewOrderNotificationContextProvider from "./context/NewOrderNotificationC
 import Ticket from "./components/ticket/Ticket"
 import KithcenTicket from "./components/ticket/KitchenTicket"
 import Persons from "./pages/persons/Persons"
+import NotificationsLayer from "./hocs/NotificationsLayer"
+import NewOrderSocketLayer from "./hocs/NewOrderSocketLayer"
 
 const Categories = lazy(() => import("./pages/categories/Categories"))
 const Products = lazy(() => import("./pages/products/Products"))
@@ -15,72 +17,77 @@ const Tables = lazy(() => import("./pages/tables/Tables"))
 // const Reports = lazy(() => import("./pages/reports/Reports"))
 
 function App() {
+
   return (
     <TicketContextProvider>
       <NewOrderNotificationContextProvider>
-        <Ticket />
-        <KithcenTicket />
-        <Layout>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Tables />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/categories"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Categories />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/products/:id"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Products />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/tables"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Tables />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/persons"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Persons />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/orders"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Orders />
-                </Suspense>
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <p>404 page not found</p>
-                </Suspense>
-              }
-            />
-            {/* <Route path="/reports" element={<Reports />} /> */}
-          </Routes>
-        </Layout>
+        <NotificationsLayer>
+          <NewOrderSocketLayer>
+            <Ticket />
+            <KithcenTicket />
+            <Layout>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Tables />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/categories"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Categories />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/products/:id"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Products />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/tables"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Tables />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/persons"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Persons />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/orders"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Orders />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="*"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <p>404 page not found</p>
+                    </Suspense>
+                  }
+                />
+                {/* <Route path="/reports" element={<Reports />} /> */}
+              </Routes>
+            </Layout>
+          </NewOrderSocketLayer>
+        </NotificationsLayer>
       </NewOrderNotificationContextProvider>
     </TicketContextProvider>
   )

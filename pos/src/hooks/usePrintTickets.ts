@@ -13,8 +13,10 @@ const usePrintTickets = () => {
 
     useEffect(() => {
 
-        ticket !== "" && window.print()
-        setTicket("")
+        if (ticket) {
+            window.print() 
+            setTicket(null)
+        }
 
     }, [ticket, setTicket])
 

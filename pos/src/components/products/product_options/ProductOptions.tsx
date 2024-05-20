@@ -67,14 +67,6 @@ const ProductOptions = () => {
                             <Counter qty={qty} setQty={setQty} />
                         </div>
                     </div>
-                    {/* {
-                        product.product_variations?.length > 0 ?
-                            <VariationsMenu
-                                variations={product.product_variations}
-                                selectedVariations={selectedVariations}
-                                setSelectedVariations={setSelectedVarations}
-                            /> : null
-                    } */}
                     <div>
                         <label className="mb-2 font-semibold">Bemerkung</label>
                         <textarea rows={2} className="w-full p-2 border border-zinc-200 resize-none rounded-md" ref={notesRef} />

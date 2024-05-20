@@ -1,19 +1,14 @@
 import { useGetProductsByCategoryQuery } from "../../store/api/apiSlice"
-import { useSearchParams } from "react-router-dom"
-import { urlSearchParamsToObject } from "../../utils/urlSearchParamsToObject"
 import Spinner from "../common/spinner/Spinner"
 import { formatPrice } from "../../utils/formatPrice"
+import useParam from "../../hooks/useParam"
+import useNavigation from "../../hooks/useNavigation"
 
 const ProductsList = () => {
 
-    const [searchParams, setSearchParams] = useSearchParams()
-    const category = searchParams.get("category")
+    const category = useParam("category")
     const { data: products, error, isFetching } = useGetProductsByCategoryQuery(category)
-
-    const handleClick = (id) => {
-        const paramsObject = urlSearchParamsToObject(searchParams)
-        setSearchParams({ ...paramsObject, product: id })
-    }
+    const { toProductView } = useNavigation()
 
     if (isFetching) {
         return (
@@ -29,19 +24,19 @@ const ProductsList = () => {
                 products.map(product => {
                     return (
                         <article
-                            onClick={() => handleClick(product.id)}
+                            onClick={() => toProductView(product.product_id)}
                             className="grid grid-cols-12 gap-2 bg-white rounded-md p-1 h-24 mb-2"
-                            key={product.id}
+                            key={product.product_id}
                         >
                             <div className="col-span-4 p-1">
-                                <img className="w-full h-full object-cover rounded-md" src="/product-placeholder.jpg" alt="" />
+                                <img className="w-full h-full object-cover rounded-md" src={product.product_image} alt="" />
                             </div>
                             <div className="col-span-8 flex flex-col justify-between">
                                 <div>
-                                    <h3 className="font-semibold truncate">{product.name}</h3>
-                                    <p className="text-sm text-zinc-500 truncate">{product.description.length > 0 ? product.description : product.name}</p>
+                                    <h3 className="font-semibold truncate">{product.product_name}</h3>
+                                    <p className="text-sm text-zinc-500 truncate">{product.product_description.length > 0 ? product.product_description : product.product_name}</p>
                                 </div>
-                                <p className="font-semibold">CHF. {formatPrice(product.price)}</p>
+                                <p className="font-semibold">CHF. {formatPrice(product.product_price)}</p>
                             </div>
                         </article>
                     )

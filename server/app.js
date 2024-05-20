@@ -1,7 +1,7 @@
 import "dotenv/config"
 import express from "express"
+import productRoute from "./routes/product.route.js"
 import productsRoute from "./routes/products.route.js"
-import productRoute from "./routes/product.router.js"
 import categoriesRoute from "./routes/categories.route.js"
 import tablesRoute from "./routes/tables.route.js"
 import personsRoute from "./routes/persons.route.js"
@@ -11,6 +11,7 @@ import completedOrdersRoute from "./routes/completed_orders.route.js"
 import { Server } from "socket.io"
 import { createServer } from "http"
 import cors from "cors"
+import { pool } from "./db/connection.js"
 
 const app = express()
 const httpServer = createServer(app)
@@ -24,16 +25,22 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 
-app.use("/api/products", productsRoute)
 app.use("/api/product", productRoute)
+app.use("/api/products", productsRoute)
 app.use("/api/categories", categoriesRoute)
 app.use("/api/tables", tablesRoute)
-app.use("/api/persons", personsRoute)
 app.use("/api/order", orderRoute)
 app.use("/api/checkout", checkoutRoute)
 app.use("/api/completed-orders", completedOrdersRoute)
+
 app.use("/", (req, res) => {
-    res.json({ message: "API is running...", success: true })
+    pool.query("SELECT NOW()", (err, result) => {
+        if (err) {
+            res.json({ message: "API is not running...", success: false })
+        } else {
+            res.json({ message: "API is running...", success: true })
+        }
+    })
 })
 
 io.on("connection", socket => {
@@ -41,6 +48,6 @@ io.on("connection", socket => {
     io.emit("on-connect", { success: true })
 })
 
-httpServer.listen(8083, () => {
-    console.log("server started at 8083")
+httpServer.listen(8082, () => {
+    console.log("server started at 8082")
 })

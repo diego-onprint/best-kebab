@@ -11,11 +11,15 @@ import Spinner from "../../components/common/spinner/Spinner"
 import { createTimestamp } from "../../utils/createTimestamp"
 import type { CartProduct } from "../../types"
 import Notification from "../../components/common/notification/Notification"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "../../store/store"
+import { addProduct } from "../../store/cart/cartSlice"
 
 const DURATION = 1000
 
 const Product = () => {
 
+  const dispatch = useDispatch<AppDispatch>()
   const [qty, setQty] = useState(1)
   const [showNotification, setShowNotification] = useState(false)
   const [selectedVariations, setSelectedVariations] = useState([])
@@ -38,18 +42,18 @@ const Product = () => {
 
     const timestamp = createTimestamp()
 
-    const productToAdd: CartProduct = {
-      id: product.id,
-      uid: product.id + timestamp,
-      name: product.name,
-      price: product.price,
-      qty: qty,
-      variations: selectedVariations,
-      parent: product.parent,
-      notes: notesRef.current.value,
+    const parsedProduct: CartProduct = {
+      product_id: product.product_id,
+      product_uid: product.product_id + timestamp,
+      product_name: product.product_name,
+      product_price: product.product_price,
+      product_qty: qty,
+      product_variations: selectedVariations,
+      product_parent_category: product.product_parent_category,
+      product_notes: notesRef.current.value,
     }
 
-    console.log(productToAdd)
+    dispatch(addProduct(parsedProduct))
 
     setShowNotification(true)
 
@@ -60,16 +64,15 @@ const Product = () => {
       setShowNotification(false)
       setDisabled(false)
     }, DURATION)
-    
   }
 
   return (
-    <div className={`${!product ? "translate-x-full" : ""} flex flex-col absolute top-0 right-0 w-screen min-h-screen pb-4 transition-transform z-[60] flex-1`}>
+    <div className={`${!productParam ? "translate-x-full" : ""} flex flex-col absolute top-0 right-0 w-screen min-h-screen pb-4 transition-transform z-[60] flex-1`}>
       <div className="section-header grid place-items-center">
         <div className="absolute left-4 top-1/2 -translate-y-1/2 grid place-items-center">
           <ReturnButton style={`w-5 h-5 ${disabled ? "opacity-50" : ""}`} disabled={disabled} />
         </div>
-        {product ? <h3 className="text-center font-semibold max-w-44 truncate">{product.name}</h3> : null}
+        {product ? <h3 className="text-center font-semibold max-w-44 truncate">{product.product_name}</h3> : null}
       </div>
       <div className="flex flex-col gap-2 bg-neutral-100 flex-1 pt-20 pb-20 px-2">
         {
@@ -79,7 +82,7 @@ const Product = () => {
             </div> :
             <div className={`${disabled ? "opacity-50" : ""} flex flex-col gap-2`}>
               <ProductDetail product={product} />
-              {
+              {/* {
                 product.variations.length > 0 ?
                   <ProductOptions
                     variations={product.variations}
@@ -87,7 +90,7 @@ const Product = () => {
                     setSelectedVariations={setSelectedVariations}
                   />
                   : null
-              }
+              } */}
               <ProductNotes ref={notesRef} />
             </div>
         }
@@ -106,17 +109,12 @@ const Product = () => {
       </div>
       {
         showNotification ?
-          <Notification
-            clear={() => setShowNotification(false)}
-            time={DURATION}
-          >
-            <div className="flex gap-1 items-center">
+            <div className="notification-base bg-lime-500 text-white font-semibold flex gap-1 items-center">
               <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
               <span>Product added</span>
             </div>
-          </Notification>
           : null
       }
     </div>

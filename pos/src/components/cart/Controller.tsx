@@ -12,6 +12,8 @@ import type { RootState, AppDispatch } from "../../store/store"
 import type { Order } from "../../types"
 import { setCheckoutMenu } from "../../store/menus/menusSlice"
 import usePrintTickets from "../../hooks/usePrintTickets"
+import { printTicket } from "../../utils/print/printTicket"
+import { useTicketContext } from "../../context/TicketContext"
 
 const Controller = () => {
 
@@ -22,6 +24,7 @@ const Controller = () => {
     const { data: order } = useGetOrderDataByIdQuery(currentOrder.id, {
         pollingInterval: 10000
     })
+    const { shopTicketDomRef, kitchenTicketDomRef }  = useTicketContext()
     const { printShopTicket, printKitchenTicket } = usePrintTickets()
 
     // Keep current order (redux) updated/synced with DB while selected.
@@ -51,11 +54,19 @@ const Controller = () => {
     }
 
     const handleShopPrint = () => {
-        printShopTicket()
+        printShopTicket()        
     }
 
     const handleKitchenPrint = () => {
         printKitchenTicket()
+    }
+
+    const handleAndroidShopPrint = () => {
+        printTicket(shopTicketDomRef.current)
+    }
+
+    const handleAndroidKitchenPrint = () => {
+        printTicket(kitchenTicketDomRef.current)
     }
 
     const clearCurrentOrder = () => {
@@ -71,6 +82,8 @@ const Controller = () => {
                 handleClearCart={handleClearCart}
                 handleCheckout={handleCheckout}
                 handleShopPrint={handleShopPrint}
+                handleAndroidShopPrint={handleAndroidShopPrint}
+                handleAndroidKitchenPrint={handleAndroidKitchenPrint}
                 handleKitchenPrint={handleKitchenPrint}
                 clearCurrentOrder={clearCurrentOrder}
             />

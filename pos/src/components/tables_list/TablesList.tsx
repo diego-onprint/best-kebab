@@ -1,33 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../store/store'
 import { setCurrentOrderId } from '../../store/current_order/currentOrderSlice'
-import { useGetTablesDataQuery } from '../../store/api/apiSlice'
-import { useEffect } from 'react'
-import { updateTables } from '../../store/tables/tablesSlice'
-import { socket } from '../../socket'
 import type { Order } from '../../types'
 
 const TablesList = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
-    const {tables } = useSelector<RootState, { tables: Order[] }>(state => state.tables)
-    const { data, refetch } = useGetTablesDataQuery()
-
-    useEffect(() => {
-        const update = () => {
-            refetch()
-        }
-        socket.on("on-order-update", update)
-        return () => {
-            socket.off("on-order-update", update)
-        }
-    }, [refetch])
-
-    // Update on first call to data and on each refresh fired by the socket
-    useEffect(() => {
-        data && dispatch(updateTables(data))
-    }, [dispatch, data])
+    const { tables } = useSelector<RootState, { tables: Order[] }>(state => state.tables)
 
     const selectTable = (id) => {
         dispatch(setCurrentOrderId(id))

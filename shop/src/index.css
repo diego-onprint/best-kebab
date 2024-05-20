@@ -22,6 +22,10 @@
   .input-base {
     @apply w-full p-4 rounded-sm border border-zinc-200 focus-visible:outline-zinc-400 focus:outline-zinc-400;
   }
+
+  .notification-base {
+    @apply fixed top-14 left-1/2 -translate-x-1/2 p-4 rounded-md shadow-lg z-[70];
+  }
 }
 
 :root {

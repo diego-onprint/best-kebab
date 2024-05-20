@@ -1,12 +1,11 @@
 import { pool } from "../db/connection.js"
 
-import { products } from "../data/products.js"
-
 const findProductById = async (productId) => {
-    const product = products.find(prod => prod.id === productId)
-    return product
+    const query = "SELECT * FROM products WHERE product_id = $1"
+    const { rows } = await pool.query(query, [productId])
+    return rows[0]
 }
 
 export const productModel = {
-    findProductById,
+    findProductById
 }

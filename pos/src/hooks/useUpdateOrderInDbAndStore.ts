@@ -4,7 +4,7 @@
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../store/store"
 import { updateCurrentOrderData } from "../store/current_order/currentOrderSlice"
-import { useUpdateOrderDataMutation } from "../store/api/apiSlice"
+import { useGetTablesDataQuery, useUpdateOrderDataMutation } from "../store/api/apiSlice"
 import type { Order } from "../types"
 
 export const useUpdateOrderInDbAndStore = () => {
@@ -14,8 +14,10 @@ export const useUpdateOrderInDbAndStore = () => {
 
     const updateOrder = async (updatedOrder: Order) => {
 
+        // Update DB
         const { data: updatedCurrentOrder } = await updateOrderData(updatedOrder)
 
+        // Update Store
         dispatch(updateCurrentOrderData(updatedCurrentOrder.data))
     }
 

@@ -1,28 +1,28 @@
-// import Order from "./components/order/Order"
-// import Checkout from "./components/checkout/Checkout"
+import LocalStorageProvider from "./hocs/LocalStorageProvider"
 import Categories from "./views/categories/Categories"
 import Products from "./views/products/Products"
 import Cart from "./components/cart/Cart"
 import Product from "./views/product/Product"
+import Checkout from "./views/checkout/Checkout"
+import TableProvider from "./hocs/TableProvider"
+import Confirmation from "./views/confirmation/Confirmation"
+import Orders from "./views/orders/Orders"
 
 function App() {
   return (
-    <main className="relative flex h-screen overflow-x-hidden">
-        <Categories />
-        <Products />
-        <Cart />
-        <Product />
-        {/* <Order
-          showOrder={showOrder}
-          setShowOrder={setShowOrder}
-          setShowCheckout={setShowCheckout}
-        /> */}
-        {/* <Checkout 
-          showCheckout={showCheckout}
-          setShowCheckout={setShowCheckout}
-        /> */}
-        {/* {isCheckout ? <CheckoutForm cart={cart} setCheckout={setCheckout} /> : null} */}
-    </main>
+    <TableProvider>
+      <LocalStorageProvider>
+        <main className="relative flex h-screen max-w-lg mx-auto overflow-hidden">
+            <Categories />
+            <Products />
+            <Cart />
+            <Product />
+            <Checkout />
+            <Confirmation />
+            <Orders />
+        </main>
+      </LocalStorageProvider>
+    </TableProvider>
   )
 }
 

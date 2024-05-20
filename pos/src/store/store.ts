@@ -4,7 +4,7 @@ import { currentOrderSlice } from "./current_order/currentOrderSlice"
 import { tablesSlice } from "./tables/tablesSlice"
 import { menusSlice } from "./menus/menusSlice"
 import { productOptionsSlice } from "./product_options/productOptionsSlice"
-
+import { notificationSlice } from "./notification/notificationSlice"
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +13,7 @@ export const store = configureStore({
         tables: tablesSlice.reducer,
         menus: menusSlice.reducer,
         productOptions: productOptionsSlice.reducer,
+        notification: notificationSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
 })

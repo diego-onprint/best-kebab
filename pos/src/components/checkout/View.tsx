@@ -43,6 +43,18 @@ const View = ({
                         >
                             Kreditkarten
                         </button>
+                        <button
+                            onClick={() => handlePaymentMethod({ name: "Twint", value: "twint" })}
+                            className={`button-base border border-zinc-200 ${order.data?.customerData?.paymentMethod?.value === "twint" && "bg-zinc-200"}`}
+                        >
+                            Twint
+                        </button>
+                        <button
+                            onClick={() => handlePaymentMethod({ name: "Lunchcheck", value: "lunchcheck" })}
+                            className={`button-base border border-zinc-200 ${order.data?.customerData?.paymentMethod?.value === "lunchcheck" && "bg-zinc-200"}`}
+                        >
+                            Lunchcheck
+                        </button>
                     </div>
                 </div>
                 <div className="col-span-5 flex flex-col gap-2 px-6">

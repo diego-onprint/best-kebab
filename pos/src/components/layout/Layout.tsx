@@ -7,6 +7,7 @@ import type { Product } from '../../types'
 
 const ProductOptions = lazy(() => import("../products/product_options/ProductOptions"))
 const Checkout = lazy(() => import("../checkout/Checkout"))
+const CustomProduct = lazy(() => import("../products/custom_product/CustomProduct"))
 
 type PropsTypes = {
   children: ReactNode
@@ -15,7 +16,7 @@ type PropsTypes = {
 const Layout = ({ children }: PropsTypes) => {
 
   const { currentSelectedProduct } = useSelector<RootState, { currentSelectedProduct: Product }>(state => state.productOptions)
-  const { checkoutMenu } = useSelector<RootState, { checkoutMenu: boolean }>(state => state.menus)
+  const { checkoutMenu, customProductMenu } = useSelector<RootState, { checkoutMenu: boolean }>(state => state.menus)
 
   return (
     <div className="dont-print relative flex w-full h-screen overflow-hidden bg-white z-50">
@@ -26,6 +27,7 @@ const Layout = ({ children }: PropsTypes) => {
       <Cart />
       {currentSelectedProduct ? <Suspense fallback={<></>}><ProductOptions /></Suspense> : null}
       {checkoutMenu ? <Suspense fallback={<></>}><Checkout /></Suspense> : null}
+      {customProductMenu ? <Suspense fallback={<></>}><CustomProduct /></Suspense> : null}
     </div>
   )
 }
