@@ -12,6 +12,6 @@ RUN ls
 
 RUN npm run build
 
-EXPOSE 4176
+EXPOSE 4175
 
 CMD ["npm", "run", "dev"]
