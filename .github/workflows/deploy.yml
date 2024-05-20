@@ -78,7 +78,7 @@ jobs:
             docker container ls -a --format {{.Names}} | grep demoShop | xargs --no-run-if-empty docker rm -f demoShop
             echo 'SmartPos2' | docker login -u smartposch --password-stdin
             docker pull smartposch/demoshopsmart:1.0.1
-            docker run --rm -i -t -d -p  4176:4176 \
+            docker run --rm -i -t -d -p  4175:4175 \
               --name demoShop \
               --network app-backend \
               smartposch/demoshopsmart:1.0.1
