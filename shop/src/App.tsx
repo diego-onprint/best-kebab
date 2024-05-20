@@ -17,7 +17,7 @@ function App() {
             <Landing />
             <Categories />
             <Products />
-            {/* <Cart /> */}
+            <Cart />
             <Product />
             <Checkout />
             <Confirmation />
