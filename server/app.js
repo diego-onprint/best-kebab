@@ -13,6 +13,7 @@ import { createServer } from "http"
 import cors from "cors"
 import { pool } from "./db/connection.js"
 
+const PORT = 8083
 const app = express()
 const httpServer = createServer(app)
 export const io = new Server(httpServer, {
@@ -48,6 +49,6 @@ io.on("connection", socket => {
     io.emit("on-connect", { success: true })
 })
 
-httpServer.listen(8083, () => {
-    console.log("server started at 8082")
+httpServer.listen(PORT, () => {
+    console.log(`Server started at ${PORT}`)
 })

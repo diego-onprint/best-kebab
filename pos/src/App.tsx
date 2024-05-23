@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom"
 import Layout from "./components/layout/Layout"
 import PageLoader from "./components/common/page_loader/PageLoader"
 import TicketContextProvider from "./context/TicketContext"
-import NewOrderNotificationContextProvider from "./context/NewOrderNotificationContext"
 import Ticket from "./components/ticket/Ticket"
 import KithcenTicket from "./components/ticket/KitchenTicket"
 import Persons from "./pages/persons/Persons"
@@ -20,7 +19,6 @@ function App() {
 
   return (
     <TicketContextProvider>
-      <NewOrderNotificationContextProvider>
         <NotificationsLayer>
           <NewOrderSocketLayer>
             <Ticket />
@@ -60,14 +58,6 @@ function App() {
                   }
                 />
                 <Route
-                  path="/persons"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Persons />
-                    </Suspense>
-                  }
-                />
-                <Route
                   path="/orders"
                   element={
                     <Suspense fallback={<PageLoader />}>
@@ -88,7 +78,6 @@ function App() {
             </Layout>
           </NewOrderSocketLayer>
         </NotificationsLayer>
-      </NewOrderNotificationContextProvider>
     </TicketContextProvider>
   )
 }

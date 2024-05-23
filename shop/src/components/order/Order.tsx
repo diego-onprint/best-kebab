@@ -7,8 +7,6 @@ const Order = () => {
     const dispatch = useDispatch<AppDispatch>()
     const cart = useSelector<RootState, Cart>(state => state.cart)
 
-    console.log(cart)
-
     return (
         <div className="flex flex-col pb-24">
             {

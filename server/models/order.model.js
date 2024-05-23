@@ -26,14 +26,12 @@ const updateOrder = async (id, body) => {
             const updatedTotal = Number(rows[0].data.cart.total) + Number(data.cart.total)
 
             const parsedData = {
-                name: rows[0].data.name,
+                ...rows[0].data,
                 isTable: true,
-                capacity: rows[0].data.capacity,
                 cart: {
                     total: updatedTotal.toFixed(2),
                     products: concatProducts,
                 },
-                customerData: {}
             }
 
             const updateQuery = 'UPDATE orders SET data = $1 WHERE id = $2'
@@ -43,10 +41,13 @@ const updateOrder = async (id, body) => {
         // If order is from pos
         if (!data.fromShop) {
             // The data is parsed directly in the front-pos!
+            // This is to add, remove, clear order easily in front and here just update it
+            // Else update should be splitted in addProduct (as above), removeProduct, clearOrder
             const updateQuery = 'UPDATE orders SET data = $1 WHERE id = $2'
             await pool.query(updateQuery, [data, id])
         }
 
+        // Query updated DB order
         const getQuery = 'SELECT * FROM orders WHERE id = $1'
         const { rows } = await pool.query(getQuery, [id])
         await client.query('COMMIT')

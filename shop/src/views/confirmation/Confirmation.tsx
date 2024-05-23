@@ -28,7 +28,7 @@ const Confirmation = () => {
                 <div className="max-w-80 mx-auto flex flex-col gap-1">
                     <p>Error placing the order.</p>
                     <p>Please contact our staff.</p>
-                    <button onClick={goHome} className='ghost-button mt-4'>Return</button>
+                    <button onClick={toHomeView} className='ghost-button mt-4'>Return</button>
                 </div>
             </div>
         )

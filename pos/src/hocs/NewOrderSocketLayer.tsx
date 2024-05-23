@@ -21,12 +21,10 @@ const NewOrderSocketLayer = ({ children }) => {
 
         const update = (args) => {
 
-            if (args.success && args.fromShop) {
+            if (args.success && args.data.fromShop) {
                 dispatch(setNotification({
                     show: true,
-                    data: {
-                        from: args.orderId
-                    }
+                    data: args.data
                 }))
             }
 

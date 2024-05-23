@@ -8,6 +8,8 @@ const CategoriesList = () => {
     const { data: categories, error, isFetching } = useGetCategoriesQuery()
     const [searchParams, setSearchParams] = useSearchParams()
 
+    if (error) throw error
+
     const handleClick = (id) => {
         const paramsObject = urlSearchParamsToObject(searchParams)
         setSearchParams({ ...paramsObject, category: id })

@@ -12,12 +12,12 @@ const getOrderById = async (req, res) => {
 }
 
 const updateOrder = async (req, res) => {
-    
+
     const fromShop = req.body.data.fromShop || false
 
     try {
         const response = await orderModel.updateOrder(req.params.id, req.body)
-        io.emit("on-order-update", { success: true, fromShop: fromShop, orderId: req.params.id })
+        io.emit("on-order-update", { success: true, data: { fromShop: fromShop, order: response } })
         res.status(200).json(response)
     } catch (err) {
         console.log(err)

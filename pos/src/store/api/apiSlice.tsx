@@ -2,14 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Category, Product, Order, CompletedOrder } from "../../types";
 
 // PROD
-const baseUrl = import.meta.env.DEV
-  ? "https://demo-pos-back.smart-pos.ch/api/"
-  : "https://demo-pos-back.smart-pos.ch/api/";
+// const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
 
 // DEV
-// const baseUrl = import.meta.env.DEV ? 
-//     "http://localhost:8082/api/" : 
-//     "https://ceviche-back.qrbestellung.ch/api/"
+const baseUrl = "http://localhost:8083/api/"
 
 export const api = createApi({
     reducerPath: "api",

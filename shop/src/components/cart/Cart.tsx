@@ -73,8 +73,8 @@ const Cart = () => {
     }
 
     const getButtonContent = () => {
-        if (checkout) return "Confirm"
         if (isLoading) return <Spinner />
+        if (checkout) return "Confirm"
         return "Check Order"
     }
 

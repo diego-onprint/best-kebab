@@ -7,7 +7,7 @@ const initialState: Cart = {
     products: [],
     total: "0",
     totalProducts: 0,
-    table: null,
+    tableId: "",
 }
 
 const getTotal = (state: Cart) => {

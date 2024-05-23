@@ -35,7 +35,7 @@ const SideBar = () => {
           <li className="relative text-[10px]">
             <Link
               to="/tables"
-              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/tables" && "bg-zinc-100"}`}
+              className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/tables" || pathname === "/" && "bg-zinc-100"}`}
             >
               {/* <span className="absolute right-2 top-1 w-2 h-2 ring-2 ring-white rounded-full bg-green-400 animate-pulse"></span> */}
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

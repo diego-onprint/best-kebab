@@ -1,4 +1,6 @@
 import CategoriesList from "../../components/categories_list/CategoriesList"
+import ErrorBoundary from "../../components/common/error_boundary/ErrorBoundary"
+import ErrorFallback from "../../components/common/error_fallback/ErrorFallback"
 import ReturnButton from "../../components/common/return_button/ReturnButton"
 import useNavigation from "../../hooks/useNavigation"
 import useParam from "../../hooks/useParam"
@@ -21,7 +23,9 @@ const Categories = () => {
                     </svg>
                 </button>
             </div>
-            <CategoriesList />
+            <ErrorBoundary fallback={<ErrorFallback>Error fetching categories</ErrorFallback>}>
+                <CategoriesList />
+            </ErrorBoundary>
         </div>
     )
 }
