@@ -81,7 +81,7 @@ const Cart = () => {
     return (
         <div className={`${!cartParam ? "translate-y-full" : ""} fixed bottom-0 h-20 bg-white w-full z-50 p-4 grid grid-cols-12 gap-2 transition-transform`}>
             <div className="col-span-5">
-                <p className="text-sm">{cart.totalProducts} producto{cart.totalProducts !== 1 ? "s" : ""}</p>
+                <p className="text-sm">{cart.totalProducts} Produkt{cart.totalProducts !== 1 ? "e" : ""}</p>
                 <p className="text-xl font-bold">CHF. {cart.total}</p>
             </div>
             <button

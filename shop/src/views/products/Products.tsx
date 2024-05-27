@@ -14,7 +14,7 @@ const Products = () => {
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 grid place-items-center">
                     <ReturnButton style="w-5 h-5" />
                 </div>
-                <h3 className="text-center font-semibold">Select a product</h3>
+                <h3 className="text-center font-semibold">Ein Produkt auswählen</h3>
                 <button onClick={toOrdersView} className="absolute right-4 top-1/2 -translate-y-1/2 grid place-items-center">
                     <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />

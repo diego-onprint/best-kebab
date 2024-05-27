@@ -95,25 +95,25 @@ const Product = () => {
         }
       </div>
       <div className="fixed bottom-0 h-20 bg-white w-full z-50 p-4 grid grid-cols-12 gap-2">
-        <div className={"col-span-5"}>
+        <div className={"col-span-4"}>
           <Counter qty={qty} setQty={setQty} disabled={disabled}/>
         </div>
         <button
           onClick={handleAdd}
           disabled={disabled}
-          className="primary-button col-span-7"
+          className="primary-button col-span-8"
         >
-          Add product
+          Produkt hinzufügen
         </button>
       </div>
       {
         showNotification ?
-            <div className="notification-base bg-lime-500 text-white font-semibold flex gap-1 items-center">
-              <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-              <span>Product added</span>
-            </div>
+          <div className="notification-base bg-lime-500 text-white font-semibold flex gap-1 items-center justify-center w-64">
+            <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <span>Produkt hinzugefügt</span>
+          </div>
           : null
       }
     </div>
