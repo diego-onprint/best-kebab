@@ -1,18 +1,24 @@
+/*
+    TODO. Check the clickin event not working
+*/
+
 import { useEffect } from "react"
 import Option from "../option/Option"
 
 const OptionsMenu = ({ handleSelected, selectedVariations, setOpen, variation }) => {
 
-    useEffect(() => {
+    // useEffect(() => {
+        
+    //     // const handleClick = (e) => ![...e.target.classList].includes("clickable") && setOpen(false)
+    //     const handleClick = () => {
+    //         console.log("lakfsjd")
+    //     }
 
-        const handleClick = (e) => ![...e.target.classList].includes("clickable") && setOpen(false)
+    //     window.addEventListener("click", handleClick)
 
-        window.addEventListener("click", handleClick)
+    //     return () => window.removeEventListener("click", handleClick)
 
-        return () => window.removeEventListener("click", handleClick)
-
-    }, [setOpen])
-
+    // }, [setOpen])
 
     return (
         <div className="clickable bg-white p-4 rounded-md shadow-md absolute top-9 z-30 max-h-72 overflow-auto">
@@ -20,7 +26,7 @@ const OptionsMenu = ({ handleSelected, selectedVariations, setOpen, variation })
                 variation.options.map(option => {
                     return (
                         <Option
-                            key={option.id}
+                            key={option.option_id}
                             option={option}
                             handleSelected={handleSelected}
                             selectedVariations={selectedVariations}

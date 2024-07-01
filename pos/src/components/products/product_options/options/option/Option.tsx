@@ -1,22 +1,23 @@
 
 const Option = ({ option, handleSelected, selectedVariations, setOpen }) => {
 
-    const index = selectedVariations.findIndex(selectedVariation => selectedVariation.id === option.id)
+    const index = selectedVariations.findIndex(selectedVariation => selectedVariation.option_id === option.option_id)
     const isSelected = index !== -1
     
-    const handleClick = () => {
+    const handleClick = (e) => {
+        // e.stopPropagation()
         handleSelected(option)
-        // setOpen(false)
+        setOpen(false)
     }
 
     return (
         <div className="flex gap-2 items-center">
             <button
-                className={`clickable ${isSelected ? "bg-zinc-200" : "bg-none"} p-2 rounded-md text-left`}
+                className={`clickable ${isSelected ? "bg-blue-500 text-white" : "bg-none"} p-2 rounded-md text-left`}
                 onClick={handleClick}
             >
-                {option.name} 
-                <span className="text-sm"> (CHF. {option.price.toFixed(2)})</span>
+                {option.option_name} 
+                <span className="text-sm"> (CHF. {option.option_price.toFixed(2)})</span>
             </button>
         </div>
     )

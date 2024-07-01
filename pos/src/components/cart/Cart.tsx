@@ -1,4 +1,4 @@
-import CartController from "./Controller"
+import CartController from "./CartController"
 
 const Cart = () => {
     return <CartController />

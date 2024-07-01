@@ -1,19 +1,19 @@
 export type Category = {
-    category_uid: number
-    category_id: string
-    category_name: string
+    uid: number
+    id: string
+    name: string
     parent_category: string
     subcategories: boolean
 }
 
 export type Product = {
-    product_id: number
-    product_name: string
-    product_price: number
-    product_parent_category: string
-    product_description?: string
-    product_stock?: number
-    product_variations?: ProductVariation[]
+    id: number
+    name: string
+    price: number
+    parent_category: string
+    description?: string
+    stock?: number
+    variations?: ProductVariation[]
 }
 
 export type ProductVariation = {
@@ -24,26 +24,18 @@ export type ProductVariation = {
 }
 
 export type CartProduct = Product & {
-    product_uid: string
-    product_qty: number
-    product_notes?: string | undefined
+    uid: string
+    qty: number
+    notes?: string | undefined
 }
 
 export type Cart = {
     products: CartProduct[]
-    total: number
+    total: string
 }
 
-export type Order = {
-    id: string
-    data: {
-        name: string
-        cart: Cart
-        customerData?: CustomerData
-        isTable?: boolean
-        isTkw?: boolean
-        capacity?: number
-    }
+export type CurrentOrder = {
+    currentOrderId: string
 }
 
 export type CompletedOrder = {
@@ -71,60 +63,26 @@ export type CustomerData = {
 }
 
 export type PaymentMethod = {
-    name: string
-    value: string
+    name: "Barzahlung" | "Kredikarten" | "Twint" | "Lunchcheck"
+    value: "cash" | "credit" | "twint" | "lunchcheck"
 }
 
+export type TicketType = "shop" | "kitchen" | "shopSelection" | "kitchenSelection" | null
 
-
-
-
-
-
+export type OrderType = {
+    value: "tisch" | "lieferung"
+    name: "Tisch" | "Lieferung"
+}
 
 ///////////////////////////////////////////
 ////////////////////////////////// CLEANUP
 //////////////////////////////////////////
-
-
-// export type Product = {
-//     id: number
-//     name: string
-//     price: string
-//     images: ProductImage[]
-//     variations: number[]
-//     timestamp: string
-// }
-
-// export type Category = {
-//     id: number
-//     name: string
-//     slug: string
-//     image: ProductImage
-//     description: string
-// }
 
 type ProductImage = {
     id: number
     src: string
     alt: string
 }
-
-//CART
-// export type Cart = {
-//     products: CartProduct[]
-//     total: string
-// }
-
-// export type CartProduct = Product & {
-//     uid: string
-//     qty: number
-//     variation: CartProductVariation
-//     notes: string
-// }
-
-// export type CartProductId = CartProduct["id"]
-// export type CartTotal = Cart["total"]
 
 export type CartProductVariation = {
     id: string
@@ -174,51 +132,6 @@ export type Table = {
 // ORDERS
 export type Order = {
     id: number
-}
-
-export type WooOrder = {
-    billing: {
-        first_name: string
-        last_name?: string
-        address_1?: string
-        addres_2?: string
-        city?: string
-        company?: string
-        country?: string
-        email?: string
-        phone?: string
-        postcode?: string
-        state?: string
-    }
-    date_crated?: string
-    line_items: WooItem[]
-    number: string
-    payment_method_title: string
-    billing?: {
-        first_name: string
-        last_name?: string
-        address_1?: string
-        addres_2?: string
-        city?: string
-        company?: string
-        country?: string
-        email?: string
-        phone?: string
-        postcode?: string
-        state?: string
-    }
-}
-
-export type WooItem = {
-    id: number
-    name: string
-    price: number
-    total: string
-    meta_data: {
-        id: number
-        key: string
-        value: string
-    }
 }
 
 export type NewOrderNotification = {

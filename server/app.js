@@ -1,54 +1,69 @@
-import "dotenv/config"
-import express from "express"
-import productRoute from "./routes/product.route.js"
-import productsRoute from "./routes/products.route.js"
-import categoriesRoute from "./routes/categories.route.js"
-import tablesRoute from "./routes/tables.route.js"
-import personsRoute from "./routes/persons.route.js"
-import orderRoute from "./routes/order.route.js"
-import checkoutRoute from "./routes/checkout.route.js"
-import completedOrdersRoute from "./routes/completed_orders.route.js"
-import { Server } from "socket.io"
-import { createServer } from "http"
-import cors from "cors"
-import { pool } from "./db/connection.js"
+import "dotenv/config";
+import express from "express";
+import productRoute from "./routes/product.route.js";
+import productsRoute from "./routes/products.route.js";
+import categoriesRoute from "./routes/categories.route.js";
+import updateOrderRoute from "./routes/update_order.route.js";
+import shopOrderRoute from "./routes/shop_order.route.js";
+import ordersRoute from "./routes/orders.route.js";
+import newOrderRoute from "./routes/new_order.route.js";
+import tkwOrderRoute from "./routes/remove_order.route.js";
+import callStaffRoute from "./routes/call_staff.route.js";
+import checkoutRoute from "./routes/checkout.route.js";
+import completedOrdersRoute from "./routes/completed_orders.route.js";
+import reportsRoute from "./routes/reports.route.js";
+import newShopOrderRoute from "./routes/new_shop_order.route.js";
+import { Server } from "socket.io";
+import { createServer } from "http";
+import cors from "cors";
+import { pool } from "./db/connection.js";
 
-const PORT = 8083
-const app = express()
-const httpServer = createServer(app)
+const PORT = 8083;
+const app = express();
+const corsOptions = {
+  origin: "*",
+  // origin: "http://localhost:5178/",
+  // credentials: true
+}
+
+const httpServer = createServer(app);
 export const io = new Server(httpServer, {
-    cors: {
-        origin: "*"
-    }
-})
+  cors: corsOptions,
+});
 
-app.use(cors())
-app.use(express.json())
-app.use(express.static('dist'))
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.static("dist"));
 
-app.use("/api/product", productRoute)
-app.use("/api/products", productsRoute)
-app.use("/api/categories", categoriesRoute)
-app.use("/api/tables", tablesRoute)
-app.use("/api/order", orderRoute)
-app.use("/api/checkout", checkoutRoute)
-app.use("/api/completed-orders", completedOrdersRoute)
+app.use("/api/product", productRoute);
+app.use("/api/products", productsRoute);
+app.use("/api/categories", categoriesRoute);
+app.use("/api/update-order", updateOrderRoute);
+app.use("/api/shop-order", shopOrderRoute);
+app.use("/api/orders", ordersRoute);
+app.use("/api/call-staff", callStaffRoute);
+app.use("/api/checkout", checkoutRoute);
+app.use("/api/completed-orders", completedOrdersRoute);
+app.use("/api/new-order", newOrderRoute);
+app.use("/api/tkw-order", tkwOrderRoute);
+app.use("/api/reports", reportsRoute);
+app.use("/api/new-shop-order", newShopOrderRoute);
 
 app.use("/", (req, res) => {
-    pool.query("SELECT NOW()", (err, result) => {
-        if (err) {
-            res.json({ message: "API is not running...", success: false })
-        } else {
-            res.json({ message: "API is running...", success: true })
-        }
-    })
-})
+  pool.query("SELECT NOW()", (err, result) => {
+    if (err) {
+      res.json({ message: "API is not running...", success: false });
+    } else {
+      res.json({ message: "API is running...", success: true });
+    }
+  });
+});
 
-io.on("connection", socket => {
-    console.log("User connected - Server")
-    io.emit("on-connect", { success: true })
-})
+io.on("connection", (socket) => {
+  console.log("User connected - Server");
+  io.emit("on-connect", { success: true });
+});
 
 httpServer.listen(PORT, () => {
-    console.log(`Server started at ${PORT}`)
-})
+  console.log(`Server started at ${PORT}`);
+});

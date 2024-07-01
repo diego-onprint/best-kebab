@@ -3,6 +3,9 @@ import { completedOrdersController } from "../controllers/completed_orders.contr
 
 const router = Router()
 
+router.delete("/delete/:id", completedOrdersController.deleteCompletedOrder)
+router.delete("/delete-old-orders/", completedOrdersController.deleteOldDeletedOrders)
+router.patch("/update-status/:id", completedOrdersController.updateOrderStatus)
 router.get("/", completedOrdersController.getAllCompletedOrders)
 
 export default router

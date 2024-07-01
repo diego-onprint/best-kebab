@@ -1,7 +1,7 @@
 import { formatPrice } from "../../../utils/format/formatPrice"
-import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch, RootState } from "../../../store/store"
-import type { Product, Order } from "../../../types"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "../../../store/store"
+import type { Product } from "../../../types"
 import { setCurrentSelectedProduct } from "../../../store/product_options/productOptionsSlice"
 
 type PropsTypes = {
@@ -11,20 +11,21 @@ type PropsTypes = {
 const ProductCard = ({ product }: PropsTypes) => {
 
   const dispatch = useDispatch<AppDispatch>()
-  const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
 
   return (
     <article
-      // Disable action if no table selected
-      onClick={() => currentOrder.data && dispatch(setCurrentSelectedProduct(product))}
+      onClick={() => dispatch(setCurrentSelectedProduct(product))}
       role="button"
       tabIndex={0}
-      className={`${!currentOrder.data && "opacity-30 cursor-default"} col-span-6 xl:col-span-4 h-24 border border-zinc-200 bg-white rounded-lg`}
+      className={`relative overflow-hidden grid col-span-6 xl:col-span-4 h-24 border border-zinc-200 bg-white rounded-lg`}
     >
-      <div className="p-2">
-        <h3>{product.product_name}</h3>
-        <p>CHF. <span className="font-bold">{formatPrice(product.product_price)}</span></p>
+      <div className="px-3 py-2 flex flex-col justify-between">
+        <h3 className="font-semibold">{product.name}</h3>
+        <p className="self-end">CHF {formatPrice(product.price)}</p>
       </div>
+      {/* <div className="absolute top-0 -right-5">
+        <div style={{backgroundColor: product.color}} className="p-8 transform rotate-45 translate-x-1/2 -translate-y-1/2 z-50"></div>
+      </div> */}
     </article>
   )
 }

@@ -1,28 +1,51 @@
+import { Suspense, lazy } from "react"
+import { Route, Routes } from "react-router-dom"
+import { Toaster } from "react-hot-toast"
 import LocalStorageProvider from "./hocs/LocalStorageProvider"
-import Categories from "./views/categories/Categories"
-import Products from "./views/products/Products"
-import Cart from "./components/cart/Cart"
-import Product from "./views/product/Product"
-import Checkout from "./views/checkout/Checkout"
 import TableProvider from "./hocs/TableProvider"
-import Confirmation from "./views/confirmation/Confirmation"
-import Orders from "./views/orders/Orders"
-import Landing from "./views/landing/Landing"
+import SectionsContextProvider from "./context/SectionsContext"
+import ShopRoute from "./hocs/ShopRoute"
+
+const Products = lazy(() => import("./views/products/Products"))
+const Checkout = lazy(() => import("./views/checkout/Checkout"))
+const Success = lazy(() => import("./views/success/Success"))
 
 function App() {
   return (
+    // REMOVE TABLE PROVIDER USE PARAMS INSTEAD
     <TableProvider>
       <LocalStorageProvider>
-        <main className="relative flex h-screen max-w-lg mx-auto overflow-hidden">
-            <Landing />
-            <Categories />
-            <Products />
-            <Cart />
-            <Product />
-            <Checkout />
-            <Confirmation />
-            <Orders />
-        </main>
+        <Toaster position="top-center" />
+        <SectionsContextProvider>
+            <Routes>
+              <Route element={<ShopRoute />}>
+                <Route
+                  path="/"
+                  element={
+                    <Suspense fallback={<></>}>
+                      <Products />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/checkout"
+                  element={
+                    <Suspense fallback={<></>}>
+                      <Checkout />
+                    </Suspense>
+                  }
+                />
+              </Route>
+              <Route
+                  path="/success"
+                  element={
+                    <Suspense fallback={<></>}>
+                      <Success />
+                    </Suspense>
+                  }
+                />
+            </Routes>
+        </SectionsContextProvider>
       </LocalStorageProvider>
     </TableProvider>
   )

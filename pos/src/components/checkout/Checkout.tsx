@@ -1,7 +1,7 @@
-import Controller from "./Controller"
+import CheckoutController from "./CheckoutController"
 
 const Checkout = () => {
-    return <Controller />
+    return <CheckoutController />
 }
 
 export default Checkout

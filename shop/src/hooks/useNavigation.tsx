@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom"
 import { urlSearchParamsToObject } from "../utils/urlSearchParamsToObject"
 
-
 const useNavigation = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()

@@ -7,7 +7,7 @@ const Tables = () => {
     const errorMsg = "An error ocurred fetching tables"
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             <h2 className="section-title">Tables</h2>
             <ErrorBoundary fallback={<ErrorFallback>{errorMsg}</ErrorFallback>}>
                 <TablesList />

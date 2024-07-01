@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { Category, Product, ProductVariationResponse } from "../../types"
+import type { Category, Product } from "../../types"
 
 // Prod
-const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
+// const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
 
 // DEV
-// const baseUrl = "http://localhost:8083/api/"
+const baseUrl = "http://localhost:8083/api/"
 
 export const api = createApi({
     reducerPath: "api",
@@ -13,6 +13,10 @@ export const api = createApi({
     endpoints: (builder) => ({
         getCategories: builder.query<{ categories: Category[]}, string | undefined>({
             query: () => "categories/",
+            keepUnusedDataFor: 21600,
+        }),
+        getAllProducts: builder.query({
+            query: () => "products/",
             keepUnusedDataFor: 21600,
         }),
         getProductsByCategory: builder.query<{products: Product[]}, string | undefined>({
@@ -27,23 +31,46 @@ export const api = createApi({
             query: (id) => `order/${id}`,
             keepUnusedDataFor: 0,
         }),
-        updateOrderData: builder.mutation<Order, Order>({
+        createNewShopOrder: builder.mutation({
             query(data) {
-                const { id, ...body } = data
                 return {
-                    url: `order/${id}`,
-                    method: "PUT",
-                    body,
+                    url: "new-shop-order/",
+                    method: "POST",
+                    body: data,
                 }
             }
         }),
+        updateOrderData: builder.mutation<Order, Order>({
+            query(data) {
+                const { table, ...patch } = data
+
+                return {
+                    url: `shop-order/${table}`,
+                    method: "PATCH",
+                    body: patch,
+                }
+            }
+        }),
+        // callStaff: builder.mutation({
+        //     query(data) {
+        //         console.log(data)
+        //         // const { tableId, ...patch } = data
+        //         // return {
+        //         //     url: `call-staff/${tableId}`,
+        //         //     method: "POST",
+        //         // }
+        //     }
+        // }),
     })
 })
 
 export const { 
     useGetCategoriesQuery, 
+    useGetAllProductsQuery,
     useGetProductsByCategoryQuery,
     useGetProductByIdQuery,
-    useUpdateOrderDataMutation,
     useGetOrderDataByIdQuery,
+    useUpdateOrderDataMutation,
+    useCreateNewShopOrderMutation,
+    // useCallStaffMutation,
 } = api

@@ -1,20 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { CurrentOrderModel } from "../../models/current_order.model"
 
 export const currentOrderSlice = createSlice({
     name: "current-order",
-    initialState: CurrentOrderModel,
+    initialState: { currentOrderId: null },
     reducers: {
-        setCurrentOrderId: (state, action) => {
-            state.id = action.payload
+        setCurrentOrder: (state, action) => {
+            state.currentOrderId = action.payload
         },
-        updateCurrentOrderData: (state, action) => {
-            state.data = action.payload
-        }
     }
 })
 
 export const { 
-    setCurrentOrderId,
-    updateCurrentOrderData,
+    setCurrentOrder,
 } = currentOrderSlice.actions

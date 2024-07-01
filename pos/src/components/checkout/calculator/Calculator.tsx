@@ -47,8 +47,8 @@ const Calculator = ({ total }: PropsTypes) => {
         <div className="flex flex-col gap-2">
             <div className="grid grid-cols-12 gap-2">
                 <div className="flex col-span-12 justify-between bg-zinc-100 rounded-md p-5">
-                    <div className="text-xl font-semibold">Total</div>
-                    <div className="text-xl font-semibold">{total}</div>
+                    <div className="text-xl font-semibold">Gesamt</div>
+                    <div className="text-xl font-semibold">{total.toFixed(2)}</div>
                 </div>
                 <div className={`${!amount && "opacity-50"} relative col-span-6 flex justify-between border border-zinc-200 rounded-md p-5`}>
                     <div className="text-md font-semibold">Bill</div>
@@ -64,17 +64,17 @@ const Calculator = ({ total }: PropsTypes) => {
                 <button value="7" onClick={handleAmount} className="ghost-button rounded-md">7</button>
                 <button value="8" onClick={handleAmount} className="ghost-button rounded-md">8</button>
                 <button value="9" onClick={handleAmount} className="ghost-button rounded-md">9</button>
-                <button onClick={handleClear} className="ghost-button rounded-md">Clear</button>
+                <button onClick={handleClear} className="ghost-button rounded-md">Löschen</button>
 
                 <button value="4" onClick={handleAmount} className="ghost-button rounded-md">4</button>
                 <button value="5" onClick={handleAmount} className="ghost-button rounded-md">5</button>
                 <button value="6" onClick={handleAmount} className="ghost-button rounded-md">6</button>
-                <button onClick={handleReturn} className="ghost-button rounded-md">Return</button>
+                <button onClick={handleReturn} className="ghost-button rounded-md">Rückgabe</button>
 
                 <button value="1" onClick={handleAmount} className="ghost-button rounded-md">1</button>
                 <button value="2" onClick={handleAmount} className="ghost-button rounded-md">2</button>
                 <button value="3" onClick={handleAmount} className="ghost-button rounded-md">3</button>
-                <button onClick={handleResult} className="ghost-button rounded-md row-span-2">Enter</button>
+                <button onClick={handleResult} className="ghost-button rounded-md row-span-2">Eingeben</button>
 
                 <button value="0" onClick={handleAmount} className="ghost-button rounded-md">0</button>
                 <button value="." onClick={handleAmount} className="ghost-button rounded-md">.</button>

@@ -1,48 +1,47 @@
 import { Link } from "react-router-dom"
 import { useGetCategoriesQuery } from "../../../store/api/apiSlice"
-import { useDispatch, useSelector } from "react-redux"
-import type { Category } from "../../../types"
-import type { AppDispatch, RootState } from "../../../store/store"
-import { setCustomProductMenu } from "../../../store/menus/menusSlice"
+import Spinner from "../../common/spinner/Spinner"
+import type { Category, CurrentOrder } from "../../../types"
 
 const CategoriesList = () => {
 
-    const dispatch = useDispatch<AppDispatch>()
     const { data, error, isFetching } = useGetCategoriesQuery()
-    const currentOrder = useSelector<RootState, Order>(state => state.currentOrder)
-
+    const categories = data?.filter(category => category.parent.includes('pos'))
+    
     //case not found -404- or sorts
     if (error) throw Error
 
     return (
         <>
             {
-                isFetching ?
-                    <div>Loading...</div> :
+                !isFetching && categories ?
                     <div className="grid grid-cols-12 gap-2 py-2">
-                        <button
-                        disabled={!currentOrder.data}
-                        onClick={() => dispatch(setCustomProductMenu(true))}
-                        className={`${!currentOrder.data && "opacity-30 cursor-default"} col-span-6 @xs/main:col-span-4 @md/main:col-span-3 h-24 grid place-items-center bg-slate-200 rounded-lg`}>
-                            Custom product
-                        </button>
                         {
-                            data.map((category: Category) => {
+                            categories.map((category: Category) => {
 
-                                const to = category.subcategories ? `/subcategories/${category.category_id}` : `/products/${category.category_id}`
+                                let to = ""
+
+                                if (category.has_subcategories) {
+                                    to = `/subcategories/${category.id}`
+                                } else {
+                                    to = `/products/${category.id}`
+                                }
 
                                 return (
                                     <Link
                                         to={to}
-                                        key={category.category_uid}
-                                        className={`${!currentOrder.data && "opacity-30 cursor-default"} col-span-6 @xs/main:col-span-4 @md/main:col-span-3 h-24 grid place-items-center border border-zinc-200 bg-white rounded-lg`}
+                                        key={category.uid}
+                                        className={`p-2 col-span-6 @xs/main:col-span-4 @md/main:col-span-3 h-24 grid place-items-center border border-zinc-200 bg-white rounded-lg`}
                                     >
-                                        <h3>{category.category_name}</h3>
+                                        <h3 className="truncate w-11/12 text-center">{category.name}</h3>
                                     </Link>
                                 )
                             })
                         }
-                    </div>
+                    </div> :
+                    <div className="flex-1 grid place-items-center">
+                        <Spinner color="text-zinc-300" />
+                    </div> 
             }
         </>
     )

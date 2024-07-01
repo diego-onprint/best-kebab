@@ -14,7 +14,6 @@ const LocalStorageProvider = ({ children }) => {
         const localStorageCart = getLocalStorageItem("cart")
         localStorageCart && dispatch(updateCartInitialState(localStorageCart))
 
-
         const checkExpiry = () => {
 
             const localStorageOrders = getLocalStorageItem("orders")

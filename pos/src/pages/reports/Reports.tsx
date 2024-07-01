@@ -1,10 +1,14 @@
-import TotalOrders from "../../components/reports/total_orders/TotalOrders"
+import ErrorBoundary from "../../components/common/error_boundary/ErrorBoundary"
+import ErrorFallback from "../../components/common/error_fallback/ErrorFallback"
+import ReportsDashboard from "../../components/reports/ReportsDashboard"
 
 const Reports = () => {
   return (
     <div>
         <h2 className="section-title">Reports</h2>
-        <TotalOrders />
+        <ErrorBoundary fallback={<ErrorFallback>Error fetching reports</ErrorFallback>}>
+          <ReportsDashboard />
+        </ErrorBoundary>
     </div>
   )
 }

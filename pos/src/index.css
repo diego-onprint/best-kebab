@@ -4,7 +4,15 @@
 
 @layer components {
   .primary-button {
-    @apply button-base bg-green-500 hover:bg-green-600 disabled:bg-zinc-100 disabled:hover:bg-zinc-100;
+    @apply button-base text-white bg-blue-500 hover:bg-blue-600 disabled:bg-zinc-300 disabled:hover:bg-zinc-300 disabled:pointer-events-none disabled:cursor-default;
+  }
+
+  .secondary-button {
+    @apply button-base border border-zinc-700 rounded-md disabled:opacity-50 disabled:pointer-events-none disabled:cursor-default;
+  }
+
+  .alert-button {
+    @apply button-base text-white bg-red-500 hover:bg-red-600 disabled:bg-zinc-100 disabled:hover:bg-zinc-100;
   }
 
   .ghost-button {
@@ -17,6 +25,10 @@
 
   .box {
     @apply bg-white rounded-md p-4 shadow-md shadow-slate-200;
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[999];
   }
 }
 

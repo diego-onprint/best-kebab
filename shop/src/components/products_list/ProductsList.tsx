@@ -1,46 +1,82 @@
-import { useGetProductsByCategoryQuery } from "../../store/api/apiSlice"
-import Spinner from "../common/spinner/Spinner"
-import { formatPrice } from "../../utils/formatPrice"
-import useParam from "../../hooks/useParam"
-import useNavigation from "../../hooks/useNavigation"
+import { useEffect, useState } from "react"
+import { useGetAllProductsQuery, useGetCategoriesQuery } from "../../store/api/apiSlice"
+import Product from "./product/Product"
+import { useSectionsContext } from "../../context/SectionsContext"
 
 const ProductsList = () => {
 
-    const category = useParam("category")
-    const { data: products, error, isFetching } = useGetProductsByCategoryQuery(category)
-    const { toProductView } = useNavigation()
+    const [groupedProducts, setGroupedProducts] = useState([])
+    const { data: categories } = useGetCategoriesQuery()
+    const { data: allProducts } = useGetAllProductsQuery()
+    const { setActiveSection } = useSectionsContext()
 
-    if (isFetching) {
-        return (
-            <div className="w-full h-full grid place-items-center bg-neutral-100">
-                <Spinner color="text-zinc-300" />
-            </div>
-        )
-    }
+    useEffect(() => {
+        if (categories && allProducts) {
+
+            const shopCategories = categories.filter(category => category.parent.includes("shop"))
+
+            const parsedProducts = shopCategories.map(category => {
+                return {
+                    title: category.name,
+                    slug: category.id,
+                    products: allProducts.filter(product => product.parent === category.id)
+                }
+            })
+
+            setGroupedProducts(parsedProducts)
+        }
+    }, [categories, allProducts])
+
+    useEffect(() => {
+        const elementsToObserve = document.querySelectorAll('.observe')
+
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: .15
+        }
+    
+        const handleIntersect = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id)
+                }
+            })
+        }
+    
+        const observer = new IntersectionObserver(handleIntersect, options)
+    
+        elementsToObserve.forEach(element => {
+            observer.observe(element);
+        })
+
+    }, [categories, groupedProducts, setActiveSection])
 
     return (
-        <div className="flex-1 bg-neutral-100 pt-3 pb-24 px-2">
+        <div>
             {
-                products.map(product => {
-                    return (
-                        <article
-                            onClick={() => toProductView(product.product_id)}
-                            className="grid grid-cols-12 gap-2 bg-white rounded-md p-1 h-24 mb-2"
-                            key={product.product_id}
-                        >
-                            <div className="col-span-4 p-1">
-                                <img className="w-full h-full object-cover rounded-md" src={product.product_image} alt="" />
-                            </div>
-                            <div className="col-span-8 flex flex-col justify-between">
-                                <div>
-                                    <h3 className="font-semibold truncate">{product.product_name}</h3>
-                                    <p className="text-sm text-zinc-500 truncate">{product.product_description.length > 0 ? product.product_description : product.product_name}</p>
-                                </div>
-                                <p className="font-semibold">CHF. {formatPrice(product.product_price)}</p>
-                            </div>
-                        </article>
-                    )
-                })
+                groupedProducts.length > 0 ?
+                    <div>
+                        {
+                            groupedProducts.map((group) => {
+                                return (
+                                    <section
+                                        id={group.slug}
+                                        key={group.slug}
+                                        className="observe scroll-spy-section flex flex-col gap-3 p-3"
+                                    >
+                                        <h2 className="font-bold text-xl">{group.title}</h2>
+                                        <div className="flex flex-col gap-2">
+                                            {
+                                                group.products.map(product => <Product product={product} key={product.id} />)
+                                            }
+                                        </div>
+                                    </section>
+                                )
+                            })
+                        }
+                    </div> : null
+
             }
         </div>
     )

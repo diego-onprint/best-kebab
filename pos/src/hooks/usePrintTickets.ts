@@ -1,30 +1,26 @@
-import { useEffect } from "react"
-import { useTicketContext } from "../context/TicketContext"
+import { useDispatch } from "react-redux"
+import { setTicketType } from "../store/ticket/ticketSlice"
+import type { AppDispatch } from "../store/store"
+import type { TicketType } from "../types"
+// import { printRawbt } from "../utils/print/printRawbt"
 
 const usePrintTickets = () => {
 
-    const { ticket, setTicket } = useTicketContext()
+    const dispatch = useDispatch<AppDispatch>()
 
-    const printShopTicket = () => setTicket("shop")
+    const handlePrint = (type: TicketType ) => {
 
-    const printKitchenTicket = () => setTicket("kitchen")
+        dispatch(setTicketType(type))
 
-    const printClientTicket = () => setTicket("client")
+        setTimeout(() => {
 
-    useEffect(() => {
+            window.print()
+            // printRawbt()
 
-        if (ticket) {
-            window.print() 
-            setTicket(null)
-        }
-
-    }, [ticket, setTicket])
-
-    return {
-        printShopTicket,
-        printKitchenTicket,
-        printClientTicket,
+        }, 500)
     }
+    
+    return { handlePrint }
 }
 
 export default usePrintTickets
