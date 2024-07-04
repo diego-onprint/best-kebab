@@ -3,6 +3,7 @@ import { api } from "./api/apiSlice"
 import { currentOrderSlice } from "./current_order/currentOrderSlice"
 import { menusSlice } from "./menus/menusSlice"
 import { productOptionsSlice } from "./product_options/productOptionsSlice"
+import { notificationSlice } from "./notification/notificationSlice"
 import { ticketSlice } from "./ticket/ticketSlice"
 import { orderTypeSlice } from "./order_type/orderTypeSlice"
 import { socketSlice } from "./socket/socketSlice"
@@ -15,6 +16,7 @@ export const store = configureStore({
         currentOrder: currentOrderSlice.reducer,
         menus: menusSlice.reducer,
         productOptions: productOptionsSlice.reducer,
+        notification: notificationSlice.reducer,
         ticket: ticketSlice.reducer,
         orderType: orderTypeSlice.reducer,
         paymentMethod: paymentMethodSlice.reducer,

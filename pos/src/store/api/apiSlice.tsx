@@ -2,10 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Category, Product, Order, CompletedOrder } from "../../types";
 
 // PROD
-// const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
+const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
 
 // DEV
-const baseUrl = "http://localhost:8083/api/"
+// const baseUrl = "http://localhost:8083/api/"
 
 export const api = createApi({
     reducerPath: "api",
@@ -157,14 +157,6 @@ export const api = createApi({
                 }
             }
         }),
-        deleteCompletedOrder: builder.mutation({
-            query(id) {
-                return {
-                    url: `/completed-orders/delete/${id}`,
-                    method: "DELETE"
-                }
-            }
-        }),
         deleteOldDeletedOrders: builder.mutation({
             query() {
                 return {
@@ -178,13 +170,46 @@ export const api = createApi({
             keepUnusedDataFor: 0,
         }),
         getCompletedOrdersByPage: builder.query({
-            query: ({ page, limit, status }) => {
+            query: ({ page, limit }) => {
                 return {
                     url: "completed-orders/",
-                    params: { page, limit, status }
+                    params: { page, limit }
                 }
             },
             keepUnusedDataFor: 0
+        }),
+        getCompletedOrderById: builder.query({
+            query: (id) => `completed-orders/${id}`,
+            keepUnusedDataFor: 0,
+        }),
+        deleteCompletedOrder: builder.mutation({
+            query(id) {
+                return {
+                    url: `completed-orders/${id}`,
+                    method: "DELETE",
+                }
+            }
+        }),
+        updateCompletedOrderDetails: builder.mutation({
+            query(data) {
+                const { id, ...patch} = data
+                return {
+                    url: `completed-orders/details/${id}`,
+                    method: "PATCH",
+                    body: patch,
+                }
+            }
+        }),
+        updateCompletedOrderProducts: builder.mutation({
+            query(data) {
+                const { orderId, ...patch} = data
+                console.log(data)
+                return {
+                    url: `completed-orders/products/${orderId}`,
+                    method: "PATCH",
+                    body: patch,
+                }
+            }
         }),
         getWeekReport: builder.query({
             query: () => "reports/current-week",
@@ -230,8 +255,8 @@ export const {
     useGetTablesDataQuery,
     useGetTakeawayOrdersDataQuery,
     useGetOrderDataByIdQuery,
-    useUpdateOrderPrintedProductsMutation,
     useUpdateOrderDataMutation,
+    useUpdateOrderPrintedProductsMutation,
     useCreateNewTkwOrderMutation,
     useUpdateTkwOrderClientDetailsMutation,
     useCreateNewCompletedOrderMutation,
@@ -243,7 +268,10 @@ export const {
     useDeleteCategoryMutation,
     useGetCompletedOrdersQuery,
     useGetCompletedOrdersByPageQuery,
+    useGetCompletedOrderByIdQuery,
     useDeleteCompletedOrderMutation,
+    useUpdateCompletedOrderDetailsMutation,
+    useUpdateCompletedOrderProductsMutation,
     useDeleteOldDeletedOrdersMutation,
     useUpdateCompletedOrderStatusMutation,
     useGetCurrentDayReportQuery,

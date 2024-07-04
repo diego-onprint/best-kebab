@@ -6,28 +6,29 @@ This component is not reached by the print media query, so it is printed on wind
 import { Fragment, useEffect, useState } from "react"
 import { calculatePercentage } from "../../utils/calculate/calculatePercentage"
 import { useSelector } from "react-redux"
-import { useGetOrderDataByIdQuery } from "../../store/api/apiSlice"
+import { useGetCompletedOrderByIdQuery, useGetOrderDataByIdQuery } from "../../store/api/apiSlice"
 import { formatOrderNumber } from "../../utils/format/formatOrderNumber"
 import { getCartTotal } from "../../utils/get/getCartTotal"
 import { type RootState } from "../../store/store"
-import type { CurrentOrder, TicketType } from "../../types"
 
 const Ticket = () => {
 
     const ticketType = useSelector<RootState, TicketType>(state => state.ticket.type)
-    const { currentOrderId } = useSelector<RootState, CurrentOrder>(state => state.currentOrder)
-    const { type: orderType } = useSelector<RootState, OrderType>(state => state.orderType)
-    const { method: paymentMethod } = useSelector<RootState, { method: PaymentMethod }>(state => state.paymentMethod)
+    const { currentOrderId, completedOrderToEditId } = useSelector(state => state.currentOrder)
+    const { data: currentOrder, refetch } = useGetOrderDataByIdQuery(currentOrderId)
+    const { data: completedOrderToEdit } = useGetCompletedOrderByIdQuery(completedOrderToEditId)
+    const { type: orderType } = useSelector(state => state.orderType)
+    const { method: paymentMethod } = useSelector(state => state.paymentMethod)
     const { products: selectedProducts } = useSelector(state => state.selectedProducts)
-    const { data: order, refetch } = useGetOrderDataByIdQuery(currentOrderId)
     const [date, setDate] = useState(new Date())
     const [ticketProducts, setTicketProducts] = useState([])
     const [ticketTotal, setTicketTotal] = useState(0)
 
+    const order = completedOrderToEditId ? completedOrderToEdit : currentOrder
+
     const shop = ticketType === "shop"
     const kitchen = ticketType === "kitchen"
-    // const TAX_RATE = orderType.value === "lieferung" ? 2.6 : 8.1
-    const TAX_RATE = 8.1
+    const TAX_RATE = orderType.value === "lieferung" ? 2.6 : 8.1
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -46,7 +47,7 @@ const Ticket = () => {
 
         refetch()
 
-    }, [currentOrderId, order, refetch])
+    }, [order, refetch])
 
     useEffect(() => {
 
@@ -65,7 +66,6 @@ const Ticket = () => {
     }, [selectedProducts, order])
 
     if (order) {
-
         return (
             <div id="shop-ticket" className="fixed max-w-[800px] bg-white w-full py-4 top-0 left-0 -z-50 block">
                 <div className="flex flex-col gap-2 px-2 py-4">
@@ -73,19 +73,21 @@ const Ticket = () => {
                         shop ?
                             <div>
                                 <div className="w-full flex items-center justify-center">
-                                    <img className="w-auto h-[180px] object-contain" src="/assets/ticket-logo.jpeg" alt="" />
+                                    <img className="w-[230px] h-[120px] object-contain" src="/assets/ticket-logo.png" alt="" />
                                 </div>
                                 <div className="flex flex-col mt-2">
-                                    <p className="to-print text-center">Edisonstrasse 5,</p>
-                                    <p className="to-print text-center">8050 Zürich,</p>
-                                    <p className="to-print text-center">www.hallobeirut.ch</p>
+                                    <p className="to-print text-center">Wülflingerstrasse 81,</p>
+                                    <p className="to-print text-center">8400 Winterhur</p>
+                                    <p className="to-print text-center">044 555 8448</p>
+                                    <p className="to-print text-center">info@li-beirut.ch</p>
+                                    <p className="to-print text-center">MwsT CHE-483-886-740</p>
                                 </div>
                             </div> : null
                     }
                     {
                         kitchen ?
                             <div className="w-full flex items-center justify-center">
-                                <h2 className="text-2xl">Hallo Beirut - Küche</h2>
+                                <h2 className="text-2xl">Li Beirut - Küche</h2>
                             </div> : null
                     }
                     <p>
@@ -93,10 +95,10 @@ const Ticket = () => {
                         <span className="">{order.is_table ? order.name : `#${formatOrderNumber(order.id)}`}</span>
                     </p>
                     {
-                        order.details.table.length > 0 ?
+                        order.details.table !== "null" ?
                             <p>
-                                <span className="font-bold">Tischbestellung: </span>
-                                <span>Tisch Nr.{order.details.table}</span>
+                                <span className="font-bold">Tisch: </span>
+                                <span>{order.details.table}</span>
                             </p> : null
                     }
                     <p>
@@ -104,12 +106,12 @@ const Ticket = () => {
                         <span>{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
                     </p>
                     {
-                        shop && order.details ?
+                        shop && order.details && order.details.customer_data ?
                             <div className="w-full">
-                                {/* <div className="font-bold text-lg my-2">
+                                <div className="font-bold text-lg my-2">
                                     <p>{order.details.order_type.name}</p>
                                     {order.details.delivery_time ? <p>{order.details.delivery_time}</p> : null}
-                                </div> */}
+                                </div>
                                 <p className="font-bold">Kundendaten:</p>
                                 <p>{order.details.customer_data.name} {order.details.customer_data.surname}</p>
                                 {order.details.customer_data.address.length > 0 ? <p>{order.details.customer_data.address}</p> : null}
@@ -149,7 +151,7 @@ const Ticket = () => {
                                                         return (
                                                             <tr key={option.option_id}>
                                                                 <td className="border border-zinc-400 p-2 text-sm">{option.option_name}</td>
-                                                                <td className="border border-zinc-400 p-2 text-sm">{(option.option_price * product.qty).toFixed(2)}</td>
+                                                                {shop ? <td className="border border-zinc-400 p-2 text-sm">{(option.option_price * product.qty).toFixed(2)}</td> : null}
                                                             </tr>
                                                         )
                                                     }) : null

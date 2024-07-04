@@ -118,7 +118,7 @@ const CheckoutView = ({
                             {
                                 isUpdating ?
                                     <Spinner /> :
-                                    "Checkout"
+                                    "Zur Kasse"
                             }
                         </button>
                         <div className="pt-4 flex items-center">

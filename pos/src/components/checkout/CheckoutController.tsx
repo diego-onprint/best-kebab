@@ -1,17 +1,20 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import usePrintTickets from "../../hooks/usePrintTickets"
+import CheckoutView from "./CheckoutView"
+// import Notification from "../notification/Notification"
 import { setCheckoutMenu } from "../../store/menus/menusSlice"
-import { setCurrentOrder } from "../../store/current_order/currentOrderSlice"
 import { useCreateNewCompletedOrderMutation, useGetOrderDataByIdQuery, useGetTablesDataQuery, useGetTakeawayOrdersDataQuery, useRemoveTkwOrderMutation } from "../../store/api/apiSlice"
+// import { useNotification } from "../../hooks/useNotification"
+// import { formatOrderNumber } from "../../utils/format/formatOrderNumber"
+import { useNavigate } from "react-router-dom"
+import { setCurrentOrder } from "../../store/current_order/currentOrderSlice"
+import useProductActions from "../../hooks/useProductActions"
+import type { CurrentOrder, PaymentMethod, OrderType } from "../../types"
+import type { RootState, AppDispatch } from "../../store/store"
 import { setOrderType } from "../../store/order_type/orderTypeSlice"
 import { setPaymentMethod } from "../../store/payment_method/paymentMehtodSlice"
 import toast from "react-hot-toast"
-import usePrintTickets from "../../hooks/usePrintTickets"
-import useProductActions from "../../hooks/useProductActions"
-import CheckoutView from "./CheckoutView"
-import type { CurrentOrder, PaymentMethod, OrderType } from "../../types"
-import type { RootState, AppDispatch } from "../../store/store"
 
 const CheckoutController = () => {
 
@@ -22,13 +25,14 @@ const CheckoutController = () => {
     const { type: orderType } = useSelector<RootState, { type: OrderType }>(state => state.orderType)
     const { method: paymentMethod } = useSelector<RootState, { method: PaymentMethod }>(state => state.paymentMethod)
     const { currentOrderId } = useSelector<RootState, CurrentOrder>(state => state.currentOrder)
+    // const { notification, showNotification } = useNotification()
     const { data: order } = useGetOrderDataByIdQuery(currentOrderId)
     const { refetch: refetchTables } = useGetTablesDataQuery()
-    const { refetch: refetchTkwOrders } = useGetTakeawayOrdersDataQuery()
+    const {refetch: refetchTkwOrders} = useGetTakeawayOrdersDataQuery()
     const [removeTkwOrder] = useRemoveTkwOrderMutation()
     const { removeAllProducts } = useProductActions()
     const { handlePrint } = usePrintTickets()
-
+    
     const handleCancel = () => {
         dispatch(setCheckoutMenu(false))
     }
@@ -63,11 +67,9 @@ const CheckoutController = () => {
             const response = await createNewOrder(orderData)
 
             if (response?.data.error) {
-                return toast.error("Error creating the order")
+                // return showNotification("Error creating the order", 3000)
             }
-
-            toast.success(`Neu Bestellung #${response.data.id}`)
-
+            
             if (printReceipt) handleTicketPrint()
 
             if (order.is_table) {
@@ -79,7 +81,9 @@ const CheckoutController = () => {
                 await removeTkwOrder(order.id)
                 refetchTkwOrders()
             }
-            
+
+            toast.success("Completed order created")
+
             // Reset order from orders table
             dispatch(setCheckoutMenu(false))
             dispatch(setCurrentOrder(null))

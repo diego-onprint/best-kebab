@@ -4,7 +4,6 @@
 
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import toast from "react-hot-toast"
 import Spinner from "../../common/spinner/Spinner"
 import { useCreateNewCategoryMutation, useDeleteCategoryMutation, useGetCategoriesQuery } from "../../../store/api/apiSlice"
 import { setEditCategoryMenu } from "../../../store/menus/menusSlice"
@@ -17,17 +16,17 @@ const EditCategoryMenu = () => {
     const [newCategoryData, setNewCategoryData] = useState({ name: "", img: "" })
     const { data: categories, isFetching: fetchingCategories, refetch } = useGetCategoriesQuery()
     const [createNewCategory, { isLoading: isCreating }] = useCreateNewCategoryMutation()
-    const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation()
+    const [deleteCategory, { isLoading: isDeleting}] = useDeleteCategoryMutation()
 
     const disabled = newCategoryData.name === ""
-    const deleteDisabled = selectedCategory === ""
+    const deleteDisabled = selectedCategory === "" 
 
     const handleClose = () => {
         dispatch(setEditCategoryMenu(false))
     }
 
     const handleInput = (e) => {
-        setNewCategoryData({ ...newCategoryData, [e.target.name]: e.target.value })
+        setNewCategoryData({ ...newCategoryData, [e.target.name]: e.target.value})
     }
 
     const handleCreateSubmit = async (e) => {
@@ -44,13 +43,11 @@ const EditCategoryMenu = () => {
                 return
             }
 
-            toast.success("Kategorie erstellt")
             refetch()
             handleClose()
 
         } catch (err) {
             console.log(err)
-            toast.error("Error creating category")
         }
     }
 
@@ -64,18 +61,15 @@ const EditCategoryMenu = () => {
             const response = await deleteCategory(selectedCategory)
 
             if (response.data?.error) {
-                console.log("Error creating category")
-                toast.error("Error creating category")
+                console.log("Error creating order")
                 return
             }
 
-            toast.success("Kategorie gelöscht")
             refetch()
             handleClose()
 
         } catch (err) {
             console.log(err)
-            toast.error("Error creating category")
         }
     }
 
@@ -94,14 +88,27 @@ const EditCategoryMenu = () => {
                     <div className="col-span-6 flex flex-col gap-4">
                         <h3 className="text-xl font-semibold">Kategorie erstellen</h3>
                         <form onSubmit={handleCreateSubmit} className="flex flex-col gap-4">
-                            <input
-                                type="text"
-                                name="name"
-                                value={newCategoryData.name}
-                                onChange={handleInput}
-                                className="input-field"
-                                placeholder="Name"
-                            />
+                            <div>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={newCategoryData.name}
+                                    onChange={handleInput}
+                                    className="input-field"
+                                    placeholder="Name"
+                                />
+                            </div>
+                            {/* <div>
+                                <label>Bild URL</label>
+                                <input
+                                    type="text"
+                                    name="img"
+                                    value={newCategoryData.img}
+                                    onChange={handleInput}
+                                    className="input-field"
+                                    placeholder="Image URL"
+                                />
+                            </div> */}
                             <button type="submit" disabled={disabled} className="col-span-8 primary-button flex gap-2 items-center">
                                 {
                                     !isCreating ?

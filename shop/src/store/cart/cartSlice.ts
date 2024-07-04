@@ -26,7 +26,7 @@ const getTotal = (state: Cart) => {
 
         return acc + curr.total + variationsTotal
     }, 0)
-    console.log("TOTAL...", total)
+    
     return total.toFixed(2)
 }
 

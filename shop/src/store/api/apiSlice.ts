@@ -1,17 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { Category, Product } from "../../types"
 
 // Prod
-// const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
+const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
 
 // DEV
-const baseUrl = "http://localhost:8083/api/"
+// const baseUrl = "http://localhost:8083/api/"
 
 export const api = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl}),
     endpoints: (builder) => ({
-        getCategories: builder.query<{ categories: Category[]}, string | undefined>({
+        getCategories: builder.query<{ categories }, string | undefined>({
             query: () => "categories/",
             keepUnusedDataFor: 21600,
         }),
@@ -19,7 +18,7 @@ export const api = createApi({
             query: () => "products/",
             keepUnusedDataFor: 21600,
         }),
-        getProductsByCategory: builder.query<{products: Product[]}, string | undefined>({
+        getProductsByCategory: builder.query<{products}, string | undefined>({
             query: (id) => `products/${id}`,
             keepUnusedDataFor: 21600,
         }),

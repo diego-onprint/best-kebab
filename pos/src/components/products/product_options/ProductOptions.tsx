@@ -10,7 +10,7 @@ import VariationsMenu from "./options/VariationsMenu"
 const ProductOptions = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const { currentOrderId } = useSelector<RootState, CurrentOrder>(state => state.currentOrder)
+    const { currentOrderId, completedOrderToEditId } = useSelector<RootState, CurrentOrder>(state => state.currentOrder)
     const { currentSelectedProduct: product } = useSelector<RootState, { currentSelectedProduct: Product }>(state => state.productOptions)
     const { productQty, setProductQty, productNotes, addProduct, productVariations, setProductVariations } = useProductActions()
 
@@ -55,7 +55,7 @@ const ProductOptions = () => {
                     </div>
                     <div className="grid grid-cols-12 gap-4">
                         <button onClick={handleClose} className="secondary-button py-3 col-span-4">Cancel</button>
-                        <button onClick={handleAdd} className={`${!currentOrderId ? "opacity-45 cursor-default pointer-events-none bg-zinc-500" : ""} primary-button py-3 col-span-8`}>Add</button>
+                        <button onClick={handleAdd} className={`${!currentOrderId && !completedOrderToEditId ? "opacity-45 cursor-default pointer-events-none bg-zinc-500" : ""} primary-button py-3 col-span-8`}>Add</button>
                     </div>
                 </div>
             </div>

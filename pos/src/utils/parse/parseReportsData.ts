@@ -38,10 +38,29 @@ export const parseReportsData = (allData) => {
         return { totalOrders: twintOrders.length, totalSales: total.toFixed(2)}
     }
 
+    const getTotalShipping = () => {
+        return data.reduce((acc, curr) => {
+            if (curr.details?.shipping_fee) {
+                return acc + curr.details.shipping_fee
+            }
+            return acc
+        }, 0).toFixed(2)
+    }
+
+
     const getTotalTips = () => {
         return data.reduce((acc, curr) => {
-            if (curr.details.tip_amount && curr.details.tip_amount.length > 0) {
-                return acc + parseFloat(curr.details.tip_amount)
+            if (curr.details?.tip && curr.details.tip.length > 0) {
+                return acc + parseFloat(curr.details.tip)
+            }
+            return acc
+        }, 0).toFixed(2)
+    }
+
+    const getTotalCoupons = () => {
+        return data.reduce((acc, curr) => {
+            if (curr.details?.coupons) {
+                return acc + curr.details.coupons.total
             }
             return acc
         }, 0).toFixed(2)
@@ -56,8 +75,8 @@ export const parseReportsData = (allData) => {
         cashOrders: getCashOrders(),
         creditOrders: getCreditOrders(),
         twintOrders: getTwintOrders(),
-        totalShipping: 0,
+        totalShipping: getTotalShipping(),
         totalTips: getTotalTips(),
-        totalCoupons: 0,
+        totalCoupons: getTotalCoupons(),
     }
 }

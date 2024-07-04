@@ -9,8 +9,7 @@ const getAllCompletedOrders = async (req, res) => {
         if (!!req.query.page && !!req.query.limit) {
             const page = parseInt(req.query.page)
             const limit = parseInt(req.query.limit)
-            const status = req.query.status
-            response = await completedOrdersModel.findSomeCompletedOrders(page, limit, status)
+            response = await completedOrdersModel.findSomeCompletedOrders(page, limit)
 
         } else {
 
@@ -25,17 +24,17 @@ const getAllCompletedOrders = async (req, res) => {
     }
 }
 
-const deleteCompletedOrder = async (req, res) => {
-    try {
+// const deleteCompletedOrder = async (req, res) => {
+//     try {
 
-        const response = completedOrdersModel.deleteCompletedOrder(req.params.id)
-        res.status(200).json(response)
+//         const response = completedOrdersModel.deleteCompletedOrder(req.params.id)
+//         res.status(200).json(response)
 
-    } catch (err) {
-        console.log(err)
-        res.status(500).json(err)
-    }
-}
+//     } catch (err) {
+//         console.log(err)
+//         res.status(500).json(err)
+//     }
+// }
 
 const updateOrderStatus = async (req, res) => {
 
@@ -60,10 +59,50 @@ const deleteOldDeletedOrders = async (req, res) => {
     }
 }
 
+const getCompletedOrderById = async (req, res) => {
+    try {
+        const response = await completedOrdersModel.findCompletedOrderById(req.params.id)
+        res.status(200).json(response)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
+
+const deleteCompletedOrder = async (req, res) => {
+    try {
+        const response = await completedOrdersModel.deleteCompletedOrder(req.params.id)
+        res.status(200).json(response)
+    } catch (err) {
+        res.status(500).json({ error: true, msg: err })
+    }
+}
+
+const updateCompletedOrderDetails = async (req, res) => {
+    try {
+        const response = await completedOrdersModel.updateCompletedOrderDetails(req.params.id, req.body)
+        res.status(200).json(response)
+    } catch (err) {
+        res.status(500).json({ error: true, msg: err })
+    }
+}
+
+const updateCompletedOrderProducts = async (req, res) => {
+    try {
+        const response = await completedOrdersModel.updateCompletedOrderProducts(req.params.id, req.body)
+        res.status(200).json(response)
+    } catch (err) {
+        res.status(500).json({ error: true, msg: err })
+    }
+}
+
 
 export const completedOrdersController = {
     getAllCompletedOrders,
-    deleteCompletedOrder,
     updateOrderStatus,
     deleteOldDeletedOrders,
+    getCompletedOrderById,
+    deleteCompletedOrder,
+    updateCompletedOrderDetails,
+    updateCompletedOrderProducts,
 }

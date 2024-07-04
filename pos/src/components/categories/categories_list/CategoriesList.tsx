@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { useGetCategoriesQuery } from "../../../store/api/apiSlice"
 import Spinner from "../../common/spinner/Spinner"
-import type { Category, CurrentOrder } from "../../../types"
+import type { Category } from "../../../types"
 
 const CategoriesList = () => {
 

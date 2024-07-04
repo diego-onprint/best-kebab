@@ -6,6 +6,7 @@ const router = Router()
 router.get("/tables", ordersController.getTablesOrders)
 router.get("/takeaway", ordersController.getTakeawayOrders)
 router.get("/:id", ordersController.getOrderById)
+router.get("/:id", ordersController.getOrderById)
 router.get("/", ordersController.getOrderById)
 router.patch("/:id", ordersController.updateOrderPrintedProducts)
 

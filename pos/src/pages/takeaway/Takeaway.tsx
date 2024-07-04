@@ -8,7 +8,7 @@ const Takeaway = () => {
 
     return (
         <div className="flex flex-col h-full">
-            <h2 className="section-title">Vorbestellt</h2>
+            <h2 className="section-title">Takeaway</h2>
             <ErrorBoundary fallback={<ErrorFallback>{errorMsg}</ErrorFallback>}>
                 <TakeawayList />
             </ErrorBoundary>

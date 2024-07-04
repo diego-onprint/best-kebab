@@ -6,7 +6,7 @@ import { AppDispatch } from "../../../store/store"
 import { removeSelectedProduct, setSelectedProduct } from "../../../store/selected_products/selectedProducts"
 
 const Item = ({ product }) => {
-    
+
     const dispatch = useDispatch<AppDispatch>()
     const { products: selectedProducts } = useSelector(state => state.selectedProducts)
     const { removeProduct, isUpdating } = useProductActions()

@@ -20,14 +20,14 @@ function App() {
   return (
     <SocketRegis>
       <AutomaticActions>
-        <Toaster position="top-center" />
+        <Toaster position="top-center" containerClassName="dont-print" />
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route
               path="/"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  <Takeaway />
+                  <Tables />
                 </Suspense>
               }
             />
@@ -55,14 +55,14 @@ function App() {
                 </Suspense>
               }
             />
-            {/* <Route
+            <Route
               path="/tables"
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Tables />
                 </Suspense>
               }
-            /> */}
+            />
             <Route
               path="/takeaway"
               element={

@@ -1,6 +1,5 @@
 import { pool } from "../db/connection.js"
 
-
 const findTablesOrders = async () => {
     const query = "SELECT * FROM orders WHERE is_table = true ORDER BY id ASC "
     const { rows } = await pool.query(query)

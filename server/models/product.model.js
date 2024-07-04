@@ -1,17 +1,17 @@
-import { pool } from "../db/connection.js"
 import { generateSlug } from "../utils/generateSlug.js"
+import { pool } from "../db/connection.js"
 
 const addProduct = async (data) => {
 
-    const { name, description, img: image, category: parent } = data
+    const { name, description, img, category: parent } = data
     const id = generateSlug(name)
     const price = parseFloat(data.price)
 
     try {
 
-        const query = "INSERT INTO products (id, name, description, price, parent, image ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *"
+        const query = "INSERT INTO products (id, name, description, price, parent ) VALUES ($1, $2, $3, $4, $5) RETURNING *"
 
-        const result = await pool.query(query, [id, name, description, price, parent, image])
+        const result = await pool.query(query, [id, name, description, price, parent])
 
         return result.rows[0]
 

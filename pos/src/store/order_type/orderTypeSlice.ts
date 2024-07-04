@@ -3,8 +3,8 @@ import type { OrderType, TicketType } from "../../types"
 
 const initialState: { type: OrderType } = { 
     type: {
-        value: "tisch", 
-        name: "Tisch" 
+        value: "lieferung", 
+        name: "Lieferung" 
     }
 }
 

@@ -1,19 +1,22 @@
 import { useState, useRef } from 'react'
-import { useGetTablesDataQuery } from '../store/api/apiSlice'
+import { useGetCompletedOrderByIdQuery, useGetTablesDataQuery, useUpdateCompletedOrderProductsMutation } from '../store/api/apiSlice'
 import { createTimestamp } from '../utils/create/createTimestamp'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import { useUpdateOrderDataMutation } from '../store/api/apiSlice'
 import type { Product, CurrentOrder } from '../types'
+import useRefetchOrderById from './useRefetchOrderById'
 
 const useProductActions = () => {
 
-    const { currentOrderId } = useSelector<RootState, CurrentOrder>(state => state.currentOrder)
+    const { currentOrderId, completedOrderToEditId } = useSelector<RootState, CurrentOrder>(state => state.currentOrder)
     const { currentSelectedProduct: product } = useSelector<RootState, { currentSelectedProduct: Product }>(state => state.productOptions)
     const [productQty, setProductQty] = useState(1)
     const [productVariations, setProductVariations] = useState([])
     const productNotes = useRef(null)
     const [updateOrderData, { isLoading: isUpdating }] = useUpdateOrderDataMutation()
+    const [updateCompletedOrderProducts] = useUpdateCompletedOrderProductsMutation()
+    const { refetchCompletedOrderById } = useRefetchOrderById()
     const { refetch } = useGetTablesDataQuery()
 
     const addProduct = async () => {
@@ -28,6 +31,14 @@ const useProductActions = () => {
             variations: productVariations,
             notes: productNotes.current.value,
         }
+
+        // PATCH .... for completed orders edit
+        if (completedOrderToEditId) {
+            await updateCompletedOrderProducts({ orderId: completedOrderToEditId, method: "add", productData: productData })
+            refetchCompletedOrderById(completedOrderToEditId)
+            return
+        }
+        // END PATCH
 
         if (currentOrderId) {
             await updateOrderData({ orderId: currentOrderId, method: "add", productData: productData })

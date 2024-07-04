@@ -2,6 +2,8 @@ import { lazy, Suspense } from "react"
 import { Navigate, Outlet } from 'react-router-dom'
 import Layout from '../components/layout/Layout'
 import { getLocalStorageItem } from '../utils/local_storage/localStorage'
+import NotificationsLayer from '../hocs/NotificationsLayer'
+import NewOrderSocketLayer from '../hocs/NewOrderSocketLayer'
 
 const AdminMenus = lazy(() => import("../hocs/AdminMenus"))
 
@@ -12,14 +14,16 @@ const PrivateRoutes = () => {
 
     return (
         auth ?
-            <>
-                <Suspense fallback={<></>}>
-                    <AdminMenus />
-                </Suspense>
-                <Layout>
-                    <Outlet />
-                </Layout>
-            </> :
+            <NotificationsLayer>
+                <NewOrderSocketLayer>
+                    <Suspense fallback={<></>}>
+                        <AdminMenus />
+                    </Suspense>
+                    <Layout>
+                        <Outlet />
+                    </Layout>
+                </NewOrderSocketLayer>
+            </NotificationsLayer> :
             <Navigate to="/login" />
     )
 }

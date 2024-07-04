@@ -3,11 +3,10 @@
 */
 
 import { useState } from "react"
-import toast from "react-hot-toast"
+import Spinner from "../../../common/spinner/Spinner"
 import { useCreateNewProductMutation, useGetCategoriesQuery } from "../../../../store/api/apiSlice"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../../../store/store"
-import Spinner from "../../../common/spinner/Spinner"
 import { setAddProductMenu } from "../../../../store/menus/menusSlice"
 import useRefetchProductsByCategory from "../../../../hooks/useRefetchProductsByCategory"
 
@@ -46,10 +45,8 @@ const Form = () => {
             const response = await createNewProduct(productData)
             refetchProductsByCategory(response.data.parent)
             dispatch(setAddProductMenu(false))
-            toast.success("Produkt erstellt")
         } catch (err) {
             console.log(err)
-            toast.error("Error creating product")
         }
     }
 

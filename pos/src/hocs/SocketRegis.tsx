@@ -30,13 +30,10 @@ const SocketRegis = ({ children }) => {
 
         dispatch(setCurrentOrder(args.data.data.id))
 
-        // ONLY FOR WINDOWS WITH AUTOMATIC PRINT
-        // setTimeout(() => {
-        //   handlePrint("shop")
-        // }, 500)
+        setTimeout(() => {
+          handlePrint("shop")
+        }, 500)
 
-
-        // TODO change for react hot toast instead
         toast.success(`Neu Bestellung #${args.data.data.id}`, {
           className: "dont-print",
           position: "top-center",

@@ -9,7 +9,11 @@ const useRefetchOrderById = () => {
         await dispatch(api.endpoints.getOrderDataById.initiate(newId, { subscribe: false, forceRefetch: true }));
     }
 
-    return { refetchOrderById }
+    const refetchCompletedOrderById = async (newId) => {
+        await dispatch(api.endpoints.getCompletedOrderById.initiate(newId, { subscribe: false, forceRefetch: true }));
+    }
+
+    return { refetchOrderById, refetchCompletedOrderById }
 }
 
 export default useRefetchOrderById

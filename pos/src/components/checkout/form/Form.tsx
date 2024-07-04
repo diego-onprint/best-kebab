@@ -6,6 +6,7 @@
 
 import { useState } from "react"
 import Spinner from "../../common/spinner/Spinner"
+import toast from "react-hot-toast"
 import { useGetOrderDataByIdQuery, useUpdateTkwOrderClientDetailsMutation } from "../../../store/api/apiSlice"
 import { useSelector } from "react-redux"
 import type { RootState } from "../../../store/store"
@@ -24,6 +25,7 @@ const Form = () => {
         try {
 
             const response = await updateClientDetails({ id: order.id, customerData })
+            toast.success("Kundendetails updated")
             refetch()
 
         } catch (err) {

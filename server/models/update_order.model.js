@@ -1,5 +1,4 @@
 import { pool } from "../db/connection.js"
-import { sendPickUpConfirmationMail } from "../utils/sendPickupConfirmationMail.js";
 
 const getCartTotal = (cart) => {
     return cart.reduce((acc, item) => {
@@ -133,42 +132,6 @@ const updateOrder = async (id, body) => {
             const { rows } = await pool.query(getQuery, [id])
             await client.query('COMMIT')
             return rows[0]
-
-        } catch (err) {
-
-            console.log(err)
-            await client.query('ROLLBACK')
-            return { error: true, msg: err }
-
-        } finally {
-
-            client.release()
-        }
-    }
-
-    // Update status
-    if (method === "updateStatus") {
-
-        console.log("UPDATE STATUS", body)
-
-        try {
-
-            // Query order
-            const getQuery = 'SELECT * FROM orders WHERE id = $1'
-
-            // Update db with new status
-            const updateQuery = 'UPDATE orders SET status = $1 WHERE id = $2'
-            await pool.query(updateQuery, [body.status, id])
-
-            // Query updated DB order
-            const { rows: updatedRows } = await pool.query(getQuery, [id])
-            await client.query('COMMIT')
-
-            if (body.email.length > 0) {
-                sendPickUpConfirmationMail(id, body.email)
-            }
-
-            return updatedRows[0]
 
         } catch (err) {
 

@@ -29,6 +29,12 @@ const TakeawayList = () => {
             {
                 !isFetching ?
                     <table className="w-full">
+                        <thead className="sticky -top-6 grid grid-cols-12 gap-2 bg-white p-4 shadow-md shadow-slate-100">
+                            <tr className="col-span-2"><td>Bestellung</td></tr>
+                            <tr className="col-span-4"><td>Kunden</td></tr>
+                            <tr className="col-span-3"><td>Date</td></tr>
+                            <tr className="col-span-2"><td>Status</td></tr>
+                        </thead>
                         <tbody className={`flex flex-col divide-y divide-slate-200 first-line:selection:${isFetching && "opacity-45"}`}>
                             {
                                 orders.map(order => {

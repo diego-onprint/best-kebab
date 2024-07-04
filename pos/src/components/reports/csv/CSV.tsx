@@ -3,28 +3,46 @@ import { formatDate } from "../../../utils/format/formatDate"
 
 const CSV = ({ currentData, rawData, selectedDate }) => {
 
-    const ordersContent = 
-    rawData.length <= 0 ? "" : 
-    rawData
-    .filter(order => order.status.value !== "deleted")
-    .map(order => {
-        return [order.id.toString(), formatDate(order.tmstamp), order.cart.total.toString(), order.cart.products.length.toString(), order.name, order.details.order_type.name, order.details.payment_method.name]
-    })
+    const ordersContent =
+        rawData.length <= 0 ? "" :
+            rawData
+                .filter(order => order.status.value === "completed")
+                .map(order => {
+                    return [order.id.toString(), formatDate(order.tmstamp), order.cart.total.toFixed(2), order.cart.products.length.toString(), order.name, order.details.order_type.name, order.details.payment_method.name]
+                })
+
+    const productAmounts = {}
+    if (rawData?.length > 0) {
+        rawData.forEach(order => {
+            order.cart?.products?.forEach(product => {
+                if (productAmounts[product.name]) {
+                    productAmounts[product.name] += product.qty
+                } else {
+                    productAmounts[product.name] = product.qty
+                }
+            })
+        })
+    }
+
+    const parsedProductAmounts = Object.entries(productAmounts).map(([key, value]) => [key, value.toString()]);
 
     const data = [
         ["Datum", selectedDate],
         [""],
-        ["Gesamtumsatz", "Gesamtprodukte", "Gesamtbestellungen"], 
+        ["Gesamtumsatz", "Gesamtprodukte", "Gesamtbestellungen"],
         [currentData.totalSales, currentData.totalItems, currentData.totalOrders,],
         [""],
-        ["Takeaway", "Tisch", ],
+        ["Takeaway", "Tisch",],
         [currentData.totalTkwOrders, currentData.totalOnsiteOrders],
         [""],
         ["Barzahlung Orders", "Barzahlung Total", "Kreditkarten Orders", "Kreditkarten Total", "Twint Orders", "Twint Total"],
         [currentData.cashOrders.totalOrders, currentData.cashOrders.totalSales, currentData.creditOrders.totalOrders, currentData.creditOrders.totalSales, currentData.twintOrders.totalOrders, currentData.twintOrders.totalSales],
         [""],
-        ["Bestellung", "Datum", "Gesamt", "Produkten", "Kunden", "Type", "Payment" ],
+        ["Bestellung", "Datum", "Gesamt", "Produkten", "Kunden", "Type", "Payment"],
         ...ordersContent,
+        [""],
+        ["Produkte", "Qty"],
+        ...parsedProductAmounts,
     ]
 
     return (
