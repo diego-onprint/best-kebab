@@ -3,7 +3,7 @@ import Spinner from "../common/spinner/Spinner"
 import { clearCart } from "../../store/cart/cartSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../store/store"
-import { useCreateNewShopOrderMutation } from "../../store/api/apiSlice"
+import { useCreateNewShopOrderMutation, useUpdateOrderDataMutation } from "../../store/api/apiSlice"
 import toast from "react-hot-toast"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import useParam from "../../hooks/useParam"
@@ -36,6 +36,7 @@ const Form = () => {
   const table = useParam("table")
   const [searchParams] = useSearchParams()
   const [createNewShopOrder, { isLoading }] = useCreateNewShopOrderMutation()
+  const [updateOrderData, {isLoading: isUpdating}] = useUpdateOrderDataMutation()
   const [customerData, setCustomerData] = useState(CustomerDataModel)
   const [deliveryData, setDeliveryData] = useState(DeliveryDataModel)
 
@@ -61,7 +62,17 @@ const Form = () => {
         deliveryData,
       }
 
-      const response = await createNewShopOrder(parsedData)
+      let response
+      // const response = await createNewShopOrder(parsedData)
+
+      if (table) {
+        response = await updateOrderData({ table, data: parsedData })
+      } else {
+        response = await createNewShopOrder(parsedData)
+      }
+      
+      console.log(response)
+
 
       if (response.data.error) {
         toast.error("Error placing order")
@@ -78,8 +89,8 @@ const Form = () => {
         const paramsObject = urlSearchParamsToObject(searchParams)
         const newParams = { 
           ...paramsObject, 
-          order: response.data.data.id,
-          email: response.data.data.details.customer_data.email,
+          order: response.data.id,
+          email: response.data.details.customer_data.email,
         }
         const queryParams = new URLSearchParams(newParams).toString()
 
