@@ -4,6 +4,7 @@ import { io } from "../app.js"
 const updateOrderFromShop = async (req, res) => {
     try {
         const response = await shopOrderModel.updateOrderFromShop(req.params.id, req.body)
+        console.log("sdlkhglsdfghkljsdfhdslk")
         io.emit("qr-order-updated", { success: true, response })
         res.status(200).json(response)
     } catch (err) {

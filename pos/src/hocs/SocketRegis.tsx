@@ -53,12 +53,18 @@ const SocketRegis = ({ children }) => {
       }
     }
 
+    const handleQrOrder = (args) => {
+      console.log(args)
+    }
+
     socket.on("on-connect", handleStatus)
     socket.on("shop-order-created", handleShopOrder)
+    socket.on("qr-order-updated", handleQrOrder)
 
     return () => {
       socket.off("on-connect", handleStatus)
       socket.off("shop-order-created", handleShopOrder)
+      socket.off("qr-order-updated", handleQrOrder)
     }
   }, [])
 

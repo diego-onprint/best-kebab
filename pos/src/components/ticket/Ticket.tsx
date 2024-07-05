@@ -68,26 +68,25 @@ const Ticket = () => {
     if (order) {
         return (
             <div id="shop-ticket" className="fixed max-w-[800px] bg-white w-full py-4 top-0 left-0 -z-50 block">
-                <div className="flex flex-col gap-2 px-2 py-4">
+                <div className="flex flex-col px-2 py-2 text-sm">
                     {
                         shop ?
                             <div>
                                 <div className="w-full flex items-center justify-center">
-                                    <img className="w-[230px] h-[120px] object-contain" src="/assets/ticket-logo.png" alt="" />
+                                    <img className="w-[200px] h-[100px] object-contain" src="/assets/ticket-logo.png" alt="" />
                                 </div>
-                                <div className="flex flex-col mt-2">
-                                    <p className="to-print text-center">Wülflingerstrasse 81,</p>
-                                    <p className="to-print text-center">8400 Winterhur</p>
-                                    <p className="to-print text-center">044 555 8448</p>
-                                    <p className="to-print text-center">info@li-beirut.ch</p>
-                                    <p className="to-print text-center">MwsT CHE-483-886-740</p>
+                                <div className="flex flex-col my-1">
+                                    <p className="to-print text-center">Dohlenweg 24,</p>
+                                    <p className="to-print text-center">8050 Zürich</p>
+                                    <p className="to-print text-center">Tel. 0800 848 832</p>
+                                    <p className="to-print text-center">www.smart-pos.ch</p>
                                 </div>
                             </div> : null
                     }
                     {
                         kitchen ?
                             <div className="w-full flex items-center justify-center">
-                                <h2 className="text-2xl">Li Beirut - Küche</h2>
+                                <h2 className="text-2xl">Smart Pos - Küche</h2>
                             </div> : null
                     }
                     <p>
@@ -108,7 +107,7 @@ const Ticket = () => {
                     {
                         shop && order.details && order.details.customer_data ?
                             <div className="w-full">
-                                <div className="font-bold text-lg my-2">
+                                <div className="font-bold">
                                     <p>{order.details.order_type.name}</p>
                                     {order.details.delivery_time ? <p>{order.details.delivery_time}</p> : null}
                                 </div>
@@ -125,9 +124,9 @@ const Ticket = () => {
                     <table className="w-full border border-collapse">
                         <thead>
                             <tr>
-                                <th className="border border-zinc-400 p-2 th w-[10px] text-left">Q</th>
-                                <th className="border border-zinc-400 p-2 th flex-1 text-left">Produkt</th>
-                                {shop ? <th className="border border-zinc-400 p-2 text-left">CHF</th> : null}
+                                <th className="border border-zinc-400 p-1 th w-[10px] text-left">Q</th>
+                                <th className="border border-zinc-400 p-1 th flex-1 text-left">Produkt</th>
+                                {shop ? <th className="border border-zinc-400 p-1 text-left">CHF</th> : null}
                             </tr>
                         </thead>
                         <tbody>
@@ -136,21 +135,21 @@ const Ticket = () => {
                                     return (
                                         <Fragment key={product.uid}>
                                             <tr>
-                                                <td className="border border-zinc-400 p-2 relative" rowSpan={product.variations.length + 1}>
+                                                <td className="border border-zinc-400 p-1 relative" rowSpan={product.variations.length + 1}>
                                                     <p className="absolute top-[8px] text-md">{product.qty}</p>
                                                 </td>
-                                                <td className="border border-zinc-400 p-2 text-md" style={{ "flex": 1 }}>
+                                                <td className="border border-zinc-400 p-1 text-md" style={{ "flex": 1 }}>
                                                     <p>{product.name}</p>
                                                     {product?.notes?.length > 0 ? <p className="text-sm">Notes: {product.notes}</p> : null}
                                                 </td>
-                                                {shop ? <td className="border border-zinc-400 p-2 text-md w-12">{product.total.toFixed(2)}</td> : null}
+                                                {shop ? <td className="border border-zinc-400 p-1 text-md w-12">{product.total.toFixed(2)}</td> : null}
                                             </tr>
                                             {
                                                 product.variations.length > 0 ?
                                                     product.variations.map((option) => {
                                                         return (
                                                             <tr key={option.option_id}>
-                                                                <td className="border border-zinc-400 p-2 text-sm">{option.option_name}</td>
+                                                                <td className="border border-zinc-400 p-1 text-sm">{option.option_name}</td>
                                                                 {shop ? <td className="border border-zinc-400 p-2 text-sm">{(option.option_price * product.qty).toFixed(2)}</td> : null}
                                                             </tr>
                                                         )
@@ -167,8 +166,8 @@ const Ticket = () => {
                             <div>
                                 <div className="flex flex-col gap-1 mt-2">
                                     <div className="flex justify-between">
-                                        <p className="text-xl font-bold">Gesamt</p>
-                                        <p className="text-xl font-bold">CHF {ticketTotal}</p>
+                                        <p className="text-base font-bold">Gesamt</p>
+                                        <p className="text-base font-bold">CHF {ticketTotal}</p>
                                     </div>
                                     <p>
                                         MwSt. CHF. {calculatePercentage(parseInt(ticketTotal), TAX_RATE).toFixed(2)} -{'>'} {TAX_RATE}% MwsT. inkl
