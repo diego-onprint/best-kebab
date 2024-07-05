@@ -37,7 +37,11 @@ const Success = () => {
                         order ?
                             <>
                                 <h1 className="text-center">Ihre Bestellnummer lautet: </h1>
-                                <h2 className="text-2xl font-bold text-center">#{formatOrderNumber(order)}</h2>
+                                {
+                                    table ?
+                                        <h2 className="text-2xl font-bold text-center">Tisch {formatOrderNumber(order)}</h2> :
+                                        <h2 className="text-2xl font-bold text-center">#{formatOrderNumber(order)}</h2>
+                                }
                                 <p className="text-center">We sent an email to: {email}</p>
                             </> : null
                     }

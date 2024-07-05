@@ -5,15 +5,18 @@ import { socket } from "../socket"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../store/store"
 import { setSocketStatus } from "../store/socket/socketSlice"
-import { useGetTakeawayOrdersDataQuery } from "../store/api/apiSlice"
+import { useGetTablesDataQuery, useGetTakeawayOrdersDataQuery } from "../store/api/apiSlice"
 import { setCurrentOrder } from "../store/current_order/currentOrderSlice"
 import usePrintTickets from "../hooks/usePrintTickets";
+import useRefetchOrderById from "../hooks/useRefetchOrderById";
 
 const SocketRegis = ({ children }) => {
 
   const audioRef = useRef(null)
   const dispatch = useDispatch<AppDispatch>()
   const { refetch } = useGetTakeawayOrdersDataQuery()
+  const { refetch: refetchTables } = useGetTablesDataQuery()
+  const { refetchOrderById } = useRefetchOrderById()
   const { handlePrint } = usePrintTickets()
 
   useEffect(() => {
@@ -48,13 +51,42 @@ const SocketRegis = ({ children }) => {
           theme: "light",
           transition: Bounce,
         })
-        
+
         refetch()
       }
     }
 
     const handleQrOrder = (args) => {
-      console.log(args)
+      if (args.success) {
+
+        if (audioRef.current) audioRef.current.play()
+
+        console.log(args)
+
+        dispatch(setCurrentOrder(args.response.data.id))
+
+        setTimeout(() => {
+          handlePrint("shop")
+        }, 500)
+
+        toast.success(`Neu Bestellung Tisch ${args.response.data.id}`, {
+          className: "dont-print",
+          position: "top-center",
+          autoClose: false,
+          hideProgressBar: true,
+          closeOnClick: true,
+          closeButton: false,
+          onClick: () => audioRef.current.pause(),
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        })
+
+        refetchOrderById(args.response.data.id)
+        refetchTables()
+      }
     }
 
     socket.on("on-connect", handleStatus)

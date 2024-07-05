@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 // Prod
-// const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
+const baseUrl = "https://demo-pos-back.smart-pos.ch/api/"
 
 // DEV
-const baseUrl = "http://localhost:8083/api/"
+// const baseUrl = "http://localhost:8083/api/"
 
 export const api = createApi({
     reducerPath: "api",

@@ -70,9 +70,6 @@ const Form = () => {
       } else {
         response = await createNewShopOrder(parsedData)
       }
-      
-      console.log(response)
-
 
       if (response.data.error) {
         toast.error("Error placing order")
@@ -89,8 +86,8 @@ const Form = () => {
         const paramsObject = urlSearchParamsToObject(searchParams)
         const newParams = { 
           ...paramsObject, 
-          order: response.data.id,
-          email: response.data.details.customer_data.email,
+          order: response.data.data.id,
+          email: response.data.data.details.customer_data.email,
         }
         const queryParams = new URLSearchParams(newParams).toString()
 

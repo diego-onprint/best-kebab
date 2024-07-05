@@ -38,17 +38,19 @@ const updateOrderFromShop = async (id, body) => {
 
         return {
             success: true,
-            id: id,
-            details: {
-                customer_data: {
-                    name: body.data.customerData.name,
-                    email: body.data.customerData.email,
-                }
-            },
-            order: {
-                cart: {
-                    products: parsedCartProducts,
-                    total: concatProducts.reduce((acc, curr) => acc + curr.total, 0)
+            data: {
+                id: id,
+                details: {
+                    customer_data: {
+                        name: body.data.customerData.name,
+                        email: body.data.customerData.email,
+                    }
+                },
+                order: {
+                    cart: {
+                        products: parsedCartProducts,
+                        total: concatProducts.reduce((acc, curr) => acc + curr.total, 0)
+                    }
                 }
             }
         }
