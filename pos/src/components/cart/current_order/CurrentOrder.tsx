@@ -9,6 +9,7 @@ const CurrentOrder = ({
     handleKitchenPrint,
     handleClearCart,
     handleCheckout,
+    handleOrderStatus,
 }) => {
 
     const noProducts = order?.cart.products.length <= 0
@@ -49,21 +50,32 @@ const CurrentOrder = ({
                     <dl className="text-xl font-bold">CHF {order.cart.total.toFixed(2)}</dl>
                 </div>
             </dl>
-            <div className="grid grid-cols-12 gap-2 p-4">
+            <div className="grid grid-cols-12 gap-2 p-4 divide-x divide-zinc-100">
                 <button
-                    onClick={handleClearCart}
-                    className="secondary-button col-span-4 disabled:opacity-50 disabled:hover:bg-zinc-300"
+                    onClick={() => handleOrderStatus(order.id, { name: "Completed", value: "completed" })}
+                    className="secondary-button col-span-2 disabled:opacity-50 disabled:hover:bg-zinc-300"
                     disabled={noProducts}
                 >
-                    Löschen
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0-3-3m3 3 3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                    </svg>
                 </button>
-                <button
-                    onClick={handleCheckout}
-                    className={`primary-button col-span-8 disabled:opacity-50`}
-                    disabled={noProducts}
-                >
-                    Zur Kasse
-                </button>
+                <div className="col-span-10 grid grid-cols-12 gap-1">
+                    <button
+                        onClick={handleClearCart}
+                        className="secondary-button col-span-4 disabled:opacity-50 disabled:hover:bg-zinc-300"
+                        disabled={noProducts}
+                    >
+                        Löschen
+                    </button>
+                    <button
+                        onClick={handleCheckout}
+                        className={`primary-button col-span-8 disabled:opacity-50`}
+                        disabled={noProducts}
+                    >
+                        Zur Kasse
+                    </button>
+                </div>
             </div>
         </div>
     )

@@ -6,5 +6,6 @@ export const formatDateAndTime = (date) => {
     const hour = String(dt.getUTCHours()).padStart(2, '0')
     const minutes = String(dt.getUTCMinutes()).padStart(2, '0')
     
-    return `${day}.${month}.${year} (${hour}:${minutes})`
+    // return `${day}.${month}.${year} (${hour}:${minutes})`
+    return `${day}.${month} (${hour}:${minutes})`
   }

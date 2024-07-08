@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentOrder } from "../../store/current_order/currentOrderSlice"
 import { useNavigate } from "react-router-dom"
-import { useGetCompletedOrderByIdQuery, useGetOrderDataByIdQuery, useUpdateOrderPrintedProductsMutation } from "../../store/api/apiSlice"
+import { useGetCompletedOrderByIdQuery, useGetOrderDataByIdQuery, useGetTakeawayOrdersDataQuery, useUpdateOrderPrintedProductsMutation, useUpdateOrderStatusMutation } from "../../store/api/apiSlice"
+import toast from "react-hot-toast"
 import CurrentOrder from "./current_order/CurrentOrder"
 import EmptyCart from "./empty_cart/EmptyCart"
 import CompletedOrder from "./completed_order/CompletedOrder"
@@ -26,7 +27,9 @@ const CartController = () => {
     const { products: selectedProducts } = useSelector(state => state.selectedProducts)
     const { data: order, isFetching } = useGetOrderDataByIdQuery(currentOrderId)
     const { refetchOrderById } = useRefetchOrderById()
+    const { refetch: refetchTkwOrders } = useGetTakeawayOrdersDataQuery()
     const [updateOrderPrintedProducts, { isLoading: isUpdatingPrintedProducts }] = useUpdateOrderPrintedProductsMutation()
+    const [updateOrderStatus, { isLoading: isUpdatingStatus }] = useUpdateOrderStatusMutation()
     const { data: completedOrderToEdit, isFetching: isFetchingCompletedOrder } = useGetCompletedOrderByIdQuery(completedOrderToEditId)
 
     // TODO sens hasSelectedProducts to CurrentOrder and show Losschen btn if so
@@ -68,6 +71,16 @@ const CartController = () => {
         navigate("/takeaway")
     }
 
+    const handleOrderStatus = async (order, status) => {
+        
+        const response = await updateOrderStatus({orderId: order, status})
+
+        if (response.data.success) {
+            toast.success(`Order #${order} is ready`)
+            await refetchTkwOrders()
+        }
+    }
+
     return (
         <ErrorBoundary fallback={<ErrorFallback><ErrorView /></ErrorFallback>}>
             <div className="bg-white flex flex-col w-[475px] border-l border-l-zinc-200">
@@ -82,6 +95,7 @@ const CartController = () => {
                                 handleShopPrint={handleShopPrint}
                                 handleKitchenPrint={handleKitchenPrint}
                                 handleCheckout={handleCheckout}
+                                handleOrderStatus={handleOrderStatus}
                             /> : null
                     }
                     {

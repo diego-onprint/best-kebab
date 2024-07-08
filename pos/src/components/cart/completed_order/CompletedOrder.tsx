@@ -53,9 +53,6 @@ const CompletedOrder = ({
         setOrderState(order)
     }, [order])
 
-    console.log(orderState)
-    // console.log(order)
-
     return (
         <>
             <div className={`${isFetching ? "opacity-45" : ""} flex flex-col h-screen`}>

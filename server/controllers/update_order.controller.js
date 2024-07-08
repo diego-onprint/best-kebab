@@ -11,6 +11,18 @@ const updateOrder = async (req, res) => {
     }
 }
 
+const updateOrderStatus = async (req, res) => {
+
+    try {
+        const response = await updateOrderModel.updateOrderStatus(req.params.id, req.body.status)
+        res.status(200).json(response)
+    } catch {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
+
 export const updateOrderController = {
-    updateOrder
+    updateOrder,
+    updateOrderStatus,
 }

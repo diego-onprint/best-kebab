@@ -1,4 +1,5 @@
 import { pool } from "../db/connection.js"
+import { sentCompletedOrderMail } from "../utils/sendCompletedOrderMail.js";
 
 const getCartTotal = (cart) => {
     return cart.reduce((acc, item) => {
@@ -146,7 +147,23 @@ const updateOrder = async (id, body) => {
     }
 }
 
+const updateOrderStatus = async (id, status) => {
+
+    // console.log(id, status)
+
+    try {
+        const getQuery = 'SELECT * FROM orders WHERE id = $1'
+        const { rows: ordersRows } = await pool.query(getQuery, [id])
+        await pool.query("UPDATE orders SET status = $1 WHERE id = $2", [status, id])
+        sentCompletedOrderMail(ordersRows[0])
+        return { success: true }
+    } catch (err) {
+        console.error("Error updating order status:", err)
+        return { error: true, msg: err }
+    }
+}
 
 export const updateOrderModel = {
     updateOrder,
+    updateOrderStatus,
 }

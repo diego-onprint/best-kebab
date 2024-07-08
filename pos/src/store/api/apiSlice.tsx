@@ -56,6 +56,16 @@ export const api = createApi({
                 }
             },
         }),
+        updateOrderStatus: builder.mutation({
+            query(data) {
+                const {orderId, ...status} = data
+                 return {
+                    url: `update-order/order-status/${orderId}`,
+                    method: "PATCH",
+                    body: status,
+                 }
+            }
+        }),
         updateOrderPrintedProducts: builder.mutation({
             query(data) {
                 const { orderId, ...patch } = data
@@ -256,6 +266,7 @@ export const {
     useGetTakeawayOrdersDataQuery,
     useGetOrderDataByIdQuery,
     useUpdateOrderDataMutation,
+    useUpdateOrderStatusMutation,
     useUpdateOrderPrintedProductsMutation,
     useCreateNewTkwOrderMutation,
     useUpdateTkwOrderClientDetailsMutation,
