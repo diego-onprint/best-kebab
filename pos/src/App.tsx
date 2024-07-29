@@ -27,28 +27,36 @@ function App() {
               path="/"
               element={
                 <Suspense fallback={<PageLoader />}>
-                  <Tables />
+                  <Products />
                 </Suspense>
               }
             />
-            <Route
+            {/* <Route
               path="/categories"
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Categories />
                 </Suspense>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/subcategories/:id"
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Subcategories />
                 </Suspense>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/products/:id"
+              element={
+                <Suspense fallback={<PageLoader />}>
+                  <Products />
+                </Suspense>
+              }
+            /> */}
+            <Route
+              path="/products"
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Products />

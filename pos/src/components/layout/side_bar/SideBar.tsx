@@ -20,10 +20,13 @@ const SideBar = () => {
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
           <span className={`absolute -right-1 top-1 w-2 h-2 ring-2 ring-white rounded-full ${socketConnected ? "bg-green-400" : "bg-red-500"}`}></span>
-          <picture className="w-8 h-8 grid place-items-center">
+          <div className="w-10 h-10 rounded-full bg-blue-500 grid place-items-center">
+            <p className="text-white text-md font-semibold">BK</p>
+          </div>
+          {/* <picture className="w-8 h-8 grid place-items-center">
             <source srcSet="/assets/logo.webp" type="image/webp" />
             <img src="/assets/logo.jpg" />
-          </picture>
+          </picture> */}
         </div>
         <div className="relative font-bold">POS</div>
       </div>
@@ -31,7 +34,7 @@ const SideBar = () => {
         <ul className="flex flex-col gap-4">
           <li className="text-[10px]">
             <Link
-              to="/categories"
+              to="/products"
               className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/products" && "bg-zinc-100"}`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

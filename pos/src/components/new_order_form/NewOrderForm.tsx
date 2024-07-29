@@ -36,7 +36,7 @@ const NewOrderForm = () => {
             dispatch(setCurrentOrder(response.data.id))
             e.target.reset()
             refetch()
-            navigate("/categories")
+            navigate("/products")
         } catch (err) {
             console.log(err)
         }

@@ -4,8 +4,8 @@ import Spinner from "../../common/spinner/Spinner"
 
 const ProductsList = ({ id }: { id: string | undefined }) => {
 
-    const { data, error, isFetching } = useGetProductsByCategoryQuery(id)
-    // const { data, error, isFetching } = useGetAllProductsQuery()
+    // const { data, error, isFetching } = useGetProductsByCategoryQuery(id)
+    const { data, error, isFetching } = useGetAllProductsQuery()
 
     //case not found -404- or sorts
     if (error) throw Error
