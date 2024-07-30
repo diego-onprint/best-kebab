@@ -5,9 +5,10 @@ import PageLoader from "./components/common/page_loader/PageLoader"
 import PrivateRoutes from "./routes/PrivateRoutes"
 import SocketRegis from "./hocs/SocketRegis"
 import AutomaticActions from "./hocs/AutomaticActions"
+import OrdersView from "./pages/orders_view/OrdersView"
 
-const Categories = lazy(() => import("./pages/categories/Categories"))
-const Subcategories = lazy(() => import("./pages/subcategories/Subcategories"))
+// const Categories = lazy(() => import("./pages/categories/Categories"))
+// const Subcategories = lazy(() => import("./pages/subcategories/Subcategories"))
 const Products = lazy(() => import("./pages/products/Products"))
 const Orders = lazy(() => import("./pages/orders/Orders"))
 const Tables = lazy(() => import("./pages/tables/Tables"))
@@ -101,6 +102,14 @@ function App() {
             element={
               <Suspense fallback={<PageLoader />}>
                 <Login />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/orders-view"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <OrdersView />
               </Suspense>
             }
           />

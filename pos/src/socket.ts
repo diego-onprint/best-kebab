@@ -1,9 +1,9 @@
 import { io } from "socket.io-client"
 
 // Prod
-const URL = "https://demo-pos-back.smart-pos.ch/"
+const URL = "https://best-kebab-server.smart-pos.ch/"
 
 // Dev
-// const URL = "http://localhost:8083"
+// const URL = "http://localhost:8108"
 
 export const socket = io(URL)

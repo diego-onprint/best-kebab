@@ -43,7 +43,7 @@ const SideBar = () => {
               Produkte
             </Link>
           </li>
-          <li className="relative text-[10px]">
+          {/* <li className="relative text-[10px]">
             <Link
               to="/tables"
               className={`flex flex-col items-center p-1 hover:bg-zinc-100 rounded-md ${pathname === "/tables" && "bg-zinc-100"}`}
@@ -53,7 +53,7 @@ const SideBar = () => {
               </svg>
               Tische
             </Link>
-          </li>
+          </li> */}
           <li className="relative text-[10px]">
             <Link
               to="/takeaway"
