@@ -7,7 +7,7 @@ const ProductsList = () => {
 
     const [groupedProducts, setGroupedProducts] = useState([])
     const { data: categories } = useGetCategoriesQuery()
-    const { data: allProducts } = useGetAllProductsQuery()
+    const { data: allProducts, isLoading } = useGetAllProductsQuery()
     const { setActiveSection } = useSectionsContext()
 
     useEffect(() => {
@@ -53,8 +53,14 @@ const ProductsList = () => {
     }, [categories, groupedProducts, setActiveSection])
 
     return (
-        <div>
+        <div className="space-y-4 px-3">
             {
+                allProducts ?
+                allProducts.map((product) => {
+                    return <Product product={product} key={product.id} />
+                }) : null
+            }
+            {/* {
                 groupedProducts.length > 0 ?
                     <div>
                         {
@@ -77,7 +83,7 @@ const ProductsList = () => {
                         }
                     </div> : null
 
-            }
+            } */}
         </div>
     )
 }

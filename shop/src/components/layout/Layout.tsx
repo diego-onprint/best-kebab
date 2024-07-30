@@ -1,6 +1,6 @@
 import Hero from "../hero/Hero"
 import Cart from "../cart/Cart"
-import StickyScrollSpyNav from "../sticky_scroll_spy_nav/StickyScrollSpyNav"
+// import StickyScrollSpyNav from "../sticky_scroll_spy_nav/StickyScrollSpyNav"
 import { useLocation } from "react-router-dom"
 import MobileCart from "../cart/mobile_cart/MobileCart"
 
@@ -12,9 +12,9 @@ const Layout = ({ children }) => {
   return (
     <main>
       <Hero />
-      {isHome ? <StickyScrollSpyNav /> : null}
+      {/* {isHome ? <StickyScrollSpyNav /> : null} */}
       {isHome ? <MobileCart /> : null}
-      <div className="max-w-7xl grid grid-cols-12 mx-auto">
+      <div className="max-w-7xl grid grid-cols-12 mx-auto pt-8">
         <div className={`col-span-12 sm:col-span-7 ${isHome && "col-span-12 sm:col-span-7"}`}>
           {children}
         </div>
