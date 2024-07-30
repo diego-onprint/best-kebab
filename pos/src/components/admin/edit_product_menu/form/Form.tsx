@@ -4,7 +4,7 @@
 
 import { useState } from "react"
 import Spinner from "../../../common/spinner/Spinner"
-import { useDeleteProductMutation, useGetCategoriesQuery, useUpdateProductMutation } from "../../../../store/api/apiSlice"
+import { useDeleteProductMutation, useGetAllProductsQuery, useGetCategoriesQuery, useUpdateProductMutation } from "../../../../store/api/apiSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../../store/store"
 import useRefetchProductsByCategory from "../../../../hooks/useRefetchProductsByCategory"
@@ -25,8 +25,9 @@ const Form = () => {
     })
     const [updateProduct, { isLoading }] = useUpdateProductMutation()
     const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation()
-    const { data: categories, isFetching } = useGetCategoriesQuery()
+    // const { data: categories, isFetching } = useGetCategoriesQuery()
     const { refetchProductsByCategory } = useRefetchProductsByCategory()
+    const { refetch } = useGetAllProductsQuery()
 
     const handleInput = (e) => {
         setProductData({ ...productData, [e.target.name]: e.target.value })
@@ -44,9 +45,9 @@ const Form = () => {
 
             const response = await updateProduct({ id: product.id, ...productData })
             // Refetch for the category of the update and refetch for the "old" category for cases where category changed
-            console.log(response)
-            refetchProductsByCategory(response.data.parent)
-            refetchProductsByCategory(product.parent)
+            // refetchProductsByCategory(response.data.parent)
+            // refetchProductsByCategory(product.parent)
+            refetch()
             dispatch(setEditProductMenu({ open: false, productId: null }))
             dispatch(setCurrentSelectedProduct(null))
 
@@ -57,14 +58,12 @@ const Form = () => {
 
     const handleDeleteProduct = async () => {
         const response = await deleteProduct(product.id)
-        console.log(response)
-        refetchProductsByCategory(product.parent)
+        // refetchProductsByCategory(product.parent)
+        refetch()
         dispatch(setEditProductMenu({ open: false, productId: null }))
         dispatch(setCurrentSelectedProduct(null))
     }
-
-    console.log(product)
-
+    
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             <div>
@@ -89,7 +88,7 @@ const Form = () => {
                     placeholder="CHF"
                 />
             </div>
-            <div>
+            {/* <div>
                 <label>Kategorie</label>
                 <select
                     id="category"
@@ -110,7 +109,7 @@ const Form = () => {
                             }) : null
                     }
                 </select>
-            </div>
+            </div> */}
             <div>
                 <label>Bild URL</label>
                 <input

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store/store"
 import { setCurrentOrder } from "../../store/current_order/currentOrderSlice"
+import socket from "../../socket"
 
 const CustomerDataModel = {
     name: "",
@@ -35,6 +36,7 @@ const NewOrderForm = () => {
             const response = await createNewTkwOrder(customerData.current)
             dispatch(setCurrentOrder(response.data.id))
             e.target.reset()
+            socket.emit("order-status-updated", { success: true })
             refetch()
             navigate("/products")
         } catch (err) {

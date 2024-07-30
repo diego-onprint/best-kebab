@@ -15,6 +15,7 @@ import type { RootState, AppDispatch } from "../../store/store"
 import { setOrderType } from "../../store/order_type/orderTypeSlice"
 import { setPaymentMethod } from "../../store/payment_method/paymentMehtodSlice"
 import toast from "react-hot-toast"
+import socket from "../../socket"
 
 const CheckoutController = () => {
 
@@ -59,9 +60,9 @@ const CheckoutController = () => {
                 details: {
                     payment_method: paymentMethod,
                     order_type: orderType,
-                    // status: { name: "Completed", value: "completed" },
                     created_by: "admin", // Use session
                 },
+                status: { name: "Process", value: "process" },
             }
 
             const response = await createNewOrder(orderData)
@@ -70,6 +71,8 @@ const CheckoutController = () => {
                 // return showNotification("Error creating the order", 3000)
             }
             
+            socket.emit("order-status-updated", { success: true })
+
             if (printReceipt) handleTicketPrint()
 
             if (order.is_table) {

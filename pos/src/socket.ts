@@ -6,4 +6,4 @@ const URL = "https://best-kebab-server.smart-pos.ch/"
 // Dev
 // const URL = "http://localhost:8108"
 
-export const socket = io(URL)
+export default io(URL)

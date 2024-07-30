@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { ToastContainer, toast, Bounce } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
-import { socket } from "../socket"
+import socket from "../socket"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../store/store"
 import { setSocketStatus } from "../store/socket/socketSlice"
@@ -9,11 +9,13 @@ import { useGetTablesDataQuery, useGetTakeawayOrdersDataQuery } from "../store/a
 import { setCurrentOrder } from "../store/current_order/currentOrderSlice"
 import usePrintTickets from "../hooks/usePrintTickets";
 import useRefetchOrderById from "../hooks/useRefetchOrderById";
+import { getLocalStorageItem } from "../utils/local_storage/localStorage";
 
 const SocketRegis = ({ children }) => {
 
   const audioRef = useRef(null)
   const dispatch = useDispatch<AppDispatch>()
+  const user = getLocalStorageItem("user")
   const { refetch } = useGetTakeawayOrdersDataQuery()
   const { refetch: refetchTables } = useGetTablesDataQuery()
   const { refetchOrderById } = useRefetchOrderById()
@@ -33,24 +35,27 @@ const SocketRegis = ({ children }) => {
 
         dispatch(setCurrentOrder(args.data.data.id))
 
-        setTimeout(() => {
-          handlePrint("shop")
-        }, 500)
+        if (user) {
 
-        toast.success(`Neu Bestellung #${args.data.data.id}`, {
-          className: "dont-print",
-          position: "top-center",
-          autoClose: false,
-          hideProgressBar: true,
-          closeOnClick: true,
-          closeButton: false,
-          onClick: () => audioRef.current.pause(),
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        })
+          setTimeout(() => {
+            handlePrint("shop")
+          }, 500)
+  
+          toast.success(`Neu Bestellung #${args.data.data.id}`, {
+            className: "dont-print",
+            position: "top-center",
+            autoClose: false,
+            hideProgressBar: true,
+            closeOnClick: true,
+            closeButton: false,
+            onClick: () => audioRef.current.pause(),
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          })
+        }
 
         refetch()
       }

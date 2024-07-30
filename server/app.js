@@ -60,8 +60,18 @@ app.use("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
+
   console.log("User connected - Server");
+
   io.emit("on-connect", { success: true });
+
+  // Receive data from client
+  socket.on('order-status-updated', (data) => {
+    console.log("WORkING>")
+    // Send data back to the client
+    io.emit('update-order-view', { success: true });
+  });
+
 });
 
 httpServer.listen(PORT, () => {

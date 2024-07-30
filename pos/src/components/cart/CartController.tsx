@@ -16,6 +16,7 @@ import usePrintTickets from "../../hooks/usePrintTickets"
 import { removeAllSelectedProducts } from "../../store/selected_products/selectedProducts"
 import { useEffect } from "react"
 import useRefetchOrderById from "../../hooks/useRefetchOrderById"
+import socket from "../../socket"
 
 const CartController = () => {
 
@@ -74,6 +75,8 @@ const CartController = () => {
     const handleOrderStatus = async (order, status) => {
         
         const response = await updateOrderStatus({orderId: order, status})
+
+        socket.emit("order-status-updated", { success: true })
 
         if (response.data.success) {
             toast.success(`Order #${order} is ready`)

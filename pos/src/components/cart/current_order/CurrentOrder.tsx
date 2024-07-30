@@ -52,7 +52,7 @@ const CurrentOrder = ({
             </dl>
             <div className="grid grid-cols-12 gap-2 p-4 divide-x divide-zinc-100">
                 <button
-                    onClick={() => handleOrderStatus(order.id, { name: "Completed", value: "completed" })}
+                    onClick={() => handleOrderStatus(order.id, { name: "Ready", value: "ready" })}
                     className="secondary-button col-span-2 disabled:opacity-50 disabled:hover:bg-zinc-300"
                     disabled={noProducts}
                 >

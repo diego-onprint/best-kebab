@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { socket } from "../socket"
+import socket from "../socket"
 import { useGetTablesDataQuery, useGetOrderDataByIdQuery } from "../store/api/apiSlice"
 import { setNotification } from "../store/notification/notificationSlice"
 import { useDispatch } from "react-redux"

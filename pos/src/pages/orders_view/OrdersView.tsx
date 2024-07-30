@@ -7,7 +7,7 @@ const OrdersView = () => {
     const errorMsg = "An error ocurred fetching tables"
 
     return (
-        <div className="flex flex-col h-full bg-zinc-100 p-4">
+        <div className="flex flex-col h-screen bg-zinc-100 p-4">
             <ErrorBoundary fallback={<ErrorFallback>{errorMsg}</ErrorFallback>}>
                 <OrdersViewList />
             </ErrorBoundary>

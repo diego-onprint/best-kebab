@@ -4,11 +4,11 @@
 
 import { useState } from "react"
 import Spinner from "../../../common/spinner/Spinner"
-import { useCreateNewProductMutation, useGetCategoriesQuery } from "../../../../store/api/apiSlice"
+import { useCreateNewProductMutation, useGetAllProductsQuery, useGetCategoriesQuery } from "../../../../store/api/apiSlice"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../../../store/store"
 import { setAddProductMenu } from "../../../../store/menus/menusSlice"
-import useRefetchProductsByCategory from "../../../../hooks/useRefetchProductsByCategory"
+// import useRefetchProductsByCategory from "../../../../hooks/useRefetchProductsByCategory"
 
 const NewProductModel = {
     name: "",
@@ -24,10 +24,12 @@ const Form = () => {
     const dispatch = useDispatch<AppDispatch>()
     const [productData, setProductData] = useState(NewProductModel)
     const [createNewProduct, { isLoading }] = useCreateNewProductMutation()
-    const { data: categories } = useGetCategoriesQuery()
-    const { refetchProductsByCategory } = useRefetchProductsByCategory()
+    const { refetch } = useGetAllProductsQuery()
+    // const { data: categories } = useGetCategoriesQuery()
+    // const { refetchProductsByCategory } = useRefetchProductsByCategory()
 
-    const disabled = productData.name.length <= 0 || productData.category.length <= 0
+    // const disabled = productData.name.length <= 0 || productData.category.length <= 0
+    const disabled = false
 
     const handleInput = (e) => {
         setProductData({ ...productData, [e.target.name]: e.target.value })
@@ -43,7 +45,8 @@ const Form = () => {
 
         try {
             const response = await createNewProduct(productData)
-            refetchProductsByCategory(response.data.parent)
+            // refetchProductsByCategory(response.data.parent)
+            refetch()
             dispatch(setAddProductMenu(false))
         } catch (err) {
             console.log(err)
@@ -68,7 +71,7 @@ const Form = () => {
                 className="input-field"
                 placeholder="CHF"
             />
-            <select
+            {/* <select
                 id="category"
                 name="category"
                 value={productData.category}
@@ -85,7 +88,7 @@ const Form = () => {
                         )
                     })
                 }
-            </select>
+            </select> */}
             <input
                 type="text"
                 name="img"

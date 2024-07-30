@@ -32,9 +32,11 @@ const postOrder = async (order) => {
             ...orderRows[0].details,
             order_type: order.details.order_type,
             payment_method: order.details.payment_method,
-            created_by: order.details.created_by
+            created_by: order.details.created_by,
+            isCompleted: true,
         }
-        const status = { value: "completed", name: "Completed" }
+
+        const status = order.status
 
         const postOrderQuery = "INSERT INTO completed_orders (id, name, cart, details, status) VALUES ($1, $2, $3, $4, $5) RETURNING *"
 
