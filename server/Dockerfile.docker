@@ -16,7 +16,7 @@ COPY ./server .
 RUN ls
 
 # Expone el puerto 8080
-EXPOSE 8083
+EXPOSE 8108
 
 # Ejecuta el servidor Express
 CMD ["npm", "run", "start"]

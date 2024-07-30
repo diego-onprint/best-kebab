@@ -18,7 +18,7 @@ import { createServer } from "http";
 import cors from "cors";
 import { pool } from "./db/connection.js";
 
-const PORT = 8083;
+const PORT = 8108;
 const app = express();
 const corsOptions = {
   origin: "*",

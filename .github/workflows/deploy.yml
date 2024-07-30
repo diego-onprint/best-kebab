@@ -1,0 +1,85 @@
+name: Best kebab Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Building & publishing docker container
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          docker build -t bestkebab/posbestkebab:1.0.1 -f pos/DockerFile.docker  .
+          docker build -t bestkebab/serverbestkebab:1.0.1 -f server/Dockerfile.docker  .
+          docker build -t bestkebab/shopbestkebab:1.0.1 -f shop/DockerFile.docker  .
+      - uses: docker/login-action@v3
+        with:
+          username: "bestkebab"
+          password: "H507$vhj0"
+      - run: |
+          docker push bestkebab/posbestkebab:1.0.1
+          docker push bestkebab/serverbestkebab:1.0.1
+          docker push bestkebab/shopbestkebab:1.0.1
+      - run: echo "🍏 Build & Publish docker image job status  is ${{ job.status }}."
+
+  deploy:
+    needs: build
+    name: Deploy Image
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Pull code
+        uses: actions/checkout@v2
+      - name: Create Docker network
+        run: docker network create app-backend
+      - name: Deploy React frontend
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH__HOST }}
+          username: ${{ secrets.SSH__USER }}
+          key: ${{ secrets.SSH__PRIVATE }}
+          port: 5069
+          script: |
+            docker stop bestKebabPos
+            docker container ls -a --format {{.Names}} | grep bestKebabPos | xargs --no-run-if-empty docker rm -f bestKebabPos
+            echo 'H507$vhj0' | docker login -u bestkebab --password-stdin
+            docker pull bestkebab/posbestkebab:1.0.1
+            docker run --rm -i -t -d -p 5196:5196 \
+              --name bestKebabPos \
+              --network app-backend \
+              bestkebab/posbestkebab:1.0.1
+            docker ps
+      - name: Deploy Express backend  best food
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH__HOST }}
+          username: ${{ secrets.SSH__USER }}
+          key: ${{ secrets.SSH__PRIVATE }}
+          port: 5069
+          script: |
+            docker stop bestKebabBackend
+            docker container ls -a --format {{.Names}} | grep bestKebabBackend | xargs --no-run-if-empty docker rm -f bestKebabBackend
+            echo 'H507$vhj0' | docker login -u bestkebab --password-stdin
+            docker pull bestkebab/serverbestkebab:1.0.1
+            docker run --rm -i -t -d -p 8108:8108 \
+              --name bestKebabBackend \
+              --network app-backend \
+              bestkebab/serverbestkebab:1.0.1
+            docker ps
+      - name: Deploy shop best food
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH__HOST }}
+          username: ${{ secrets.SSH__USER }}
+          key: ${{ secrets.SSH__PRIVATE }}
+          port: 5069
+          script: |
+            docker stop bestKebabShop
+            docker container ls -a --format {{.Names}} | grep bestKebabShop | xargs --no-run-if-empty docker rm -f bestKebabShop
+            echo 'H507$vhj0' | docker login -u bestkebab --password-stdin
+            docker pull bestkebab/shopbestkebab:1.0.1
+            docker run --rm -i -t -d -p  4186:4186 \
+              --name bestKebabShop \
+              --network app-backend \
+              bestkebab/shopbestkebab:1.0.1
+            docker ps
