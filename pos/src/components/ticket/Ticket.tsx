@@ -30,7 +30,7 @@ const Ticket = () => {
     const kitchen = ticketType === "kitchen"
     const TAX_RATE = orderType.value === "lieferung" ? 2.6 : 8.1
 
-    console.log(order)
+    // console.log(order)
 
     useEffect(() => {
         const intervalId = setInterval(() => {

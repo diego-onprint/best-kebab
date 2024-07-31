@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../store/store"
 import { removeSelectedProduct, setSelectedProduct } from "../../../store/selected_products/selectedProducts"
 
-const Item = ({ product }) => {
+const CartItem = ({ product }) => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { products: selectedProducts } = useSelector(state => state.selectedProducts)
@@ -70,4 +70,4 @@ const Item = ({ product }) => {
     )
 }
 
-export default Item
+export default CartItem

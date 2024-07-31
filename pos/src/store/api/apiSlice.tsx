@@ -2,10 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Category, Product, Order, CompletedOrder } from "../../types";
 
 // PROD
-const baseUrl = "https://best-kebab-server.smart-pos.ch/api/"
+// const baseUrl = "https://best-kebab-server.smart-pos.ch/api/"
 
 // DEV
-// const baseUrl = "http://localhost:8108/api/"
+const baseUrl = "http://localhost:8108/api/"
 
 export const api = createApi({
     reducerPath: "api",
@@ -26,18 +26,33 @@ export const api = createApi({
             query: (id) => `products/${id}`,
             keepUnusedDataFor: 21600,
         }),
-        getTablesData: builder.query({
-            query: () => "orders/tables/",
-            keepUnusedDataFor: 0,
+        createNewOrder: builder.mutation({
+            query(data) {
+                return {
+                    url: "new-order/",
+                    method: "POST",
+                    body: data,
+                }
+            }
         }),
-        getTakeawayOrdersData: builder.query({
-            query: () => "orders/takeaway/",
-            keepUnusedDataFor: 0,
+        getOrders: builder.query({
+            query: () => {
+                return {
+                    url: "orders/all",
+                }
+            },
+            keepUnusedDataFor: 0
         }),
-        getOrderDataById: builder.query({
-            query: (id) => `orders/${id}`,
+        getOrdersByPage: builder.query({
+            query: ({ page, limit, condition }) => {
+                return {
+                    url: "orders/",
+                    params: { page, limit, condition }
+                }
+            },
+            keepUnusedDataFor: 0
         }),
-        updateOrderData: builder.mutation<Order, Order>({
+         updateOrderData: builder.mutation<Order, Order>({
             query(data) {
                 const { orderId, ...patch } = data
                 return {
@@ -55,6 +70,31 @@ export const api = createApi({
                     console.log("Error updating cache")
                 }
             },
+        }),
+        deleteOrder: builder.mutation({
+            query(id) {
+                return {
+                    url: `delete-order/${id}`,
+                    method: "DELETE",
+                }
+            }
+        }),
+
+
+
+
+
+
+        getTablesData: builder.query({
+            query: () => "orders/tables/",
+            keepUnusedDataFor: 0,
+        }),
+        getTakeawayOrdersData: builder.query({
+            query: () => "orders/takeaway/",
+            keepUnusedDataFor: 0,
+        }),
+        getOrderDataById: builder.query({
+            query: (id) => `orders/${id}`,
         }),
         updateOrderStatus: builder.mutation({
             query(data) {
@@ -262,6 +302,11 @@ export const {
     useGetCategoriesQuery,
     useGetAllProductsQuery,
     useGetProductsByCategoryQuery,
+    useCreateNewOrderMutation,
+    useGetOrdersQuery,
+    useGetOrdersByPageQuery,
+    useDeleteOrderMutation,
+
     useGetTablesDataQuery,
     useGetTakeawayOrdersDataQuery,
     useGetOrderDataByIdQuery,

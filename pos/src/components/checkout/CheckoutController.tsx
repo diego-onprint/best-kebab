@@ -16,22 +16,23 @@ import { setOrderType } from "../../store/order_type/orderTypeSlice"
 import { setPaymentMethod } from "../../store/payment_method/paymentMehtodSlice"
 import toast from "react-hot-toast"
 import socket from "../../socket"
+import useRefetchOrders from "../../hooks/useRefetchOrders"
 
 const CheckoutController = () => {
 
     const dispatch = useDispatch<AppDispatch>()
-    const navigate = useNavigate()
     const [printReceipt, setPrintReceipt] = useState()
     const [createNewOrder, { isLoading: isUpdating }] = useCreateNewCompletedOrderMutation()
     const { type: orderType } = useSelector<RootState, { type: OrderType }>(state => state.orderType)
     const { method: paymentMethod } = useSelector<RootState, { method: PaymentMethod }>(state => state.paymentMethod)
-    const { currentOrderId } = useSelector<RootState, CurrentOrder>(state => state.currentOrder)
-    // const { notification, showNotification } = useNotification()
+    const { currentOrderId } = useSelector(state => state.currentOrder)
+    const { page, limit, condition } = useSelector(state => state.ordersPage)
+    const { refetchOrdersByPage } = useRefetchOrders()
     const { data: order } = useGetOrderDataByIdQuery(currentOrderId)
-    const { refetch: refetchTables } = useGetTablesDataQuery()
-    const {refetch: refetchTkwOrders} = useGetTakeawayOrdersDataQuery()
-    const [removeTkwOrder] = useRemoveTkwOrderMutation()
-    const { removeAllProducts } = useProductActions()
+    // const { refetch: refetchTables } = useGetTablesDataQuery()
+    // const {refetch: refetchTkwOrders} = useGetTakeawayOrdersDataQuery()
+    // const [removeTkwOrder] = useRemoveTkwOrderMutation()
+    // const { removeAllProducts } = useProductActions()
     const { handlePrint } = usePrintTickets()
     
     const handleCancel = () => {
@@ -62,35 +63,26 @@ const CheckoutController = () => {
                     order_type: orderType,
                     created_by: "admin", // Use session
                 },
-                status: { name: "Process", value: "process" },
+                status: { name: "Completed", value: "completed" },
             }
 
             const response = await createNewOrder(orderData)
 
+            console.log(response)
+
             if (response?.data.error) {
-                // return showNotification("Error creating the order", 3000)
+                toast.error("Error creating the order")
             }
             
             socket.emit("order-status-updated", { success: true })
 
             if (printReceipt) handleTicketPrint()
 
-            if (order.is_table) {
-                await removeAllProducts()
-                refetchTables()
-            }
-
-            if (order.is_tkw) {
-                await removeTkwOrder(order.id)
-                refetchTkwOrders()
-            }
-
             toast.success("Completed order created")
 
-            // Reset order from orders table
+            refetchOrdersByPage({ page, limit, condition })
             dispatch(setCheckoutMenu(false))
             dispatch(setCurrentOrder(null))
-            navigate("/takeaway")
 
         } catch (err) {
 

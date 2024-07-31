@@ -7,7 +7,7 @@ import updateOrderRoute from "./routes/update_order.route.js";
 import shopOrderRoute from "./routes/shop_order.route.js";
 import ordersRoute from "./routes/orders.route.js";
 import newOrderRoute from "./routes/new_order.route.js";
-import tkwOrderRoute from "./routes/remove_order.route.js";
+import deleteOrderRoute from "./routes/delete_order.route.js";
 import callStaffRoute from "./routes/call_staff.route.js";
 import checkoutRoute from "./routes/checkout.route.js";
 import completedOrdersRoute from "./routes/completed_orders.route.js";
@@ -38,14 +38,16 @@ app.use(express.static("dist"));
 app.use("/api/product", productRoute);
 app.use("/api/products", productsRoute);
 app.use("/api/categories", categoriesRoute);
+app.use("/api/new-order", newOrderRoute);
+app.use("/api/orders", ordersRoute);
+app.use("/api/delete-order", deleteOrderRoute);
+
+
 app.use("/api/update-order", updateOrderRoute);
 app.use("/api/shop-order", shopOrderRoute);
-app.use("/api/orders", ordersRoute);
 app.use("/api/call-staff", callStaffRoute);
 app.use("/api/checkout", checkoutRoute);
 app.use("/api/completed-orders", completedOrdersRoute);
-app.use("/api/new-order", newOrderRoute);
-app.use("/api/tkw-order", tkwOrderRoute);
 app.use("/api/reports", reportsRoute);
 app.use("/api/new-shop-order", newShopOrderRoute);
 

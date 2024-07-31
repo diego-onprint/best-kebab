@@ -9,6 +9,7 @@ import { orderTypeSlice } from "./order_type/orderTypeSlice"
 import { socketSlice } from "./socket/socketSlice"
 import { paymentMethodSlice } from "./payment_method/paymentMehtodSlice"
 import { selectedProductsSlice } from "./selected_products/selectedProducts"
+import { ordersPageSlice } from "./orders_page/ordersPageSlice"
 
 export const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
         paymentMethod: paymentMethodSlice.reducer,
         selectedProducts: selectedProductsSlice.reducer,
         socket: socketSlice.reducer,
+        ordersPage: ordersPageSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
 })

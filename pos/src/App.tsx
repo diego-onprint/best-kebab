@@ -11,8 +11,6 @@ import OrdersView from "./pages/orders_view/OrdersView"
 // const Subcategories = lazy(() => import("./pages/subcategories/Subcategories"))
 const Products = lazy(() => import("./pages/products/Products"))
 const Orders = lazy(() => import("./pages/orders/Orders"))
-const Tables = lazy(() => import("./pages/tables/Tables"))
-const Takeaway = lazy(() => import("./pages/takeaway/Takeaway"))
 const Login = lazy(() => import("./pages/login/Login"))
 const Reports = lazy(() => import("./pages/reports/Reports"))
 
@@ -65,22 +63,6 @@ function App() {
               }
             />
             <Route
-              path="/tables"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Tables />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/takeaway"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Takeaway />
-                </Suspense>
-              }
-            />
-            <Route
               path="/orders"
               element={
                 <Suspense fallback={<PageLoader />}>
@@ -88,14 +70,14 @@ function App() {
                 </Suspense>
               }
             />
-            <Route
+            {/* <Route
               path="/reports"
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Reports />
                 </Suspense>
               }
-            />
+            /> */}
           </Route>
           <Route
             path="/login"
@@ -105,14 +87,14 @@ function App() {
               </Suspense>
             }
           />
-          <Route
+          {/* <Route
             path="/orders-view"
             element={
               <Suspense fallback={<PageLoader />}>
                 <OrdersView />
               </Suspense>
             }
-          />
+          /> */}
           <Route
             path="*"
             element={
