@@ -20,13 +20,10 @@ const SideBar = () => {
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
           <span className={`absolute -right-1 top-1 w-2 h-2 ring-2 ring-white rounded-full ${socketConnected ? "bg-green-400" : "bg-red-500"}`}></span>
-          <div className="w-10 h-10 rounded-full bg-blue-500 grid place-items-center">
-            <p className="text-white text-md font-semibold">BK</p>
-          </div>
-          {/* <picture className="w-8 h-8 grid place-items-center">
+          <picture className="w-8 h-8 grid place-items-center">
             <source srcSet="/assets/logo.webp" type="image/webp" />
             <img src="/assets/logo.jpg" />
-          </picture> */}
+          </picture>
         </div>
         <div className="relative font-bold">POS</div>
       </div>

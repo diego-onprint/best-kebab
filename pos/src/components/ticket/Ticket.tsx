@@ -78,22 +78,22 @@ const Ticket = () => {
                                     <img className="w-[200px] h-[100px] object-contain" src="/assets/ticket-logo.png" alt="" />
                                 </div>
                                 <div className="flex flex-col my-1">
-                                    <p className="to-print text-center">Dohlenweg 24,</p>
-                                    <p className="to-print text-center">8050 Zürich</p>
-                                    <p className="to-print text-center">Tel. 0800 848 832</p>
-                                    <p className="to-print text-center">www.smart-pos.ch</p>
+                                    <p className="to-print text-center">Langstrasse 206,</p>
+                                    <p className="to-print text-center">8005 Zürich,</p>
+                                    <p className="to-print text-center">www.bestkebabzuerich.ch</p>
                                 </div>
                             </div> : null
                     }
                     {
                         kitchen ?
                             <div className="w-full flex items-center justify-center">
-                                <h2 className="text-2xl">Smart Pos - Küche</h2>
+                                <h2 className="text-2xl">Best Kebab - Küche</h2>
                             </div> : null
                     }
                     <p>
                         <span className="font-bold">Bestellung: </span>
-                        <span className="">{order.is_table ? order.name : `#${formatOrderNumber(order.id)}`}</span>
+                        {/* RECHECK TABLES LOGIC */}
+                        {/* <span className="">{order.is_table ? order.name : `#${formatOrderNumber(order.id)}`}</span> */}
                     </p>
                     {
                         order.details.table !== "null" ?
