@@ -12,8 +12,6 @@ const OrdersList = () => {
     const { data, error, isFetching } = useGetOrdersByPageQuery({ page: currentPage, limit, condition })
     const orders = data?.results
 
-    console.log("COND....", condition)
-
     const handlePage = (value) => {
         dispatch(setOrdersPage(value))
     }

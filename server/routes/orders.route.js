@@ -5,6 +5,7 @@ const router = Router()
 
 router.get("/all", ordersController.getAllOrders)
 router.get("/", ordersController.getOrdersByPage)
+router.patch("/order-status/:id", ordersController.updateOrderStatus)
 
 ////////////////////////////////////////////////////////
 router.get("/tables", ordersController.getTablesOrders)

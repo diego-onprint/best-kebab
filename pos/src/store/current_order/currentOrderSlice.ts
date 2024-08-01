@@ -8,7 +8,6 @@ export const currentOrderSlice = createSlice({
     reducers: {
         setCurrentOrder: (state, action) => {
             // If completed order selected, reset it and set current order
-            console.log("HERE.....", action.payload)
             state.currentOrderId = action.payload
         },
         setCompletedOrderToEdit: (state, action) => {

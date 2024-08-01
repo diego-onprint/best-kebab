@@ -70,14 +70,14 @@ function App() {
                 </Suspense>
               }
             />
-            {/* <Route
+            <Route
               path="/reports"
               element={
                 <Suspense fallback={<PageLoader />}>
                   <Reports />
                 </Suspense>
               }
-            /> */}
+            />
           </Route>
           <Route
             path="/login"
@@ -87,14 +87,14 @@ function App() {
               </Suspense>
             }
           />
-          {/* <Route
+          <Route
             path="/orders-view"
             element={
               <Suspense fallback={<PageLoader />}>
                 <OrdersView />
               </Suspense>
             }
-          /> */}
+          />
           <Route
             path="*"
             element={

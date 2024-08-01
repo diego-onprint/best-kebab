@@ -5,6 +5,7 @@ import Ticket from '../ticket/Ticket'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../store/store'
 import type { Product } from '../../types'
+import EditOrderMenu from '../edit_order_menu/EditOrderMenu'
 
 const ProductOptions = lazy(() => import("../products/product_options/ProductOptions"))
 const Checkout = lazy(() => import("../checkout/Checkout"))
@@ -16,7 +17,7 @@ type PropsTypes = {
 const Layout = ({ children }: PropsTypes) => {
 
   const { currentSelectedProduct } = useSelector<RootState, { currentSelectedProduct: Product }>(state => state.productOptions)
-  const { checkoutMenu, customProductMenu } = useSelector<RootState, { checkoutMenu: boolean }>(state => state.menus)
+  const { checkoutMenu, editOrderMenu } = useSelector<RootState, { checkoutMenu: boolean, editOrderMenu: boolean }>(state => state.menus)
 
   return (
     <>
@@ -29,6 +30,7 @@ const Layout = ({ children }: PropsTypes) => {
         <Cart />
         {currentSelectedProduct ? <Suspense fallback={<></>}><ProductOptions /></Suspense> : null}
         {checkoutMenu ? <Suspense fallback={<></>}><Checkout /></Suspense> : null}
+        {editOrderMenu ? <Suspense fallback={<></>}><EditOrderMenu /></Suspense> : null}
       </div>
     </>
   )

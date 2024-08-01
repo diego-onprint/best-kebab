@@ -41,6 +41,7 @@ app.use("/api/categories", categoriesRoute);
 app.use("/api/new-order", newOrderRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/delete-order", deleteOrderRoute);
+app.use("/api/reports", reportsRoute);
 
 
 app.use("/api/update-order", updateOrderRoute);
@@ -48,7 +49,6 @@ app.use("/api/shop-order", shopOrderRoute);
 app.use("/api/call-staff", callStaffRoute);
 app.use("/api/checkout", checkoutRoute);
 app.use("/api/completed-orders", completedOrdersRoute);
-app.use("/api/reports", reportsRoute);
 app.use("/api/new-shop-order", newShopOrderRoute);
 
 app.use("/", (req, res) => {

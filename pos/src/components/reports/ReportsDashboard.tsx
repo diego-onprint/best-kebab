@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react'
-import { CSVLink } from "react-csv"
+import { useEffect, useState} from 'react'
 import Calendars from './calendars/Calendars'
+import CSV from './csv/CSV'
 import { parseReportsData } from '../../utils/parse/parseReportsData'
 import { formatDate } from '../../utils/format/formatDate'
 import { getCurrentDay } from '../../utils/get/getCurrentDay'
@@ -14,7 +14,6 @@ import {
     useLazyGetLastYearReportQuery,
     useLazyGetWeekReportQuery
 } from '../../store/api/apiSlice'
-import CSV from './csv/CSV'
 
 const CurrentDataModel = {
     totalSales: "0",
@@ -67,30 +66,6 @@ const ReportsDashboard = () => {
 
     const dataLoading = isLoadingDayReport || isLoadingWeekReport || isLoadingLastMonthReport || isLoadingLastYearReport || isLoadingCustomDatesReport
 
-    const csvHeaders = [
-        { label: "Sales", key: "sales" },
-        { label: "Items", key: "items" },
-        { label: "Orders", key: "orders" },
-        { label: "Takeaway", key: "tkw" },
-        { label: "Tisch", key: "tisch" },
-        { label: "Barzahlung", key: "cash" },
-        { label: "Kreditkarten", key: "credit" },
-        { label: "Twint", key: "twint" },
-    ]
-
-    const csvData = [
-        {
-            sales: currentData.totalSales,
-            items: currentData.totalItems,
-            orders: currentData.totalOrders,
-            tkw: currentData.totalTkwOrders,
-            tisch: currentData.totalOnsiteOrders,
-            cash: currentData.cashOrders.totalSales,
-            credit: currentData.creditOrders.totalSales,
-            twint: currentData.twintOrders.totalSales,
-        }
-    ]
-
     const handleLastYear = () => {
         const { firstDay, lastDay } = getLastYearDates()
         setSelectedDate(`${firstDay} - ${lastDay}`)
@@ -136,6 +111,7 @@ const ReportsDashboard = () => {
 
         if (dayReportData && dataIndex === "today") {
             const { data } = dayReportData
+            console.log("DATA....", data)
             const parsedData = parseReportsData(data)
             setCurrentData(parsedData)
             setRawData(data)

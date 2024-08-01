@@ -6,7 +6,7 @@ import EmptyCart from "./empty_cart/EmptyCart"
 import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
 import ErrorFallback from "../common/error_fallback/ErrorFallback"
 import type { AppDispatch } from "../../store/store"
-import { setCheckoutMenu } from "../../store/menus/menusSlice"
+import { setCheckoutMenu, setEditOrderMenu } from "../../store/menus/menusSlice"
 import useProductActions from "../../hooks/useProductActions"
 import usePrintTickets from "../../hooks/usePrintTickets"
 import { removeAllSelectedProducts } from "../../store/selected_products/selectedProducts"
@@ -15,6 +15,7 @@ import useRefetchOrderById from "../../hooks/useRefetchOrderById"
 import socket from "../../socket"
 import CartItem from "./cart_item/CartItem"
 import { formatOrderNumber } from "../../utils/format/formatOrderNumber"
+import useRefetchOrders from "../../hooks/useRefetchOrders"
 
 const Cart = () => {
 
@@ -23,13 +24,14 @@ const Cart = () => {
     const { handlePrint } = usePrintTickets()
     const { currentOrderId } = useSelector(state => state.currentOrder)
     const { products: selectedProducts } = useSelector(state => state.selectedProducts)
+    const { page, limit, condition } = useSelector(state => state.ordersPage)
     const { data: order, isFetching } = useGetOrderDataByIdQuery(currentOrderId)
     const { refetchOrderById } = useRefetchOrderById()
-    const { refetch: refetchTkwOrders } = useGetTakeawayOrdersDataQuery()
+    const { refetchOrdersByPage } = useRefetchOrders()
     const [updateOrderPrintedProducts, { isLoading: isUpdatingPrintedProducts }] = useUpdateOrderPrintedProductsMutation()
     const [updateOrderStatus, { isLoading: isUpdatingStatus }] = useUpdateOrderStatusMutation()
 
-    // TODO sens hasSelectedProducts to CurrentOrder and show Losschen btn if so
+    // TODO hasSelectedProducts to CurrentOrder and show Losschen btn if so
     const hasSelectedProducts = selectedProducts.length > 0
     const noProducts = order?.cart.products.length <= 0
 
@@ -39,10 +41,6 @@ const Cart = () => {
 
     const handleClearCart = async () => {
         await removeAllProducts()
-    }
-
-    const handleCheckout = () => {
-        dispatch(setCheckoutMenu(true))
     }
 
     const handleShopPrint = async () => {
@@ -64,17 +62,17 @@ const Cart = () => {
         handleClearProductSelection()
     }
 
-    console.log(currentOrderId)
+    const handleEdit = () => dispatch(setEditOrderMenu(true))
 
-    const handleOrderStatus = async (order, status) => {
+    const handleOrderStatus = async (id, status) => {
 
-        const response = await updateOrderStatus({ orderId: order, status })
+        const response = await updateOrderStatus({ id, status })
 
-        socket.emit("order-status-updated", { success: true })
+        // socket.emit("order-status-updated", { success: true })
 
         if (response.data.success) {
-            toast.success(`Order #${order} is ready`)
-            await refetchTkwOrders()
+            toast.success(`Order #${order.id} changed to: ${status.name}`)
+            refetchOrdersByPage({ page, limit, condition })
         }
     }
 
@@ -139,7 +137,7 @@ const Cart = () => {
                                     </div>
                                     <div className="col-span-2 flex flex-col disabled:opacity-50">
                                         <button
-                                            onClick={() => console.log("EDIT ORDER")}
+                                            onClick={handleEdit}
                                             className="secondary-button col-span-4 disabled:opacity-50 disabled:hover:bg-zinc-300"
                                             disabled={noProducts}
                                         >
@@ -169,8 +167,8 @@ const Cart = () => {
                                     </div>
                                     <div className="col-span-4 flex flex-col disabled:opacity-50">
                                         <button
-                                            onClick={handleCheckout}
-                                            className={"primary-button border border-blue-500 col-span-8"}
+                                            onClick={() => handleOrderStatus(order.id, { name: "Completed", value: "completed" })}
+                                            className={"primary-button border border-blue-500 disabled:border-zinc-200 col-span-8"}
                                             disabled={noProducts}
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-6">

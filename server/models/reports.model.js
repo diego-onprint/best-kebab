@@ -4,12 +4,13 @@ const getOrdersCurrentDay = async () => {
     try {
         const query = `
             SELECT *
-            FROM completed_orders
-            WHERE tmstamp >= date_trunc('day', CURRENT_DATE)
-            AND tmstamp < date_trunc('day', CURRENT_DATE + INTERVAL '1 day');
-            `
+            FROM orders
+            WHERE (details->>'created_at')::timestamp >= date_trunc('day', CURRENT_DATE)
+            AND (details->>'created_at')::timestamp < date_trunc('day', CURRENT_DATE + INTERVAL '1 day');
+        `
 
         const response = await pool.query(query)
+        // console.log("RESPONSE...........", response)
         return { success: true, data: response.rows }
 
     } catch (err) {
@@ -23,9 +24,9 @@ const getOrdersCurrentWeek = async () => {
 
         const query = `
             SELECT *
-            FROM completed_orders
-            WHERE tmstamp >= date_trunc('week', CURRENT_DATE + INTERVAL '1 day') - INTERVAL '1 day'
-            AND tmstamp < date_trunc('week', CURRENT_DATE + INTERVAL '1 day') + INTERVAL '6 day 23 hour 59 minute 59 second';
+            FROM orders
+            WHERE (details->>'created_at')::timestamp >= date_trunc('week', CURRENT_DATE + INTERVAL '1 day') - INTERVAL '1 day'
+            AND (details->>'created_at')::timestamp < date_trunc('week', CURRENT_DATE + INTERVAL '1 day') + INTERVAL '6 day 23 hour 59 minute 59 second';
         `
 
         const response = await pool.query(query)
@@ -43,9 +44,9 @@ const getOrdersLastMonth = async () => {
 
         const query = `
             SELECT *
-            FROM completed_orders
-            WHERE tmstamp >= date_trunc('month', CURRENT_DATE - INTERVAL '1 month')
-            AND tmstamp < date_trunc('month', CURRENT_DATE);
+            FROM orders
+            WHERE (details->>'created_at')::timestamp >= date_trunc('month', CURRENT_DATE - INTERVAL '1 month')
+            AND (details->>'created_at')::timestamp < date_trunc('month', CURRENT_DATE);
         `
 
         const response = await pool.query(query)
@@ -63,9 +64,9 @@ const getOrdersLastYear = async () => {
 
         const query = `
             SELECT *
-            FROM completed_orders
-            WHERE tmstamp >= date_trunc('year', CURRENT_DATE - INTERVAL '1 year')
-            AND tmstamp < date_trunc('year', CURRENT_DATE);
+            FROM orders
+            WHERE (details->>'created_at')::timestamp >= date_trunc('year', CURRENT_DATE - INTERVAL '1 year')
+            AND (details->>'created_at')::timestamp < date_trunc('year', CURRENT_DATE);
         `
 
         const response = await pool.query(query)
@@ -76,16 +77,6 @@ const getOrdersLastYear = async () => {
         console.log(err)
         return { error: true, msg: err }
     }
-}
-
-const getOrdersCurrentYear = async () => {
-    // const query = `
-    //   SELECT *
-    //   FROM completed_orders
-    //   WHERE tmstamp >= date_trunc('year', CURRENT_DATE)
-    //     AND tmstamp < CURRENT_DATE + INTERVAL '1 day';
-    // `
-    // return queryOrders(query)
 }
 
 const getOrdersBetweenDates = async (data) => {
@@ -100,8 +91,8 @@ const getOrdersBetweenDates = async (data) => {
 
         const query = `
             SELECT *
-            FROM completed_orders
-            WHERE tmstamp >= $1 AND tmstamp <= $2;
+            FROM orders
+            WHERE (details->>'created_at')::timestamp >= $1 AND (details->>'created_at')::timestamp <= $2;
         `
 
         const { rows } = await pool.query(query, [startDate, endDate])
@@ -117,7 +108,6 @@ const getOrdersBetweenDates = async (data) => {
 export const reportsModel = {
     getOrdersCurrentWeek,
     getOrdersLastMonth,
-    getOrdersCurrentYear,
     getOrdersLastYear,
     getOrdersBetweenDates,
     getOrdersCurrentDay,

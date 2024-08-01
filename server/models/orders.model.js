@@ -18,6 +18,22 @@ const getAllOrders = async (page, limit) => {
     return rows
 }
 
+const updateOrderStatus = async (id, status) => {
+
+    // console.log(id, status)
+
+    try {
+        const getQuery = 'SELECT * FROM orders WHERE id = $1'
+        const { rows: ordersRows } = await pool.query(getQuery, [id])
+        await pool.query("UPDATE orders SET status = $1 WHERE id = $2", [status, id])
+        sentCompletedOrderMail(ordersRows[0])
+        return { success: true }
+    } catch (err) {
+        console.error("Error updating order status:", err)
+        return { error: true, msg: err }
+    }
+}
+
 
 
 ///////////////////////////////////
@@ -70,6 +86,7 @@ const updateOrderPrintedProducts = async (id, selectedProducts) => {
 export const ordersModel = {
     getOrdersByPage,
     getAllOrders,
+    updateOrderStatus,
 
     findTablesOrders,
     findTakeawayOrders,

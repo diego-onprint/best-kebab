@@ -23,6 +23,21 @@ const getAllOrders = async (req, res) => {
     }
 }
 
+const updateOrderStatus = async (req, res) => {
+    try {
+        const response = await updateOrderModel.updateOrderStatus(req.params.id, req.body.status)
+        res.status(200).json(response)
+    } catch {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
+
+
+
+
+
+
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 
@@ -72,6 +87,7 @@ const updateOrderPrintedProducts = async (req, res) => {
 export const ordersController = {
     getOrdersByPage,
     getAllOrders,
+    updateOrderStatus,
 
     getTablesOrders,
     getTakeawayOrders,
