@@ -1,7 +1,6 @@
 import { pool } from "../db/connection.js"
 import { pagination } from "../utils/pagination.js"
 
-
 const getOrdersByPage = async (page, limit, condition) => {
 
     if (condition === "all") {
@@ -18,10 +17,20 @@ const getAllOrders = async (page, limit) => {
     return rows
 }
 
+const getScreenOrders = async () => {
+    const query = `
+        SELECT * 
+        FROM orders 
+        WHERE status->>'value' IN ('ready', 'process') 
+        ORDER BY id DESC
+    `
+    const { rows } = await pool.query(query)
+    return rows
+}
+
+
+// TODO change to update orders
 const updateOrderStatus = async (id, status) => {
-
-    // console.log(id, status)
-
     try {
         const getQuery = 'SELECT * FROM orders WHERE id = $1'
         const { rows: ordersRows } = await pool.query(getQuery, [id])
@@ -33,7 +42,6 @@ const updateOrderStatus = async (id, status) => {
         return { error: true, msg: err }
     }
 }
-
 
 
 ///////////////////////////////////
@@ -86,8 +94,9 @@ const updateOrderPrintedProducts = async (id, selectedProducts) => {
 export const ordersModel = {
     getOrdersByPage,
     getAllOrders,
-    updateOrderStatus,
+    getScreenOrders,
 
+    updateOrderStatus,
     findTablesOrders,
     findTakeawayOrders,
     findOrderById,

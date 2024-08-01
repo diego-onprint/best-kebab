@@ -52,6 +52,14 @@ export const api = createApi({
             },
             keepUnusedDataFor: 0
         }),
+        getScreenOrders: builder.query({
+            query: () => {
+                return {
+                    url: "orders/screen-orders",
+                }
+            },
+            keepUnusedDataFor: 0
+        }),
         updateOrderData: builder.mutation<Order, Order>({
             query(data) {
                 const { orderId, ...patch } = data
@@ -320,6 +328,7 @@ export const {
     useCreateNewOrderMutation,
     useGetOrdersQuery,
     useGetOrdersByPageQuery,
+    useGetScreenOrdersQuery,
     useDeleteOrderMutation,
     useUpdateOrderStatusMutation,
     useUpdateOrderDetailsMutation,

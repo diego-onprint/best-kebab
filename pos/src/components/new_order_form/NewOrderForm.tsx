@@ -35,9 +35,8 @@ const NewOrderForm = () => {
             const response = await createNewOrder(customerData.current)
             dispatch(setCurrentOrder(response.data.id))
             refetchOrdersByPage({ page: 1, limit: 10 })
+            socket.emit("order-status-updated", { success: true })
             e.target.reset()
-            // socket.emit("order-status-updated", { success: true })
-            // navigate("/products")
         } catch (err) {
             console.log(err)
         }

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setCurrentOrder } from "../../../store/current_order/currentOrderSlice"
 import { useDeleteOrderMutation } from "../../../store/api/apiSlice"
 import useRefetchOrders from "../../../hooks/useRefetchOrders"
+import socket from "../../../socket"
 
 const Order = ({ order }) => {
 
@@ -15,11 +16,12 @@ const Order = ({ order }) => {
     const handleClick = () => {
         dispatch(setCurrentOrder(order.id))
     }
-
-    const handleDelete = (e) => {
+    
+    const handleDelete = async (e) => {
         e.stopPropagation()
-        deleteOrder(order.id)
-        refetchOrdersByPage({ page, limit, condition })
+        await deleteOrder(order.id)
+        await refetchOrdersByPage({ page, limit, condition })
+        socket.emit("order-status-updated", { success: true })
         dispatch(setCurrentOrder(null))
     }
 

@@ -5,7 +5,11 @@ const router = Router()
 
 router.get("/all", ordersController.getAllOrders)
 router.get("/", ordersController.getOrdersByPage)
+router.get("/screen-orders", ordersController.getScreenOrders)
+//TODO change to update orders
 router.patch("/order-status/:id", ordersController.updateOrderStatus)
+
+
 
 ////////////////////////////////////////////////////////
 router.get("/tables", ordersController.getTablesOrders)

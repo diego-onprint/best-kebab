@@ -7,7 +7,7 @@ const getOrdersByPage = async (req, res) => {
         const condition = req.query.condition
         const response = await ordersModel.getOrdersByPage(page, limit, condition)
         res.status(200).json(response)
-    } catch(err) {
+    } catch (err) {
         console.log(err)
         res.status(500).json(err)
     }
@@ -17,12 +17,25 @@ const getAllOrders = async (req, res) => {
     try {
         const response = await ordersModel.getAllOrders()
         res.status(200).json(response)
-    } catch(err) {
+    } catch (err) {
         console.log(err)
         res.status(500).json(err)
     }
 }
 
+const getScreenOrders = async (req, res) => {
+    try {
+        const response = await ordersModel.getScreenOrders()
+        res.status(200).json(response)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
+
+
+
+//
 const updateOrderStatus = async (req, res) => {
     try {
         const response = await updateOrderModel.updateOrderStatus(req.params.id, req.body.status)
@@ -87,8 +100,9 @@ const updateOrderPrintedProducts = async (req, res) => {
 export const ordersController = {
     getOrdersByPage,
     getAllOrders,
-    updateOrderStatus,
+    getScreenOrders,
 
+    updateOrderStatus,
     getTablesOrders,
     getTakeawayOrders,
     getOrderById,

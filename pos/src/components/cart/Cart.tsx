@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentOrder } from "../../store/current_order/currentOrderSlice"
-import { useGetOrderDataByIdQuery, useGetTakeawayOrdersDataQuery, useUpdateOrderPrintedProductsMutation, useUpdateOrderStatusMutation } from "../../store/api/apiSlice"
+import { useGetOrderDataByIdQuery, useGetScreenOrdersQuery, useGetTakeawayOrdersDataQuery, useUpdateOrderPrintedProductsMutation, useUpdateOrderStatusMutation } from "../../store/api/apiSlice"
 import toast from "react-hot-toast"
 import EmptyCart from "./empty_cart/EmptyCart"
 import ErrorBoundary from "../common/error_boundary/ErrorBoundary"
@@ -64,14 +64,13 @@ const Cart = () => {
 
     const handleEdit = () => dispatch(setEditOrderMenu(true))
 
-    const handleOrderStatus = async (id, status) => {
+    const handleOrderStatus = async (status) => {
 
-        const response = await updateOrderStatus({ id, status })
-
-        // socket.emit("order-status-updated", { success: true })
+        const response = await updateOrderStatus({ id: order.id, status })
 
         if (response.data.success) {
             toast.success(`Order #${order.id} changed to: ${status.name}`)
+            socket.emit("order-status-updated", { success: true })
             refetchOrdersByPage({ page, limit, condition })
         }
     }
@@ -153,7 +152,7 @@ const Cart = () => {
 
                                     <div className="col-span-4 flex flex-col disabled:opacity-50">
                                         <button
-                                            onClick={() => handleOrderStatus(order.id, { name: "Ready", value: "ready" })}
+                                            onClick={() => handleOrderStatus({ name: "Ready", value: "ready" })}
                                             className="secondary-button bg-green-500 text-white border-green-500 disabled:opacity-50 disabled:hover:bg-zinc-300"
                                             disabled={noProducts}
                                         >
@@ -167,7 +166,7 @@ const Cart = () => {
                                     </div>
                                     <div className="col-span-4 flex flex-col disabled:opacity-50">
                                         <button
-                                            onClick={() => handleOrderStatus(order.id, { name: "Completed", value: "completed" })}
+                                            onClick={() => handleOrderStatus({ name: "Completed", value: "completed" })}
                                             className={"primary-button border border-blue-500 disabled:border-zinc-200 col-span-8"}
                                             disabled={noProducts}
                                         >
