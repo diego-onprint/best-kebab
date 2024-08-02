@@ -95,13 +95,6 @@ const Ticket = () => {
                         {/* RECHECK TABLES LOGIC */}
                         {/* <span className="">{order.is_table ? order.name : `#${formatOrderNumber(order.id)}`}</span> */}
                     </p>
-                    {
-                        order.details.table !== "null" ?
-                            <p>
-                                <span className="font-bold">Tisch: </span>
-                                <span>{order.details.table}</span>
-                            </p> : null
-                    }
                     <p>
                         <span className="font-bold">Bestelldatum: </span>
                         <span>{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
@@ -152,7 +145,15 @@ const Ticket = () => {
                                                         return (
                                                             <tr key={option.option_id}>
                                                                 <td className="border border-zinc-400 p-1 text-sm">{option.option_name}</td>
-                                                                {shop ? <td className="border border-zinc-400 p-2 text-sm">{(option.option_price * product.qty).toFixed(2)}</td> : null}
+                                                                {
+                                                                    shop ?
+                                                                        <td className="border border-zinc-400 p-2 text-sm">
+                                                                            {
+                                                                                option.option_price !== 0 ?
+                                                                                (option.option_price * product.qty).toFixed(2) : ""
+                                                                            }
+                                                                        </td> : null
+                                                                }
                                                             </tr>
                                                         )
                                                     }) : null

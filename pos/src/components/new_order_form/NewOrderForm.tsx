@@ -1,12 +1,12 @@
 import { useRef } from "react"
 import { useCreateNewOrderMutation } from "../../store/api/apiSlice"
 import Spinner from "../common/spinner/Spinner"
-import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../store/store"
 import { setCurrentOrder } from "../../store/current_order/currentOrderSlice"
 import socket from "../../socket"
 import useRefetchOrders from "../../hooks/useRefetchOrders"
+import useRefetchOrderById from "../../hooks/useRefetchOrderById"
 
 const CustomerDataModel = {
     name: "",
@@ -23,9 +23,10 @@ const NewOrderForm = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const customerData = useRef(CustomerDataModel)
+    const { page, limit, condition } = useSelector(state => state.ordersPage)
     const [createNewOrder, { isLoading }] = useCreateNewOrderMutation()
     const { refetchOrdersByPage } = useRefetchOrders()
-    // const navigate = useNavigate()
+    const { refetchOrderById } = useRefetchOrderById()
 
     const handleForm = (e) => customerData.current[e.target.name] = e.target.value
 
@@ -33,8 +34,10 @@ const NewOrderForm = () => {
         e.preventDefault()
         try {
             const response = await createNewOrder(customerData.current)
+            // Prevent cached data if order id matches deleted order
             dispatch(setCurrentOrder(response.data.id))
-            refetchOrdersByPage({ page: 1, limit: 10 })
+            refetchOrderById(response.data.id)
+            refetchOrdersByPage({ page, limit, condition})
             socket.emit("order-status-updated", { success: true })
             e.target.reset()
         } catch (err) {

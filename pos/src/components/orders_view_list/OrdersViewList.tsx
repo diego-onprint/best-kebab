@@ -14,10 +14,6 @@ const OrdersViewList = () => {
 
     if (error) console.log(error)
 
-    // useEffect(() => {
-    //     refetch()
-    // }, [refetch])
-
     useEffect(() => {
 
         if (orders) {
@@ -37,9 +33,14 @@ const OrdersViewList = () => {
             refetch()
         });
 
+        // const timer = setTimeout(() => {
+        //     refetch()
+        // }, 5000);
+
         // Cleanup on unmount
         return () => {
-            socket.off('update-order-view');
+            // clearTimeout(timer)
+            socket.off('update-order-view')
         };
     }, []);
 

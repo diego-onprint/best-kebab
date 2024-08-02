@@ -6,9 +6,10 @@ const createOrder = async (req, res) => {
     try {
         const response = await createShopOrderModel.createOrder(req.body)
         io.emit("shop-order-created", { success: true, data: response })
+
         //Send mail to customer
-        if (response.success ) {
-            sendOrderConfirmationMail(response.data)
+        if (!response.error ) {
+            sendOrderConfirmationMail(response)
         }
         
         res.status(200).json(response)

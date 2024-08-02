@@ -28,7 +28,7 @@ const login = async (data) => {
         const accessToken = jwt.sign( payload, ACCESS_TOKEN_SECRET, { expiresIn: "20s"})
         const refreshToken = jwt.sign( payload, REFRESH_TOKEN_SECRET, { expiresIn: "5m"})
 
-        return { success: true, tokens: { accessToken, refreshToken } }
+        return { success: true, tokens: { accessToken, refreshToken }, username: rows[0].username }
 
     } catch (err) {
         console.log(err)

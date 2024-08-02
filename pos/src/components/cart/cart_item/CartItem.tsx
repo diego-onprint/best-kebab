@@ -40,12 +40,15 @@ const CartItem = ({ product }) => {
                     product.variations.length > 0 ?
                         product.variations.map(option => {
                             return (
-                                <div key={option.timestamp} className="flex justify-between gap-2 pl-4 text-zinc-400">
+                                <div key={option.uid} className="flex justify-between gap-2 pl-4 text-zinc-400">
                                     <p>{option.option_name}</p>
-                                    <dt className="truncate max-w-60">
-                                        <span className="text-sm">CHF </span>
-                                        {(option.option_price * product.qty).toFixed(2)}
-                                    </dt>
+                                    {
+                                        option.option_price !== 0 ?
+                                            <dt className="truncate max-w-60">
+                                                <span className="text-sm">CHF </span>
+                                                {(option.option_price * product.qty).toFixed(2)}
+                                            </dt> : null
+                                    }
                                 </div>
                             )
                         }) : null

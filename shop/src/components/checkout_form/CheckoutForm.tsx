@@ -36,7 +36,7 @@ const Form = () => {
   const table = useParam("table")
   const [searchParams] = useSearchParams()
   const [createNewShopOrder, { isLoading }] = useCreateNewShopOrderMutation()
-  const [updateOrderData, {isLoading: isUpdating}] = useUpdateOrderDataMutation()
+  const [updateOrderData, { isLoading: isUpdating }] = useUpdateOrderDataMutation()
   const [customerData, setCustomerData] = useState(CustomerDataModel)
   const [deliveryData, setDeliveryData] = useState(DeliveryDataModel)
 
@@ -62,40 +62,30 @@ const Form = () => {
         deliveryData,
       }
 
-      let response
-      // const response = await createNewShopOrder(parsedData)
-
-      if (table) {
-        response = await updateOrderData({ table, data: parsedData })
-      } else {
-        response = await createNewShopOrder(parsedData)
+      const response = await createNewShopOrder(parsedData)
+      
+      if (response.error) {
+        return toast.error("Error placing order")
       }
 
-      if (response.data.error) {
-        toast.error("Error placing order")
+      toast.success('Bestellung gesendet', { duration: 2000 })
+
+      setCustomerData(CustomerDataModel)
+      setDeliveryData(DeliveryDataModel)
+      dispatch(clearCart())
+
+      const paramsObject = urlSearchParamsToObject(searchParams)
+      const newParams = {
+        ...paramsObject,
+        order: response.data.id,
+        email: response.data.details.customer_data.email,
       }
+      const queryParams = new URLSearchParams(newParams).toString()
 
-      if (response.data.success) {
-
-        toast.success('Bestellung gesendet', { duration: 2000 })
-
-        setCustomerData(CustomerDataModel)
-        setDeliveryData(DeliveryDataModel)
-        dispatch(clearCart())
-
-        const paramsObject = urlSearchParamsToObject(searchParams)
-        const newParams = { 
-          ...paramsObject, 
-          order: response.data.data.id,
-          email: response.data.data.details.customer_data.email,
-        }
-        const queryParams = new URLSearchParams(newParams).toString()
-
-        navigate({
-          pathname: "/success",
-          search: queryParams,
-        })
-      }
+      navigate({
+        pathname: "/success",
+        search: queryParams,
+      })
 
     } catch (err) {
       console.log(err)

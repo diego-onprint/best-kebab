@@ -10,8 +10,6 @@ const createOrder = async (data) => {
         let newId;
 
         if (reusableIdResult.rows.length > 0) {
-
-            console.log("REUSABLE?/////////")
             newId = reusableIdResult.rows[0].reusable_id
             // Delete the used reusable ID
             await pool.query('DELETE FROM reusable_ids WHERE reusable_id = $1', [newId])

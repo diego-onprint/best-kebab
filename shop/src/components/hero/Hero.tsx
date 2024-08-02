@@ -7,19 +7,16 @@ const Hero = () => {
                 <img className="w-full h-full object-cover" src="https://resto-demo.ch/wp-content/uploads/2024/06/hero-large-e1718890498941.jpg" alt="" />
             </picture>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl mx-auto p-2">
-                <div className="rounded-full p-2 w-24 h-24 overflow-hidden flex items-center justify-center">
-                    {/* <picture>
+                <div className="rounded-full bg-white p-2 w-24 h-24 overflow-hidden flex items-center justify-center">
+                    <picture>
                         <source type="image/webp" srcSet="/logo.webp" />
                         <source type="image/png" srcSet="/logo.png" />
                         <img className="w-full h-full object-contain" src="/logo.jpg" alt="" />
-                    </picture> */}
-                    <div className="w-20 h-20 rounded-full bg-white grid place-items-center">
-                        <p className="text-4xl font-semibold">BK</p>
-                    </div>
+                    </picture>
                 </div>
             </div>
         </div>
-    )
+    ) 
 }
 
 export default Hero

@@ -17,7 +17,7 @@ const Option = ({ option, handleSelected, selectedVariations, setOpen }) => {
                 onClick={handleClick}
             >
                 {option.option_name} 
-                <span className="text-sm"> (CHF. {option.option_price.toFixed(2)})</span>
+                {option.option_price !== 0 ? <span className="text-sm"> (CHF. {option.option_price.toFixed(2)})</span> : null}
             </button>
         </div>
     )

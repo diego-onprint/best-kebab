@@ -13,6 +13,7 @@ import checkoutRoute from "./routes/checkout.route.js";
 import completedOrdersRoute from "./routes/completed_orders.route.js";
 import reportsRoute from "./routes/reports.route.js";
 import newShopOrderRoute from "./routes/new_shop_order.route.js";
+import loginRoute from "./routes/login.route.js"
 import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
@@ -42,6 +43,7 @@ app.use("/api/new-order", newOrderRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/delete-order", deleteOrderRoute);
 app.use("/api/reports", reportsRoute);
+app.use("/api/login", loginRoute);
 
 
 app.use("/api/update-order", updateOrderRoute);

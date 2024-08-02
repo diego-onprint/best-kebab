@@ -6,7 +6,7 @@ const VariationButton = ({ variation, handleSelected, selectedVariations }) => {
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <div key={variation.variation_name} className="relative col-span-4">
+    <div key={variation.variation_name} className="relative flex-1">
       <button
         onClick={() => !isOpen ? setTimeout(() => setOpen(true), 20) : setOpen(false)}
         className={`${isOpen && "clickable"} border border-zinc-700 w-full px-4 py-3 rounded-md flex justify-between items-center relative`}
