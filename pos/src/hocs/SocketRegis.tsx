@@ -12,6 +12,7 @@ import usePrintTickets from "../hooks/usePrintTickets";
 import { getLocalStorageItem } from "../utils/local_storage/localStorage";
 import useRefetchOrders from "../hooks/useRefetchOrders";
 import useRefetchOrderById from "../hooks/useRefetchOrderById";
+import { useGetScreenOrdersQuery } from "../store/api/apiSlice";
 
 const SocketRegis = ({ children }) => {
 
@@ -22,8 +23,11 @@ const SocketRegis = ({ children }) => {
   const { handlePrint } = usePrintTickets()
   const { refetchOrdersByPage } = useRefetchOrders()
   const { refetchOrderById } = useRefetchOrderById()
+  const { refetch: refetchScreenOders } = useGetScreenOrdersQuery()
 
   useEffect(() => {
+
+    socket.emit("register-store", user.username)
 
     const handleStatus = (args) => {
       if (args.success) dispatch(setSocketStatus(true))
@@ -32,9 +36,6 @@ const SocketRegis = ({ children }) => {
     const handleShopOrder = (args) => {
 
       if (args.success) {
-
-        console.log(args)
-
         refetchOrderById(args.data.id)
         refetchOrdersByPage({ page, limit, condition })
         dispatch(setCurrentOrder(args.data.id))
@@ -63,6 +64,11 @@ const SocketRegis = ({ children }) => {
           })
         }
       }
+    }
+
+    const handleUpdateScreen = async () => {
+      const response = await refetchScreenOders()
+      console.log(response)
     }
 
     // ONLY FOR RESTAURANT QR NOT TKW
@@ -101,12 +107,12 @@ const SocketRegis = ({ children }) => {
 
     socket.on("on-connect", handleStatus)
     socket.on("shop-order-created", handleShopOrder)
-    // socket.on("qr-order-updated", handleQrOrder)
+    socket.on("update-screen", handleUpdateScreen)
 
     return () => {
       socket.off("on-connect", handleStatus)
       socket.off("shop-order-created", handleShopOrder)
-      // socket.off("qr-order-updated", handleQrOrder)
+      socket.off("update-screen", handleUpdateScreen)
     }
   }, [])
 

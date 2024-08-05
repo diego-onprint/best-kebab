@@ -4,8 +4,6 @@ import { calculatePercentage } from "./calculatePercentage.js"
 
 export const sendOrderConfirmationMail = (data) => {
 
-    console.log("DATA.....", data)
-
     const transporter = nodemailer.createTransport({
         host: "neptun.kreativmedia.ch",
         port: 465,

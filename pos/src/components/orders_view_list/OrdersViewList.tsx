@@ -10,8 +10,6 @@ const OrdersViewList = () => {
     const [completedOrders, setCompletedOrders] = useState([])
     const [inProcessOrders, setInProcessOrders] = useState([])
 
-    console.log(orders)
-
     if (error) console.log(error)
 
     useEffect(() => {

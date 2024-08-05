@@ -18,6 +18,7 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
 import { pool } from "./db/connection.js";
+import { storeSockets } from "./utils/storeSockets.js"
 
 const PORT = 8108;
 const app = express();
@@ -71,11 +72,14 @@ io.on("connection", (socket) => {
 
   // Receive data from client
   socket.on('order-status-updated', (data) => {
-    console.log("WORkING>")
     // Send data back to the client
     io.emit('update-order-view', { success: true });
   });
 
+  socket.on("register-store", (user) => {
+    storeSockets[user] = socket.id
+    io.emit("on-store-registered", { success: true, registered: storeSockets })
+  })
 });
 
 httpServer.listen(PORT, () => {

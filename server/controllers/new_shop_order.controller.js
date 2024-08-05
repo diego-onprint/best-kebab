@@ -1,11 +1,17 @@
 import { createShopOrderModel } from "../models/new_shop_order.model.js"
 import { io } from "../app.js"
+import { storeSockets } from "../utils/storeSockets.js"
 import { sendOrderConfirmationMail } from "../utils/sendOrderConfirmationMail.js"
 
 const createOrder = async (req, res) => {
     try {
         const response = await createShopOrderModel.createOrder(req.body)
+
         io.emit("shop-order-created", { success: true, data: response })
+
+        io
+        .to(storeSockets.screen)
+        .emit("update-screen", { success: true, message: "here" })
 
         //Send mail to customer
         if (!response.error ) {
