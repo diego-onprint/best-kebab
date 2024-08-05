@@ -30,7 +30,7 @@ const Ticket = () => {
     const kitchen = ticketType === "kitchen"
     const TAX_RATE = orderType.value === "lieferung" ? 2.6 : 8.1
 
-    console.log(order)
+    // console.log(order)
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -78,30 +78,23 @@ const Ticket = () => {
                                     <img className="w-[200px] h-[100px] object-contain" src="/assets/ticket-logo.png" alt="" />
                                 </div>
                                 <div className="flex flex-col my-1">
-                                    <p className="to-print text-center">Dohlenweg 24,</p>
-                                    <p className="to-print text-center">8050 Zürich</p>
-                                    <p className="to-print text-center">Tel. 0800 848 832</p>
-                                    <p className="to-print text-center">www.smart-pos.ch</p>
+                                    <p className="to-print text-center">Langstrasse 206,</p>
+                                    <p className="to-print text-center">8005 Zürich,</p>
+                                    <p className="to-print text-center">www.bestkebabzuerich.ch</p>
                                 </div>
                             </div> : null
                     }
                     {
                         kitchen ?
                             <div className="w-full flex items-center justify-center">
-                                <h2 className="text-2xl">Smart Pos - Küche</h2>
+                                <h2 className="text-2xl">Best Kebab - Küche</h2>
                             </div> : null
                     }
                     <p>
                         <span className="font-bold">Bestellung: </span>
-                        <span className="">{order.is_table ? order.name : `#${formatOrderNumber(order.id)}`}</span>
+                        {/* RECHECK TABLES LOGIC */}
+                        {/* <span className="">{order.is_table ? order.name : `#${formatOrderNumber(order.id)}`}</span> */}
                     </p>
-                    {
-                        order.details.table !== "null" ?
-                            <p>
-                                <span className="font-bold">Tisch: </span>
-                                <span>{order.details.table}</span>
-                            </p> : null
-                    }
                     <p>
                         <span className="font-bold">Bestelldatum: </span>
                         <span>{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>
@@ -152,7 +145,15 @@ const Ticket = () => {
                                                         return (
                                                             <tr key={option.option_id}>
                                                                 <td className="border border-zinc-400 p-1 text-sm">{option.option_name}</td>
-                                                                {shop ? <td className="border border-zinc-400 p-2 text-sm">{(option.option_price * product.qty).toFixed(2)}</td> : null}
+                                                                {
+                                                                    shop ?
+                                                                        <td className="border border-zinc-400 p-2 text-sm">
+                                                                            {
+                                                                                option.option_price !== 0 ?
+                                                                                (option.option_price * product.qty).toFixed(2) : ""
+                                                                            }
+                                                                        </td> : null
+                                                                }
                                                             </tr>
                                                         )
                                                     }) : null

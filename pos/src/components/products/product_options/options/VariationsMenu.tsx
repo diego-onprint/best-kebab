@@ -31,7 +31,7 @@ const VariationsMenu = ({ variations, productVariations, setProductVariations })
                 <label className="font-semibold">Options</label>
                 <fieldset className="">
                     <legend className="sr-only">Select options</legend>
-                    <div className="grid grid-cols-12 gap-2">
+                    <div className="flex gap-2">
                         {
                             variations.map(variation => {
                                 return (

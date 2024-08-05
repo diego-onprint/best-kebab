@@ -7,6 +7,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 const initialState = {
     checkoutMenu: false,
     customProductMenu: false,
+    editOrderMenu: false,
     editCategoryMenu: false,
     addProductMenu: false,
     editProductMenu: {
@@ -25,6 +26,9 @@ export const menusSlice = createSlice({
         setCustomProductMenu: (state, action: PayloadAction<boolean>) => {
             state.customProductMenu = action.payload
         },
+        setEditOrderMenu: (state, action: PayloadAction<boolean>) => {
+            state.editOrderMenu = action.payload
+        },
         setEditCategoryMenu: (state, action: PayloadAction<boolean>) => {
             state.editCategoryMenu = action.payload
         },
@@ -40,6 +44,7 @@ export const menusSlice = createSlice({
 export const { 
     setCheckoutMenu,
     setCustomProductMenu,
+    setEditOrderMenu,
     setEditCategoryMenu,
     setAddProductMenu,
     setEditProductMenu,

@@ -42,17 +42,6 @@ const getOrdersLastYear = async (req, res) => {
     }
 }
 
-
-const getOrdersCurrentYear = async (req, res) => {
-    try {
-        const response = await reportsModel.getOrdersCurrentYear()
-        res.status(200).json(response)
-    } catch (err) {
-        console.log(err)
-        res.status(500).json(err)
-    }
-}
-
 const getOrdersBetweenDates = async (req, res) => {
     try {
         const response = await reportsModel.getOrdersBetweenDates(req.body)
@@ -67,7 +56,6 @@ export const reportsController = {
     getOrdersCurrentWeek,
     getOrdersLastMonth,
     getOrdersLastYear,
-    getOrdersCurrentYear,
     getOrdersBetweenDates,
     getOrdersCurrentDay,
 }

@@ -1,7 +1,6 @@
 export const parseReportsData = (allData) => {
 
-    // Remove orders with "delete" status
-    const data = allData.filter(order => order.status.value !== "deleted")
+    const data = allData.filter(order => order.status.value === "completed")
 
     const getTotalSales = () => data.reduce((acc, curr) => acc + curr.cart.total, 0)
 

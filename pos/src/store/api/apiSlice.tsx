@@ -2,14 +2,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Category, Product, Order, CompletedOrder } from "../../types";
 
 // PROD
-const baseUrl = "https://best-kebab-server.smart-pos.ch/api/"
+// const baseUrl = "https://best-kebab-server.smart-pos.ch/api/"
 
 // DEV
-// const baseUrl = "http://localhost:8108/api/"
+const baseUrl = "http://localhost:8108/api/"
 
 export const api = createApi({
     reducerPath: "api",
-    baseQuery: fetchBaseQuery({ 
+    baseQuery: fetchBaseQuery({
         baseUrl: baseUrl,
         // credentials: "include"
     }),
@@ -26,16 +26,39 @@ export const api = createApi({
             query: (id) => `products/${id}`,
             keepUnusedDataFor: 21600,
         }),
-        getTablesData: builder.query({
-            query: () => "orders/tables/",
-            keepUnusedDataFor: 0,
+        createNewOrder: builder.mutation({
+            query(data) {
+                return {
+                    url: "new-order/",
+                    method: "POST",
+                    body: data,
+                }
+            }
         }),
-        getTakeawayOrdersData: builder.query({
-            query: () => "orders/takeaway/",
-            keepUnusedDataFor: 0,
+        getOrders: builder.query({
+            query: () => {
+                return {
+                    url: "orders/all",
+                }
+            },
+            keepUnusedDataFor: 0
         }),
-        getOrderDataById: builder.query({
-            query: (id) => `orders/${id}`,
+        getOrdersByPage: builder.query({
+            query: ({ page, limit, condition }) => {
+                return {
+                    url: "orders/",
+                    params: { page, limit, condition }
+                }
+            },
+            keepUnusedDataFor: 0
+        }),
+        getScreenOrders: builder.query({
+            query: () => {
+                return {
+                    url: "orders/screen-orders",
+                }
+            },
+            keepUnusedDataFor: 0
         }),
         updateOrderData: builder.mutation<Order, Order>({
             query(data) {
@@ -51,20 +74,94 @@ export const api = createApi({
                     const { data } = await queryFulfilled
                     // Revalidate order cached data on order update
                     dispatch(api.util.upsertQueryData('getOrderDataById', orderId, data))
-                } catch { 
+                } catch {
                     console.log("Error updating cache")
                 }
             },
         }),
+        deleteOrder: builder.mutation({
+            query(id) {
+                return {
+                    url: `delete-order/${id}`,
+                    method: "DELETE",
+                }
+            }
+        }),
         updateOrderStatus: builder.mutation({
             query(data) {
-                const {orderId, ...status} = data
-                 return {
-                    url: `update-order/order-status/${orderId}`,
+                const { id, ...status } = data
+                return {
+                    url: `update-order/order-status/${id}`,
                     method: "PATCH",
                     body: status,
-                 }
+                }
             }
+        }),
+        updateOrderDetails: builder.mutation({
+            query(data) {
+                const { id, ...details } = data
+
+                console.log("DETAILS.....", details)
+                return {
+                    url: `update-order/order-details/${id}`,
+                    method: "PATCH",
+                    body: details,
+                }
+            }
+        }),
+        getWeekReport: builder.query({
+            query: () => "reports/current-week",
+            keepUnusedDataFor: 0,
+        }),
+        getCurrentDayReport: builder.query({
+            query: () => "reports/current-day",
+            keepUnusedDataFor: 0,
+        }),
+        getLastMonthReport: builder.query({
+            query: () => "reports/last-month",
+            keepUnusedDataFor: 0,
+        }),
+        getLastYearReport: builder.query({
+            query: () => "reports/last-year",
+            keepUnusedDataFor: 0,
+        }),
+        getCustomDatesReport: builder.mutation({
+            query(data) {
+                return {
+                    url: `/reports/custom`,
+                    method: "POST",
+                    body: data,
+                }
+            }
+        }),
+        login: builder.mutation({
+            query(data) {
+                return {
+                    url: "login/",
+                    method: "POST",
+                    body: data,
+                }
+            }
+        }),
+
+
+
+
+
+
+
+
+
+        getTablesData: builder.query({
+            query: () => "orders/tables/",
+            keepUnusedDataFor: 0,
+        }),
+        getTakeawayOrdersData: builder.query({
+            query: () => "orders/takeaway/",
+            keepUnusedDataFor: 0,
+        }),
+        getOrderDataById: builder.query({
+            query: (id) => `orders/${id}`,
         }),
         updateOrderPrintedProducts: builder.mutation({
             query(data) {
@@ -87,7 +184,7 @@ export const api = createApi({
         }),
         updateTkwOrderClientDetails: builder.mutation({
             query(data) {
-                const { id, ...patch} = data
+                const { id, ...patch } = data
                 console.log("here", id, patch)
                 return {
                     url: `new-order/${id}`,
@@ -202,7 +299,7 @@ export const api = createApi({
         }),
         updateCompletedOrderDetails: builder.mutation({
             query(data) {
-                const { id, ...patch} = data
+                const { id, ...patch } = data
                 return {
                     url: `completed-orders/details/${id}`,
                     method: "PATCH",
@@ -212,46 +309,12 @@ export const api = createApi({
         }),
         updateCompletedOrderProducts: builder.mutation({
             query(data) {
-                const { orderId, ...patch} = data
+                const { orderId, ...patch } = data
                 console.log(data)
                 return {
                     url: `completed-orders/products/${orderId}`,
                     method: "PATCH",
                     body: patch,
-                }
-            }
-        }),
-        getWeekReport: builder.query({
-            query: () => "reports/current-week",
-            keepUnusedDataFor: 0,
-        }),
-        getCurrentDayReport: builder.query({
-            query: () => "reports/current-day",
-            keepUnusedDataFor: 0,
-        }),
-        getLastMonthReport: builder.query({
-            query: () => "reports/last-month",
-            keepUnusedDataFor: 0,
-        }),
-        getLastYearReport: builder.query({
-            query: () => "reports/last-year",
-            keepUnusedDataFor: 0,
-        }),
-        getCustomDatesReport: builder.mutation({
-            query(data) {
-                return {
-                    url: `/reports/custom`,
-                    method: "POST",
-                    body: data,
-                }
-            }
-        }),
-        login: builder.mutation({
-            query(data) {
-                return {
-                    url: "login/",
-                    method: "POST",
-                    body: data,
                 }
             }
         }),
@@ -262,11 +325,18 @@ export const {
     useGetCategoriesQuery,
     useGetAllProductsQuery,
     useGetProductsByCategoryQuery,
+    useCreateNewOrderMutation,
+    useGetOrdersQuery,
+    useGetOrdersByPageQuery,
+    useGetScreenOrdersQuery,
+    useDeleteOrderMutation,
+    useUpdateOrderStatusMutation,
+    useUpdateOrderDetailsMutation,
+
     useGetTablesDataQuery,
     useGetTakeawayOrdersDataQuery,
     useGetOrderDataByIdQuery,
     useUpdateOrderDataMutation,
-    useUpdateOrderStatusMutation,
     useUpdateOrderPrintedProductsMutation,
     useCreateNewTkwOrderMutation,
     useUpdateTkwOrderClientDetailsMutation,

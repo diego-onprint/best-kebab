@@ -20,11 +20,9 @@ const LoginForm = () => {
             setTimeout(() => { setError("") }, 5000)
         } 
 
-        // console.log(response)
-
-        // TEMP until solver CORS issue and headeres in requests
+        // TEMP until solve CORS issue and headeres in requests
         if (response.data.success) {
-            setLocalStorageItem("user", { auth: true })
+            setLocalStorageItem("user", { auth: true, username: response.data.username })
             navigate("/")
         }
     }

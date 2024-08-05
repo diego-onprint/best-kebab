@@ -22,7 +22,21 @@ const updateOrderStatus = async (req, res) => {
     }
 }
 
+const updateOrderDetails = async (req, res) => {
+
+    console.log("BODY....", req.body)
+    try {
+        const response = await updateOrderModel.updateOrderDetails(req.params.id, req.body.details)
+        res.status(200).json(response)
+    } catch {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
+
+
 export const updateOrderController = {
     updateOrder,
     updateOrderStatus,
+    updateOrderDetails,
 }

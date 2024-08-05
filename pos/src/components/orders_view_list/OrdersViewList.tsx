@@ -1,22 +1,18 @@
 import Spinner from "../common/spinner/Spinner"
-import { useGetTakeawayOrdersDataQuery } from "../../store/api/apiSlice"
+import { useGetScreenOrdersQuery, useGetTakeawayOrdersDataQuery } from "../../store/api/apiSlice"
 import { useEffect, useState } from "react"
 import { formatOrderNumber } from "../../utils/format/formatOrderNumber"
 import socket from "../../socket"
 
 const OrdersViewList = () => {
 
-    const { data: orders, error, isFetching, refetch } = useGetTakeawayOrdersDataQuery()
+    const { data: orders, error, isFetching, refetch } = useGetScreenOrdersQuery()
     const [completedOrders, setCompletedOrders] = useState([])
     const [inProcessOrders, setInProcessOrders] = useState([])
 
     console.log(orders)
 
     if (error) console.log(error)
-
-    useEffect(() => {
-        refetch()
-    }, [refetch])
 
     useEffect(() => {
 
@@ -37,9 +33,14 @@ const OrdersViewList = () => {
             refetch()
         });
 
+        // const timer = setTimeout(() => {
+        //     refetch()
+        // }, 5000);
+
         // Cleanup on unmount
         return () => {
-            socket.off('update-order-view');
+            // clearTimeout(timer)
+            socket.off('update-order-view')
         };
     }, []);
 

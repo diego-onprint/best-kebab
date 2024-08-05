@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../store/store"
 import { removeSelectedProduct, setSelectedProduct } from "../../../store/selected_products/selectedProducts"
 
-const Item = ({ product }) => {
+const CartItem = ({ product }) => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { products: selectedProducts } = useSelector(state => state.selectedProducts)
@@ -40,12 +40,15 @@ const Item = ({ product }) => {
                     product.variations.length > 0 ?
                         product.variations.map(option => {
                             return (
-                                <div key={option.timestamp} className="flex justify-between gap-2 pl-4 text-zinc-400">
+                                <div key={option.uid} className="flex justify-between gap-2 pl-4 text-zinc-400">
                                     <p>{option.option_name}</p>
-                                    <dt className="truncate max-w-60">
-                                        <span className="text-sm">CHF </span>
-                                        {(option.option_price * product.qty).toFixed(2)}
-                                    </dt>
+                                    {
+                                        option.option_price !== 0 ?
+                                            <dt className="truncate max-w-60">
+                                                <span className="text-sm">CHF </span>
+                                                {(option.option_price * product.qty).toFixed(2)}
+                                            </dt> : null
+                                    }
                                 </div>
                             )
                         }) : null
@@ -70,4 +73,4 @@ const Item = ({ product }) => {
     )
 }
 
-export default Item
+export default CartItem

@@ -1,4 +1,50 @@
 import { pool } from "../db/connection.js"
+import { pagination } from "../utils/pagination.js"
+
+const getOrdersByPage = async (page, limit, condition) => {
+
+    if (condition === "all") {
+        const { rows } = await pool.query("SELECT * FROM orders ORDER BY id DESC")
+        return pagination(rows, page, limit)
+    }
+
+    const { rows } = await pool.query("SELECT * FROM orders WHERE status->>'value' = $1 ORDER BY id DESC", [condition])
+    return pagination(rows, page, limit)
+}
+
+const getAllOrders = async (page, limit) => {
+    const { rows } = await pool.query("SELECT * FROM orders ORDER BY id DESC")
+    return rows
+}
+
+const getScreenOrders = async () => {
+    const query = `
+        SELECT * 
+        FROM orders 
+        WHERE status->>'value' IN ('ready', 'process') 
+        ORDER BY id DESC
+    `
+    const { rows } = await pool.query(query)
+    return rows
+}
+
+
+// TODO change to update orders
+const updateOrderStatus = async (id, status) => {
+    try {
+        const getQuery = 'SELECT * FROM orders WHERE id = $1'
+        const { rows: ordersRows } = await pool.query(getQuery, [id])
+        await pool.query("UPDATE orders SET status = $1 WHERE id = $2", [status, id])
+        sentCompletedOrderMail(ordersRows[0])
+        return { success: true }
+    } catch (err) {
+        console.error("Error updating order status:", err)
+        return { error: true, msg: err }
+    }
+}
+
+
+///////////////////////////////////
 
 const findTablesOrders = async () => {
     const query = "SELECT * FROM orders WHERE is_table = true ORDER BY id ASC "
@@ -46,6 +92,11 @@ const updateOrderPrintedProducts = async (id, selectedProducts) => {
 }
 
 export const ordersModel = {
+    getOrdersByPage,
+    getAllOrders,
+    getScreenOrders,
+
+    updateOrderStatus,
     findTablesOrders,
     findTakeawayOrders,
     findOrderById,

@@ -32,14 +32,6 @@ const useProductActions = () => {
             notes: productNotes.current.value,
         }
 
-        // PATCH .... for completed orders edit
-        if (completedOrderToEditId) {
-            await updateCompletedOrderProducts({ orderId: completedOrderToEditId, method: "add", productData: productData })
-            refetchCompletedOrderById(completedOrderToEditId)
-            return
-        }
-        // END PATCH
-
         if (currentOrderId) {
             await updateOrderData({ orderId: currentOrderId, method: "add", productData: productData })
         }

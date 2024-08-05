@@ -1,24 +1,55 @@
-import { useState } from "react"
 import Order from "../order/Order"
 import Spinner from "../../common/spinner/Spinner"
-import { useGetCompletedOrdersByPageQuery } from "../../../store/api/apiSlice"
+import { useGetOrdersByPageQuery } from "../../../store/api/apiSlice"
 import Pagination from "../../common/pagination/Pagination"
+import { useDispatch, useSelector } from "react-redux"
+import { setOrdersCondition, setOrdersPage } from "../../../store/orders_page/ordersPageSlice"
 
 const OrdersList = () => {
 
-    const [currentPage, setCurrentPage] = useState(1)
-    const { data, error, isFetching } = useGetCompletedOrdersByPageQuery({ page: currentPage, limit: 10 })
+    const dispatch = useDispatch()
+    const { page: currentPage, limit, condition } = useSelector(state => state.ordersPage)
+    const { data, error, isFetching } = useGetOrdersByPageQuery({ page: currentPage, limit, condition })
     const orders = data?.results
 
-    //case not found -404- or sorts
+    const handlePage = (value) => {
+        dispatch(setOrdersPage(value))
+    }
+
+    const handleCondition = (value) => {
+        dispatch(setOrdersCondition(value))
+    }
+
     if (error) throw Error
 
     return (
-        <div>
-            <div className="flex justify-end">
+        <div className="mt-3">
+            <div className="flex justify-between items-center">
+                <div className="space-x-2">
+                    <button
+                     onClick={() => handleCondition("all")}
+                     className={`${condition === "all" ? "border-blue-500 bg-blue-500 text-white" : "bg-white border border-zinc-200"} rounded-full px-3 py-1 text-sm`}>
+                        Alles
+                     </button>
+                    <button
+                     onClick={() => handleCondition("process")}
+                     className={`${condition === "process" ? "border-blue-500 bg-blue-500 text-white" : "bg-white border border-zinc-200"} rounded-full px-3 py-1 text-sm`}>
+                        Process
+                     </button>
+                    <button
+                     onClick={() => handleCondition("ready")}
+                     className={`${condition === "ready" ? "border-blue-500 bg-blue-500 text-white" : "bg-white border border-zinc-200"} rounded-full px-3 py-1 text-sm`}>
+                        Ready
+                     </button>
+                    <button
+                     onClick={() => handleCondition("completed")}
+                     className={`${condition === "completed" ? "border-blue-500 bg-blue-500 text-white" : "bg-white border border-zinc-200"} rounded-full px-3 py-1 text-sm`}>
+                        Completed
+                     </button>
+                </div>
                 <Pagination
                     page={currentPage}
-                    setPage={setCurrentPage}
+                    setPage={handlePage}
                     hasNextPage={true}
                     loading={isFetching}
                 />

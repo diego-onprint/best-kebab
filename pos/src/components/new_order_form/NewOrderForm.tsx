@@ -1,11 +1,12 @@
 import { useRef } from "react"
-import { useCreateNewTkwOrderMutation, useGetTakeawayOrdersDataQuery } from "../../store/api/apiSlice"
+import { useCreateNewOrderMutation } from "../../store/api/apiSlice"
 import Spinner from "../common/spinner/Spinner"
-import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../store/store"
 import { setCurrentOrder } from "../../store/current_order/currentOrderSlice"
 import socket from "../../socket"
+import useRefetchOrders from "../../hooks/useRefetchOrders"
+import useRefetchOrderById from "../../hooks/useRefetchOrderById"
 
 const CustomerDataModel = {
     name: "",
@@ -22,23 +23,23 @@ const NewOrderForm = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const customerData = useRef(CustomerDataModel)
-    const [createNewTkwOrder, { isLoading }] = useCreateNewTkwOrderMutation()
-    const { refetch } = useGetTakeawayOrdersDataQuery()
-    const navigate = useNavigate()
+    const { page, limit, condition } = useSelector(state => state.ordersPage)
+    const [createNewOrder, { isLoading }] = useCreateNewOrderMutation()
+    const { refetchOrdersByPage } = useRefetchOrders()
+    const { refetchOrderById } = useRefetchOrderById()
 
     const handleForm = (e) => customerData.current[e.target.name] = e.target.value
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
-
-            const response = await createNewTkwOrder(customerData.current)
+            const response = await createNewOrder(customerData.current)
+            // Prevent cached data if order id matches deleted order
             dispatch(setCurrentOrder(response.data.id))
-            e.target.reset()
+            refetchOrderById(response.data.id)
+            refetchOrdersByPage({ page, limit, condition})
             socket.emit("order-status-updated", { success: true })
-            refetch()
-            navigate("/products")
+            e.target.reset()
         } catch (err) {
             console.log(err)
         }
