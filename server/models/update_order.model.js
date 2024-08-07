@@ -1,5 +1,6 @@
 import { pool } from "../db/connection.js"
 import { sentCompletedOrderMail } from "../utils/sendCompletedOrderMail.js";
+import { sendWhatsAppMessage } from "../utils/sendWhatsappMessage.js";
 
 const getCartTotal = (cart) => {
     return cart.reduce((acc, item) => {
@@ -149,13 +150,25 @@ const updateOrder = async (id, body) => {
 
 const updateOrderStatus = async (id, status) => {
 
-    // console.log(id, status)
+    console.log("STATUS...........", id, status)
 
     try {
         const getQuery = 'SELECT * FROM orders WHERE id = $1'
         const { rows: ordersRows } = await pool.query(getQuery, [id])
         await pool.query("UPDATE orders SET status = $1 WHERE id = $2", [status, id])
-        sentCompletedOrderMail(ordersRows[0])
+
+        if (status.value === "ready") {
+            
+            if (ordersRows[0].details.customer_data.email.length > 0) {
+                //TODO change function name to "send" not "sent"
+                sentCompletedOrderMail(ordersRows[0])
+            }
+
+            if (ordersRows[0].details.customer_data.phone.length > 0) {
+                sendWhatsAppMessage(ordersRows[0].details.customer_data.phone, ordersRows[0].id)
+            }
+        }
+
         return { success: true }
     } catch (err) {
         console.error("Error updating order status:", err)

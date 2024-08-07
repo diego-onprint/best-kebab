@@ -67,6 +67,8 @@ const Ticket = () => {
 
     }, [selectedProducts, order])
 
+    console.log(order)
+
     if (order) {
         return (
             <div id="shop-ticket" className="fixed max-w-[800px] bg-white w-full py-4 top-0 left-0 -z-50 block">
@@ -90,11 +92,7 @@ const Ticket = () => {
                                 <h2 className="text-2xl">Best Kebab - Küche</h2>
                             </div> : null
                     }
-                    <p>
-                        <span className="font-bold">Bestellung: </span>
-                        {/* RECHECK TABLES LOGIC */}
-                        {/* <span className="">{order.is_table ? order.name : `#${formatOrderNumber(order.id)}`}</span> */}
-                    </p>
+                    <p className="font-bold">Bestellung: #{formatOrderNumber(order.id)}</p>
                     <p>
                         <span className="font-bold">Bestelldatum: </span>
                         <span>{date.toLocaleDateString()}, {date.toLocaleTimeString()}</span>

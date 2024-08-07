@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
 import Spinner from "../common/spinner/Spinner"
+import PhoneInput from "react-phone-input-2"
+import 'react-phone-input-2/lib/style.css'
+import es from 'react-phone-input-2/lang/es.json'
 import { clearCart } from "../../store/cart/cartSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../store/store"
@@ -40,9 +43,14 @@ const Form = () => {
   const [customerData, setCustomerData] = useState(CustomerDataModel)
   const [deliveryData, setDeliveryData] = useState(DeliveryDataModel)
 
+  console.log(customerData)
 
   const handleForm = (e) => {
     setCustomerData({ ...customerData, [e.target.name]: e.target.value })
+  }
+
+  const handlePhoneInput = (value) => {
+    setCustomerData({ ...customerData, phone: value})
   }
 
   const handleSubmit = async (e) => {
@@ -63,12 +71,10 @@ const Form = () => {
       }
 
       const response = await createNewShopOrder(parsedData)
-      
+
       if (response.error) {
         return toast.error("Error placing order")
       }
-
-      toast.success('Bestellung gesendet', { duration: 2000 })
 
       setCustomerData(CustomerDataModel)
       setDeliveryData(DeliveryDataModel)
@@ -108,6 +114,20 @@ const Form = () => {
           className="input-field"
           placeholder="Email"
           required
+        />
+        <
+          PhoneInput
+          onChange={(value) => handlePhoneInput(value)}
+          inputProps={{
+            name: 'phone',
+            required: true,
+          }}
+          countryCodeEditable={false}
+          containerClass="flex"
+          inputClass="!py-2 !border !border-zinc-200 !rounded-md !text-base !h-auto flex-1"
+          localization={es}
+          country="ch"
+          preferredCountries={["ch", "de", "it", "fr", "gb", "es", "at"]}
         />
         <div className="flex gap-1">
           <input
