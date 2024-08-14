@@ -27,7 +27,7 @@ const SocketRegis = ({ children }) => {
 
   useEffect(() => {
 
-    socket.emit("register-store", user.username)
+    socket.emit("register-store", user?.username)
 
     const handleStatus = (args) => {
       if (args.success) dispatch(setSocketStatus(true))
@@ -40,7 +40,7 @@ const SocketRegis = ({ children }) => {
         refetchOrdersByPage({ page, limit, condition })
         dispatch(setCurrentOrder(args.data.id))
 
-        if (user.username !== "screen") {
+        if (user?.username !== "screen") {
 
           if (audioRef.current) audioRef.current.play()
 
