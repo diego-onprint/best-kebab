@@ -40,7 +40,9 @@ const SocketRegis = ({ children }) => {
         refetchOrdersByPage({ page, limit, condition })
         dispatch(setCurrentOrder(args.data.id))
 
-        if (user?.username !== "screen") {
+        console.log("user.....", user?.username)
+        
+        if (user?.username === "admin") {
 
           if (audioRef.current) audioRef.current.play()
 
