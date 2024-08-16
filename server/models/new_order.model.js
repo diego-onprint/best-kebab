@@ -38,7 +38,7 @@ const createOrder = async (data) => {
             table: "",
             tip: "0.00",
         }
-        const status = { name: "Process", value: "process" }
+        const status = { name: "Created", value: "created" }
 
         const query = "INSERT INTO orders (id, name, cart, details, status ) VALUES ($1, $2, $3, $4, $5) RETURNING *"
 

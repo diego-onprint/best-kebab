@@ -67,8 +67,6 @@ const Ticket = () => {
 
     }, [selectedProducts, order])
 
-    console.log(order)
-
     if (order) {
         return (
             <div id="shop-ticket" className="fixed max-w-[800px] bg-white w-full py-4 top-0 left-0 -z-50 block">
@@ -83,6 +81,7 @@ const Ticket = () => {
                                     <p className="to-print text-center">Langstrasse 206,</p>
                                     <p className="to-print text-center">8005 Zürich,</p>
                                     <p className="to-print text-center">www.bestkebabzuerich.ch</p>
+                                    <p className="to-print text-center">MwsT: CHE 187.831.311</p>
                                 </div>
                             </div> : null
                     }

@@ -33,6 +33,8 @@ const Order = ({ order }) => {
                 return "text-green-500"
             case "process":
                 return "text-yellow-500"
+            case "created":
+                return "text-zinc-500"
             default:
                 return "text-zinc-900"
         }

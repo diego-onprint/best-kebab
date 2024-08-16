@@ -40,7 +40,6 @@ const SocketRegis = ({ children }) => {
         dispatch(setCurrentOrder(args.data.id))
         refetchOrdersByPage({ page, limit, condition })
         refetchScreenOders()
-        console.log("user.....", user?.username)
         
         if (user?.username === "admin") {
 
