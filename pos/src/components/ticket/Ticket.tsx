@@ -28,9 +28,22 @@ const Ticket = () => {
 
     const shop = ticketType === "shop"
     const kitchen = ticketType === "kitchen"
-    const TAX_RATE = orderType.value === "lieferung" ? 2.6 : 8.1
 
-    // console.log(order)
+    const getTaxRate = () => {
+
+        if (order) {
+
+            const hasTaxableItem = order.cart.products.some(item => {
+                return item.id === "chicken-steak-burger-l" || item.id === "fried-chicken-menu"
+            })
+
+            if (hasTaxableItem) return 8.1
+        }
+
+        return 2.6
+    }
+
+    const TAX_RATE = getTaxRate()
 
     useEffect(() => {
         const intervalId = setInterval(() => {

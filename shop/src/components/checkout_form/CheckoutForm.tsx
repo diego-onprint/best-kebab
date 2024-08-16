@@ -115,7 +115,7 @@ const Form = () => {
           placeholder="Email"
           required
         />
-        <
+        {/* <
           PhoneInput
           onChange={(value) => handlePhoneInput(value)}
           inputProps={{
@@ -128,7 +128,7 @@ const Form = () => {
           localization={es}
           country="ch"
           preferredCountries={["ch", "de", "it", "fr", "gb", "es", "at"]}
-        />
+        /> */}
         <div className="flex gap-1">
           <input
             type="text"

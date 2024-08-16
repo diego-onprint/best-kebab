@@ -4,22 +4,7 @@ const createOrder = async (data) => {
     
     try {
 
-        await pool.query('BEGIN');
-
-        const reusableIdResult = await pool.query('SELECT reusable_id FROM reusable_ids ORDER BY id LIMIT 1')
-        let newId;
-
-        if (reusableIdResult.rows.length > 0) {
-            newId = reusableIdResult.rows[0].reusable_id
-            // Delete the used reusable ID
-            await pool.query('DELETE FROM reusable_ids WHERE reusable_id = $1', [newId])
-        } else {
-            // Get the next sequence value
-            const sequenceResult = await pool.query("SELECT nextval('orders_id_seq')")
-            newId = sequenceResult.rows[0].nextval
-        }
-
-        const name = `${data.customerData.name} ${data.customerData.surname}`
+        const name = data.cart.products[0].name
         const cart = { total: data.cart.total, products: data.cart.products }
         const timestamp = new Date().toISOString()
         const details = {
@@ -34,19 +19,14 @@ const createOrder = async (data) => {
             shipping_fee: data.cart.shipping_fee,
             tip: data.cart.tip.total,
         }
-        const status = { name: "Process", value: "process" }
+        const status = { name: "Created", value: "created" }
 
-        const query = "INSERT INTO orders (id, name, cart, details, status ) VALUES ($1, $2, $3, $4, $5) RETURNING *"
-
-        const result = await pool.query(query, [newId, name, cart, details, status ])
-
-        await pool.query('COMMIT')
-
+        const query = "INSERT INTO orders (name, cart, details, status ) VALUES ($1, $2, $3, $4) RETURNING *"
+        const result = await pool.query(query, [name, cart, details, status ])
         return result.rows[0]
 
     } catch (error) {
         console.error("Error inserting order:", error)
-        await pool.query('ROLLBACK')
         return { error: "Internal server error" }
     }
 }

@@ -54,12 +54,23 @@ const updateOrder = async (id, body) => {
             const newTotal = getCartTotal(concatProducts)
             const updatedCart = { total: newTotal, products: concatProducts }
 
+            console.log(ordersRows[0])
+
+            let newOrderName
+
+            if (ordersRows[0].cart.products.length > 0) {
+                newOrderName = ordersRows[0].cart.products[0].name
+            } else {
+                newOrderName = productToAdd.name
+            }
+
             // Update db with cart + new product
-            const updateQuery = 'UPDATE orders SET cart = $1 WHERE id = $2'
-            await pool.query(updateQuery, [updatedCart, id])
+            const updateQuery = 'UPDATE orders SET cart = $1, name = $2 WHERE id = $3'
+            await pool.query(updateQuery, [updatedCart, newOrderName, id])
 
             // Query updated DB order
             const { rows } = await pool.query(getQuery, [id])
+
             await client.query('COMMIT')
             return rows[0]
 
@@ -158,7 +169,7 @@ const updateOrderStatus = async (id, status) => {
         await pool.query("UPDATE orders SET status = $1 WHERE id = $2", [status, id])
 
         if (status.value === "ready") {
-            
+
             if (ordersRows[0].details.customer_data.email.length > 0) {
                 //TODO change function name to "send" not "sent"
                 sentCompletedOrderMail(ordersRows[0])
