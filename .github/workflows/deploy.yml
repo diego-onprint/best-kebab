@@ -46,7 +46,7 @@ jobs:
             docker pull bestkebab/posbestkebab:1.0.1
             docker run --rm -i -t -d -p 5196:5196 \
               --name bestKebabPos \
-              --label 'traefik.http.routers.best-kebab-pos.rule=Host(`best-kebab-pos.smart-pos.ch`)' \
+              --label 'traefik.http.routers.best-kebab-pos.rule=Host(`best-kebab-pos.smart-pos.ch`) || Host(`www.best-kebab-pos.smart-pos.ch`)' \
               --label 'traefik.http.routers.best-kebab-pos.tls=true' \
               --label 'traefik.http.routers.best-kebab-pos.tls.certresolver=leresolver' \
               --label 'traefik.http.services.best-kebab-pos.loadbalancer.server.port=5196' \
@@ -67,7 +67,7 @@ jobs:
             docker pull bestkebab/serverbestkebab:1.0.1
             docker run --rm -i -t -d -p 8108:8108 \
               --name bestKebabBackend \
-              --label 'traefik.http.routers.best-kebab-server.rule=Host(`best-kebab-server.smart-pos.ch`)' \
+              --label 'traefik.http.routers.best-kebab-server.rule=Host(`best-kebab-server.smart-pos.ch`) || Host(`www.best-kebab-server.smart-pos.ch`)' \
               --label 'traefik.http.routers.best-kebab-server.tls=true' \
               --label 'traefik.http.routers.best-kebab-server.tls.certresolver=leresolver' \
               --label 'traefik.http.services.best-kebab-server.loadbalancer.server.port=8108' \
@@ -88,7 +88,7 @@ jobs:
             docker pull bestkebab/shopbestkebab:1.0.1
             docker run --rm -i -t -d -p  4186:4186 \
               --name bestKebabShop \
-              --label 'traefik.http.routers.best-kebab-shop.rule=Host(`best-kebab-shop.smart-pos.ch`)' \
+              --label 'traefik.http.routers.best-kebab-shop.rule=Host(`best-kebab-shop.smart-pos.ch`) || Host(`www.best-kebab-shop.smart-pos.ch`)' \
               --label 'traefik.http.routers.best-kebab-shop.tls=true' \
               --label 'traefik.http.routers.best-kebab-shop.tls.certresolver=leresolver' \
               --label 'traefik.http.services.best-kebab-shop.loadbalancer.server.port=4186' \
